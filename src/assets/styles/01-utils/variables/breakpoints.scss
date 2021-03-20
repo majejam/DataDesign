@@ -1,0 +1,20 @@
+// --------------------------------------------------
+// Breakpoints
+// --------------------------------------------------
+@function rem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+$gridMaxSize: 1440px;
+
+$breakpoints: (
+  // default: unquote("only all"),
+  all: 99999px,
+  //large
+  lg: rem(1440px),
+  //large
+  md: rem(1024px),
+  //medium
+  sm: rem(767px) //small
+);

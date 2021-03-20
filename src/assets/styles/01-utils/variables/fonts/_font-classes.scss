@@ -1,0 +1,41 @@
+.cta-font {
+  font-family: var(--font-primary);
+  font-size: rem(16px);
+  font-weight: 700;
+}
+
+.footer-h {
+  font-family: var(--font-primary);
+  font-size: rem(11px);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.footer-link {
+  font-family: var(--font-primary);
+  font-size: rem(11px);
+  font-weight: 400;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.block-title {
+  font-family: var(--font-primary);
+  font-size: rem(36px);
+  font-weight: 700;
+  line-height: rem(52px);
+}
+
+.main-title {
+  font-family: var(--font-primary);
+  font-size: rem(24px);
+  font-weight: 700;
+  line-height: rem(32px);
+}
+
+.main-description {
+  font-family: var(--font-primary);
+  font-size: rem(16px);
+  font-weight: 400;
+  line-height: rem(27px);
+}

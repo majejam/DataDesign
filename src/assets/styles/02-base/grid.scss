@@ -1,0 +1,115 @@
+// -------------------------
+// Grids
+// -------------------------
+
+$grids: (3 4);
+$pad: 0;
+$padmobile: 0;
+
+@each $name, $breakpoint in $breakpoints {
+  $suffix: \@+ $name;
+
+  .only#{$suffix} {
+    display: none !important;
+  }
+
+  @include media('<=#{$name}') {
+    @if ($name == all) {
+      $suffix: '';
+    }
+
+    .not#{$suffix} {
+      display: none !important;
+    }
+    .only#{$suffix} {
+      display: block !important;
+    }
+
+    .offset-l-0#{$suffix} {
+      margin-left: 0;
+    }
+    .offset-r-0#{$suffix} {
+      margin-right: 0;
+    }
+
+    @each $grid in $grids {
+      @for $index from 1 through $grid {
+        .w#{$index}of#{$grid}#{$suffix} {
+          width: (100% / $grid) * $index;
+          &-abs {
+            width: (100vw / $grid) * $index;
+          }
+        }
+
+        .offset-l-w#{$index}of#{$grid}#{$suffix} {
+          margin-left: (100% / $grid) * $index;
+          &-abs {
+            margin-left: (100vw / $grid) * $index;
+          }
+        }
+
+        .offset-r-w#{$index}of#{$grid}#{$suffix} {
+          margin-right: (100% / $grid) * $index;
+          &-abs {
+            margin-right: (100vw / $grid) * $index;
+          }
+        }
+      }
+    }
+  }
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: row wrap;
+
+  &-start {
+    align-items: flex-start;
+  }
+  &-end {
+    align-items: flex-end;
+  }
+  &-nowrap {
+    flex-wrap: nowrap;
+  }
+  &-evenly {
+    justify-content: space-evenly;
+  }
+  &-between {
+    justify-content: space-between;
+  }
+  &-around {
+    justify-content: space-around;
+  }
+  &-left {
+    justify-content: flex-start;
+  }
+  &-right {
+    justify-content: flex-end;
+  }
+  &-stretch {
+    align-items: stretch;
+  }
+  &-column {
+    flex-direction: column;
+  }
+  &-row {
+    flex-direction: row;
+  }
+}
+
+:root {
+  --column-width: 940px;
+}
+
+.main-column {
+  max-width: var(--column-width);
+  margin: 0 auto;
+
+  @include media('<960px') {
+    width: 90%;
+    margin: 0 auto;
+  }
+}

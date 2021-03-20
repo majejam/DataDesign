@@ -1,0 +1,35 @@
+@function zindex($key) {
+  @if map-has-key($zindex, $key) {
+    @return map-get($zindex, $key);
+  }
+
+  @warn "Unknown `#{$key}` in $zindex.";
+  @return null;
+}
+
+// Respond-To Mixin
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+    @media #{inspect($value)} {
+      @content;
+    }
+  } @else {
+    @warn "Unknown `#{$breakpoint}` in $breakpoints";
+  }
+}
+
+@function rem($size) {
+  $remSize: $size / 16px;
+  @return $remSize * 1rem;
+}
+
+@mixin after-underline {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  top: 100%;
+  left: 0;
+  background: var(--primary-base);
+}
