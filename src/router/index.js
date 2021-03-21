@@ -13,7 +13,9 @@ const routes = [
     component: Home,
     beforeEnter(to, from, next) {
       if (store.getters.isAuthenticated) {
-        next()
+        store.dispatch('initPersonalization').then(() => {
+          next()
+        })
       } else {
         next('/login')
       }
