@@ -71,6 +71,7 @@ const actions = {
       )
       .then(res => {
         if (res.status === 200) {
+          console.log('cc')
           commit('setToken', res.data)
           dispatch('getUser')
           dispatch('initPersonalization')
