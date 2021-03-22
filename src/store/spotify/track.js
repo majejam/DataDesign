@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 const state = {
   recentlyPlayed: [],
-  currentPlayback: {},
+  currentPlaybackDevice: 0,
   searchData: {
     artists: {
       items: [],
@@ -18,8 +18,8 @@ const getters = {
   getRecentlyPlayed(state) {
     return state.recentlyPlayed
   },
-  getCurrentPlayback(state) {
-    return state.currentPlayback
+  getCurrentPlaybackDevice(state) {
+    return state.currentPlaybackDevice
   },
   getSearchData(state) {
     return state.searchData
@@ -33,8 +33,8 @@ const mutations = {
   setRecentlyPlayed(state, data) {
     state.recentlyPlayed = data
   },
-  setCurrentPlayback(state, data) {
-    state.currentPlayback = data
+  setCurrentPlaybackDevice(state, data) {
+    state.currentPlaybackDevice = data
   },
   setSearchData(state, data) {
     state.searchData = data
@@ -45,42 +45,19 @@ const mutations = {
 }
 
 const actions = {
-  getCurrentPlayback({ getters, commit }) {
-    Vue.axios
-      .get('https://api.spotify.com/v1/me/player', {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + getters.getTokens['access_token'],
-        },
-      })
-      .then(res => {
-        if (res.status === 200) {
-          commit('setCurrentPlayback', res.data)
-          console.log(res.data)
-        } else {
-          console.log('getCurrentPlaybackError')
-        }
-      })
-      .catch(err => {
-        console.log('getCurrentPlayback : ' + err)
-      })
-  },
-  playTrack({ getters, dispatch }, id) {
-    console.log(
-      id,
-      JSON.stringify({
-        context_uri: 'spotify:track:6EJiVf7U0p1BBfs0qqeb1f',
-        offset: {
-          position: 5,
-        },
-        position_ms: 0,
-      })
-    )
+  playTrack({ getters }, uri) {
+    console.log(uri)
+    /**
+     * {
+  "uris": [ "spotify:track:18lKp9uRyR2xJZFvg8ZWUC"],
+  "position_ms": 0
+}
+     */
     Vue.axios
       .put(
-        `https://api.spotify.com/v1/me/player/play?device_id=${id}`,
+        `https://api.spotify.com/v1/me/player/play?device_id=${getters.getCurrentPlaybackDevice}`,
         JSON.stringify({
-          context_uri: 'spotify:album:5ht7ItJgpBH7W6vJ5BqpPr',
+          context_uri: uri,
           offset: {
             position: 5,
           },
@@ -94,13 +71,13 @@ const actions = {
         }
       )
       .then(() => {
-        dispatch('getCurrentPlayback')
+        //dispatch('getCurrentPlayback')
       })
   },
-  pauseTrack({ getters, dispatch }) {
+  pauseTrack({ getters }) {
     Vue.axios
       .put(
-        `https://api.spotify.com/v1/me/player/pause?device_id=${getters.getCurrentPlayback.device.id}`,
+        `https://api.spotify.com/v1/me/player/pause?device_id=${getters.getCurrentPlaybackDevice}`,
         {},
         {
           headers: {
@@ -110,7 +87,7 @@ const actions = {
         }
       )
       .then(() => {
-        dispatch('getCurrentPlayback')
+        //dispatch('getCurrentPlayback')
       })
   },
   setVolume({ getters }, volume) {

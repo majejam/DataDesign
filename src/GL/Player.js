@@ -38,18 +38,25 @@ export default class Player {
       // Ready
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id)
-        let id = device_id
+        Store.commit('setCurrentPlaybackDevice', device_id)
+
         //Store.dispatch('getCurrentPlayback')
 
         setTimeout(() => {
           console.log('cc')
-          Store.dispatch('playTrack', id)
+          Store.dispatch('playTrack', 'spotify:album:3tXNwhv4GZQDHCOb4p5kcS')
         }, 5000)
       })
 
       // Not Ready
       player.addListener('not_ready', ({ device_id }) => {
         console.log('Device ID has gone offline', device_id)
+      })
+
+      player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
+        console.log('Currently Playing', current_track)
+        console.log('Position in Song', position)
+        console.log('Duration of Song', duration)
       })
 
       // Connect to the player!
