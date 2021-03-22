@@ -52,7 +52,7 @@ class Engine {
   onResize() {
     console.log('resize')
     this.$app.renderer.resize(this.$el.offsetWidth, this.$el.offsetHeight)
-    this.container.position.set(this.$app.screen.width / 2, this.$app.screen.height / 2)
+    //this.container.position.set(this.$app.screen.width / 2, this.$app.screen.height / 2)
   }
 
   update() {
