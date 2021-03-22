@@ -71,11 +71,9 @@ const actions = {
       )
       .then(res => {
         if (res.status === 200) {
-          console.log('cc')
+          console.log(res.data)
           commit('setToken', res.data)
           dispatch('getUser')
-          console.log('get playback')
-          dispatch('getCurrentPlayback')
           dispatch('initPersonalization')
         } else {
           dispatch('logoutUser')
