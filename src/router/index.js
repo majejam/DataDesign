@@ -12,7 +12,11 @@ const routes = [
     name: 'Home',
     component: Home,
     beforeEnter(to, from, next) {
-      next()
+      if (store.getters.isAuthenticated) {
+        next()
+      } else {
+        next('/login')
+      }
     },
   },
   {

@@ -32,7 +32,9 @@ export default {
   components: { Header },
   name: 'Home',
   mounted() {
-    Engine.init(this.$refs.renderer)
+    setTimeout(() => {
+      Engine.init(this.$refs.renderer)
+    }, 2000)
   },
 }
 </script>
