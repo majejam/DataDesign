@@ -12,8 +12,8 @@ export default class Festival {
       graphics: null,
       color: this.$opt.color ? this.$opt.color : 0xffff00,
       size: {
-        width: this.$opt.width ? this.$opt.width : 300,
-        height: this.$opt.height ? this.$opt.height : 300,
+        width: this.$opt.width ? this.$opt.width : (500 * data.popularity) / 100,
+        height: this.$opt.height ? this.$opt.height : (500 * data.popularity) / 100,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,

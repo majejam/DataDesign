@@ -27,11 +27,13 @@
 import Header from '@/components/shared/Header.vue'
 
 import Engine from '@/GL/Engine.js'
+import Player from '@/GL/Player.js'
 
 export default {
   components: { Header },
   name: 'Home',
   mounted() {
+    new Player()
     setTimeout(() => {
       Engine.init(this.$refs.renderer)
     }, 2000)

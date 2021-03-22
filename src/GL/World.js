@@ -29,7 +29,7 @@ class World {
 
     this.storeData.forEach((data, index) => {
       new Festival(data, {
-        x: index * 400,
+        x: index * 500,
         y: 0,
       })
     })
