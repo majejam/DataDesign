@@ -1,22 +1,39 @@
 //import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
+import Draggable from '@/GL/Draggable.js'
+import Festival from '@/GL/Festival.js'
+import Store from '@/store'
 
 class World {
   constructor() {
+    this.$el = null
     this.world = {
       container: null,
       position: {
         x: 0,
         y: 0,
+        lerp: {
+          x: 0,
+          y: 0,
+        },
       },
     }
   }
 
-  init() {
-    this._update = this.update.bind(this)
+  init(el) {
+    this.$el = el
+    this.storeData = Store.getters.getTopTracksFeatures
     this.createWorldContainer()
-    Engine.$app.ticker.add(this._update)
+    this.draggable = new Draggable(this.$el)
+
+    this.storeData.forEach((data, index) => {
+      new Festival(data, {
+        x: index * 400,
+        y: 0,
+      })
+    })
+    this.setEvents()
   }
 
   /**
@@ -48,17 +65,35 @@ class World {
     console.log('resize')
   }
 
-  update(delta) {
-    this.world.container.rotation -= 0.01 * delta
+  update() {
+    this.updateWorldPosition()
+  }
+
+  /**
+   * Drag functions
+   */
+
+  updateWorldPosition() {
+    this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
+    this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
   }
 
   /**
    * EVENTS
    */
 
-  setEvents() {}
+  setEvents() {
+    /**
+     * Binding functions
+     */
+    this._update = this.update.bind(this)
+    Engine.$app.ticker.add(this._update)
+  }
 
-  removeEvents() {}
+  removeEvents() {
+    window.removeEventListener('mousedown', this._mousedown)
+    window.removeEventListener('mouseup', this._mouseup)
+  }
 }
 
 let WorldInstance = new World()

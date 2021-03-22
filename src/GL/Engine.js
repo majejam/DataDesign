@@ -22,8 +22,7 @@ class Engine {
     // Listen for frame updates
     this.$app.ticker.add(this._update)
 
-    World.init()
-    this.drawRectangle()
+    World.init(this.$el)
 
     Bus.$on('resize', this._onResize)
 
@@ -48,19 +47,6 @@ class Engine {
     // The application will create a canvas element for you that you
     // can then insert into the DOM
     this.$el.appendChild(this.$app.view)
-  }
-
-  /**
-   * PIXI test
-   */
-  drawRectangle() {
-    const rectAndHole = new this.PIXI.Graphics()
-
-    rectAndHole.beginFill(0x00ff00)
-    rectAndHole.drawRect(0, 0, 150, 150)
-    rectAndHole.endFill()
-
-    World.addChild(rectAndHole)
   }
 
   onResize() {
