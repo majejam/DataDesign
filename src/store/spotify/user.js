@@ -74,6 +74,8 @@ const actions = {
           console.log('cc')
           commit('setToken', res.data)
           dispatch('getUser')
+          console.log('get playback')
+          dispatch('getCurrentPlayback')
           dispatch('initPersonalization')
         } else {
           dispatch('logoutUser')
