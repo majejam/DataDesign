@@ -47,7 +47,7 @@ const actions = {
     dispatch('getUserTopArtists')
     dispatch('getUserTopTracks')
   },
-  getUserTopArtists({ getters, commit }) {
+  getUserTopArtists({ getters, commit, dispatch }) {
     console.log(getters.getTokens['access_token'])
     Vue.axios
       .get(`https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5`, {
@@ -66,11 +66,13 @@ const actions = {
       })
       .catch(err => {
         console.log('getTopTracks : ' + err)
+        dispatch('logoutUser')
+        //commit('clearState')
       })
   },
   getUserTopTracks({ getters, commit, dispatch }) {
     Vue.axios
-      .get('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=5', {
+      .get('https://api.spotify.com/v1/me/top/tracks?time_range=medium_term&limit=20', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + getters.getTokens['access_token'],
@@ -112,13 +114,18 @@ const actions = {
             Object.assign(getters.getTopTracks.items[index], { audio_features: obj })
             return getters.getTopTracks.items[index]
           })
-          commit('setTopTracksFeatures', data)
+
+          const dataUniqueArtist = Array.from(new Set(data.map(a => a.artists[0].id))).map(id => {
+            return data.find(a => a.artists[0].id === id)
+          })
+          console.log(dataUniqueArtist)
+          commit('setTopTracksFeatures', dataUniqueArtist)
         } else {
           console.log('getAudioFeaturesError')
         }
       })
       .catch(() => {
-        console.log('getAudioFeaturesError')
+        //dispatch('logoutUser')
       })
   },
 }

@@ -13,9 +13,7 @@ const routes = [
     component: Home,
     beforeEnter(to, from, next) {
       if (store.getters.isAuthenticated) {
-        store.dispatch('initPersonalization').then(() => {
-          next()
-        })
+        next()
       } else {
         next('/login')
       }
@@ -58,5 +56,4 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 })
-
 export default router
