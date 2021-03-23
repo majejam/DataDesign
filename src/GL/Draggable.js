@@ -80,6 +80,14 @@ export default class Draggable {
     this.position.lerp.y = this.lerp(this.position.lerp.y, this.position.y, 0.1)
   }
 
+  setPositionX(pos) {
+    this.position.x = pos
+  }
+
+  setPositionY(pos) {
+    this.position.y = pos
+  }
+
   getPosition() {
     return {
       x: this.position.lerp.x,
@@ -99,13 +107,11 @@ export default class Draggable {
    */
 
   mouseDown(_e) {
-    console.log('mouse down')
     this.cursor.hold = true
     this.startCursor(_e)
   }
 
   mouseUp() {
-    console.log('mouse up')
     this.cursor.hold = false
     this.resetDeltas()
   }
@@ -135,8 +141,11 @@ export default class Draggable {
   }
 
   removeEvents() {
-    window.removeEventListener('mousedown', this._mousedown)
-    window.removeEventListener('mouseup', this._mouseup)
+    this.$el.removeEventListener('mousedown', this._mousedown)
+    this.$el.removeEventListener('mouseup', this._mouseup)
+    this.$el.removeEventListener('mouseout', this._mouseup)
+    this.$el.removeEventListener('mousemove', this._mousemove)
+    Engine.$app.ticker.remove(this._update)
   }
 
   /**

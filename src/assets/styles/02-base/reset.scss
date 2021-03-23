@@ -3,6 +3,10 @@
    License: none (public domain)
 */
 
+* {
+  user-select: none;
+}
+
 .cdp-copy-alert-success {
   display: none !important;
 }

@@ -130,7 +130,6 @@ export default class Festival {
         })
       )
       if (count === concertPerRow - 1) {
-        console.log('new row')
         row++
         count = 0
       } else {

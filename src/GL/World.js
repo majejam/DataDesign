@@ -53,8 +53,7 @@ class World {
     this.world.container.pivot.x = this.world.container.width / 2
     this.world.container.pivot.y = this.world.container.height / 2
 
-    this.world.container.scale.x = 1
-    this.world.container.scale.y = 1
+    this.world.container.scale.x = this.world.container.scale.y = 1
   }
 
   addChild(child) {
@@ -75,9 +74,18 @@ class World {
    */
 
   updateWorldPosition() {
-    if (this.normalizeWorldPos().x < 1 && this.normalizeWorldPos().x > 0) this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
-    if (this.normalizeWorldPos().y < 1 && this.normalizeWorldPos().y > 0) this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
-    console.log(-this.normalizeWorldPos().x, -this.normalizeWorldPos().y)
+    this.checkBounds()
+
+    this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
+    this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
+  }
+
+  checkBounds() {
+    if (this.normalizeWorldPos().x > 1) this.draggable.setPositionX(-(this.world.container.width / 2 - Engine.$app.screen.width / 2))
+    else if (this.normalizeWorldPos().x < 0) this.draggable.setPositionX(this.world.container.width / 2 - Engine.$app.screen.width / 2)
+
+    if (this.normalizeWorldPos().y > 1) this.draggable.setPositionY(-(this.world.container.height / 2 - Engine.$app.screen.height / 2))
+    else if (this.normalizeWorldPos().y < 0) this.draggable.setPositionY(this.world.container.height / 2 - Engine.$app.screen.height / 2)
   }
 
   normalizeWorldPos() {
