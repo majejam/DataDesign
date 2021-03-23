@@ -2,6 +2,7 @@
   <header>
     <button @click.prevent="logout">Sign out ({{ this.$store.getters.getUser.display_name }})</button>
     <button @click.prevent="refresh">Refresh</button>
+    <button @click.prevent="refreshToken">Refresh Token</button>
   </header>
 </template>
 
@@ -13,6 +14,9 @@ export default {
     },
     refresh() {
       this.$store.dispatch('initPersonalization')
+    },
+    refreshToken() {
+      this.$store.dispatch('refreshToken')
     },
   },
 }

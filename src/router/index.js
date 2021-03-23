@@ -12,7 +12,17 @@ const routes = [
     name: 'Home',
     component: Home,
     beforeEnter(to, from, next) {
-      if (store.getters.isAuthenticated) {
+      if (store.getters.isAuthenticated && store.getters.isRefreshToken) {
+        store
+          .dispatch('refreshToken')
+          .then(() => {
+            next()
+          })
+          .catch(() => {
+            next('/login')
+          })
+        next()
+      } else if (store.getters.isAuthenticated && !store.getters.isRefreshToken) {
         next()
       } else {
         next('/login')
