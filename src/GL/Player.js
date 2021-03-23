@@ -39,13 +39,6 @@ export default class Player {
       player.addListener('ready', ({ device_id }) => {
         console.log('Ready with Device ID', device_id)
         Store.commit('setCurrentPlaybackDevice', device_id)
-
-        //Store.dispatch('getCurrentPlayback')
-
-        setTimeout(() => {
-          console.log('cc')
-          Store.dispatch('playTrack', 'spotify:album:3tXNwhv4GZQDHCOb4p5kcS')
-        }, 5000)
       })
 
       // Not Ready

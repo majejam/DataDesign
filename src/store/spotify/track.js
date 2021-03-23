@@ -57,10 +57,7 @@ const actions = {
       .put(
         `https://api.spotify.com/v1/me/player/play?device_id=${getters.getCurrentPlaybackDevice}`,
         JSON.stringify({
-          context_uri: uri,
-          offset: {
-            position: 5,
-          },
+          uris: [uri],
           position_ms: 0,
         }),
         {
