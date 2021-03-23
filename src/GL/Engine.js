@@ -9,7 +9,6 @@ class Engine {
     this.$el = null
     this.$app = null
     this.PIXI = PIXI
-    console.log('Engine')
   }
 
   init(el) {
@@ -27,6 +26,8 @@ class Engine {
     Bus.$on('resize', this._onResize)
 
     window.addEventListener('resize', this._onResize)
+
+    console.log('Engine init done')
   }
 
   /**

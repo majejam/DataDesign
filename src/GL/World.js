@@ -27,10 +27,12 @@ class World {
     this.createWorldContainer()
     this.draggable = new Draggable(this.$el)
 
-    new Festival(this.storeData, {
+    this.festival = new Festival(this.storeData, {
       x: 0,
       y: 0,
     })
+
+    this.currentFestival = this.festival
     this.setEvents()
   }
 
@@ -67,6 +69,7 @@ class World {
 
   update() {
     this.updateWorldPosition()
+    this.currentFestival.getNearestConcert(this.normalizeWorldPos().x, this.normalizeWorldPos().y)
   }
 
   /**

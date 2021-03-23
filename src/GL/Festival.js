@@ -3,6 +3,7 @@
 import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
 import Concert from '@/GL/Concert.js'
+import Store from '@/store'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
     this.$concertsData = concertsData
@@ -10,6 +11,7 @@ export default class Festival {
     this.festival = {
       container: null,
       graphics: null,
+      currentConcertName: '',
       color: this.$opt.color ? this.$opt.color : 0xffff00,
       size: {
         width: this.$opt.width ? this.$opt.width : 2000,
@@ -104,23 +106,23 @@ export default class Festival {
     this.createFestivalGrounds()
   }
   positionConcertRow(concertPerRow) {
-    let placedConcert = new Array()
+    this.concertPosition = new Array()
     this.concerts = new Array()
     let count = 0
     let row = 0
 
     this.$concertsData.forEach((concert, index) => {
-      let xPos = count > 0 ? 50 + Math.random() * 100 + placedConcert[index - 1].x + placedConcert[index - 1].width : this.festival.margin.x
+      let xPos = count > 0 ? 50 + Math.random() * 100 + this.concertPosition[index - 1].x + this.concertPosition[index - 1].width : this.festival.margin.x
       let yPos = 0
       if (row > 0) {
-        let temp = [...placedConcert]
-        yPos = 50 + Math.random() * 100 + placedConcert[index - 1 - count].y + this.getBiggerHeight(temp.splice((row - 1) * concertPerRow, concertPerRow))
+        let temp = [...this.concertPosition]
+        yPos = 50 + Math.random() * 100 + this.concertPosition[index - 1 - count].y + this.getBiggerHeight(temp.splice((row - 1) * concertPerRow, concertPerRow))
       } else {
         yPos = this.festival.margin.y
       }
       let rWidth = ((1000 + Math.random() * 200) * concert.popularity) / 100
       let rHeight = ((600 + Math.random() * 100) * concert.popularity) / 100
-      placedConcert.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
+      this.concertPosition.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
       this.concerts.push(
         new Concert(this, concert, {
           x: xPos,
@@ -135,6 +137,11 @@ export default class Festival {
       } else {
         count++
       }
+    })
+
+    console.log(this.concerts)
+    this.concerts.forEach(concert => {
+      console.log(concert.getMiddlePosition().x / this.festival.container.width)
     })
   }
 
@@ -156,6 +163,43 @@ export default class Festival {
 
   showFestival() {
     this.festival.container.visible = true
+  }
+
+  getNearestConcert(currentX, currentY) {
+    //console.log(currentX, currentY)
+    //(A.x - B.x)² + (A.y - B.y)²
+
+    this.concerts.forEach(concert => {
+      concert.setCurrentDistance(this.pythagoreCalc(currentX, currentY, concert.getMiddlePosition().x / this.festival.container.width, concert.getMiddlePosition().y / this.festival.container.height))
+    })
+    //console.log(this.concerts[8].concert.distance)
+    this.getMinDistance(this.concerts)
+    //console.log(this.getMinDistance(this.concerts))
+  }
+
+  getMinDistance(data) {
+    var lowest = Number.POSITIVE_INFINITY
+    var highest = Number.NEGATIVE_INFINITY
+    var tmp
+    var current
+    for (var i = data.length - 1; i >= 0; i--) {
+      tmp = data[i].concert.distance
+      if (tmp < lowest) {
+        lowest = tmp
+        current = i
+      }
+      if (tmp > highest) highest = tmp
+    }
+    if (data[current].$data.name !== this.festival.currentConcertName) {
+      console.log('Now playing : ', this.festival.currentConcertName)
+      Store.dispatch('playTrack', data[current].$data.uri)
+      this.festival.currentConcertName = data[current].$data.name
+    }
+    //console.log(data[current].$data.name, lowest)
+  }
+
+  pythagoreCalc(cx, cy, tx, ty) {
+    return Math.pow(cx - tx, 2) + Math.pow(cy - ty, 2)
   }
 
   update() {}
