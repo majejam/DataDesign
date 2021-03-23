@@ -47,7 +47,7 @@ const actions = {
     dispatch('getUserTopArtists')
     dispatch('getUserTopTracks')
   },
-  getUserTopArtists({ getters, commit }) {
+  getUserTopArtists({ getters, commit, dispatch }) {
     console.log(getters.getTokens['access_token'])
     Vue.axios
       .get(`https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5`, {
@@ -66,6 +66,8 @@ const actions = {
       })
       .catch(err => {
         console.log('getTopTracks : ' + err)
+        dispatch('logoutUser')
+        //commit('clearState')
       })
   },
   getUserTopTracks({ getters, commit, dispatch }) {
@@ -92,7 +94,7 @@ const actions = {
         console.log('getUserTopTracksError')
       })
   },
-  getAudioFeatures({ getters, commit, dispatch }, ids) {
+  getAudioFeatures({ getters, commit }, ids) {
     Vue.axios
       .get(`https://api.spotify.com/v1/audio-features?ids=${ids}`, {
         headers: {
@@ -123,7 +125,7 @@ const actions = {
         }
       })
       .catch(() => {
-        dispatch('logoutUser')
+        //dispatch('logoutUser')
       })
   },
 }

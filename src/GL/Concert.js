@@ -19,6 +19,7 @@ export default class Concert {
         x: this.$opt.x ? this.$opt.x : 0,
         y: this.$opt.y ? this.$opt.y : 0,
       },
+      distance: 0,
     }
     this.init()
   }
@@ -68,6 +69,29 @@ export default class Concert {
   }
 
   update() {}
+
+  /**
+   * Getters
+   */
+
+  getPosition() {
+    return this.concert.position
+  }
+
+  getMiddlePosition() {
+    return {
+      x: this.concert.position.x + this.concert.size.width / 2,
+      y: this.concert.position.y + this.concert.size.height / 2,
+    }
+  }
+
+  getCurrentDistance() {
+    return this.concert.distance
+  }
+
+  setCurrentDistance(payload) {
+    this.concert.distance = payload
+  }
 
   /**
    * EVENTS

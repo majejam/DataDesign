@@ -32,6 +32,7 @@ import Player from '@/GL/Player.js'
 export default {
   components: { Header },
   name: 'Home',
+  beforeMount() {},
   mounted() {
     new Player()
     setTimeout(() => {
