@@ -27,11 +27,9 @@ class World {
     this.createWorldContainer()
     this.draggable = new Draggable(this.$el)
 
-    this.storeData.forEach((data, index) => {
-      new Festival(data, {
-        x: index * 500,
-        y: 0,
-      })
+    new Festival(this.storeData, {
+      x: 0,
+      y: 0,
     })
     this.setEvents()
   }
@@ -54,6 +52,9 @@ class World {
 
     this.world.container.pivot.x = this.world.container.width / 2
     this.world.container.pivot.y = this.world.container.height / 2
+
+    this.world.container.scale.x = 1
+    this.world.container.scale.y = 1
   }
 
   addChild(child) {
@@ -74,8 +75,16 @@ class World {
    */
 
   updateWorldPosition() {
-    this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
-    this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
+    if (this.normalizeWorldPos().x < 1 && this.normalizeWorldPos().x > 0) this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
+    if (this.normalizeWorldPos().y < 1 && this.normalizeWorldPos().y > 0) this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
+    console.log(-this.normalizeWorldPos().x, -this.normalizeWorldPos().y)
+  }
+
+  normalizeWorldPos() {
+    return {
+      x: -(this.draggable.getPosition().x / (this.world.container.width - Engine.$app.screen.width) - 0.5),
+      y: -(this.draggable.getPosition().y / (this.world.container.height - Engine.$app.screen.height) - 0.5),
+    }
   }
 
   /**
