@@ -23,3 +23,7 @@ VUE_APP_SPOTIFY_CLIENT_SECRET=XXX
 ## Deployment
 
 [WIP]
+
+## Notes
+
+- set the refresh token flow
