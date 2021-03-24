@@ -5,6 +5,8 @@ class Player {
   constructor() {
     this.hasToken = false
     this.hasInit = false
+    this.playerisInit = false
+    this.apiisInit = false
     this.player = null
 
     this.volume = {
@@ -17,8 +19,15 @@ class Player {
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
       this.hasToken = true
-      this.initPlayer()
+
+      if (this.playerisInit) this.initPlayer()
+      else this.apiisInit = true
     })
+
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      if (this.apiisInit) this.initPlayer()
+      else this.playerisInit = true
+    }
   }
 
   initPlayer() {
