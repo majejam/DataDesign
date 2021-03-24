@@ -1,12 +1,14 @@
-//import Bus from '@/utils/bus.js'
+import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
 import Concert from '@/GL/Concert.js'
 import Store from '@/store'
+import Player from '@/GL/Player.js'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
     this.$concertsData = concertsData
+    this.canPlayMusic = false
     this.$opt = opt
     this.festival = {
       container: null,
@@ -120,8 +122,8 @@ export default class Festival {
       } else {
         yPos = this.festival.margin.y
       }
-      let rWidth = ((1000 + Math.random() * 200) * concert.popularity) / 100
-      let rHeight = ((600 + Math.random() * 100) * concert.popularity) / 100
+      let rWidth = ((1500 + Math.random() * 400) * concert.popularity) / 100
+      let rHeight = ((1100 + Math.random() * 200) * concert.popularity) / 100
       this.concertPosition.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
       this.concerts.push(
         new Concert(this, concert, {
@@ -192,7 +194,9 @@ export default class Festival {
     }
     if (data[current].$data.name !== this.festival.currentConcertName) {
       console.log('Now playing : ', this.festival.currentConcertName)
-      Store.dispatch('playTrack', data[current].$data.uri)
+      //Store.dispatch('playTrack', data[current].$data.uri)
+      if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri)
+      console.log(this.canPlayMusic)
       this.festival.currentConcertName = data[current].$data.name
     }
     //console.log(data[current].$data.name, lowest)
@@ -212,6 +216,10 @@ export default class Festival {
     /**
      * Binding functions
      */
+    Bus.$on('PlayerInit', () => {
+      console.log('Init done')
+      this.canPlayMusic = true
+    })
     this._update = this.update.bind(this)
     //Engine.$app.ticker.add(this._update)
   }

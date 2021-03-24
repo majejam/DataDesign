@@ -2,6 +2,12 @@
   <div>
     <div class="renderer" ref="renderer"></div>
     <Header />
+    <button @click="Player.volume(0.5)">up volume</button>
+    <div>
+      <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
+      <label for="volume">Volume</label>
+    </div>
+
     <img :src="$store.getters.getUser.images[0].url" alt="" srcset="" />
     <pre>
  USER INFO
@@ -32,12 +38,25 @@ import Player from '@/GL/Player.js'
 export default {
   components: { Header },
   name: 'Home',
+  data() {
+    return {
+      volume: 0,
+      targetVolume: 0,
+    }
+  },
   beforeMount() {},
   mounted() {
-    new Player()
+    Player.init()
     setTimeout(() => {
       Engine.init(this.$refs.renderer)
     }, 2000)
+  },
+  methods: {
+    setVolume(event) {
+      //this.volume = event.target.value
+      console.log(event.target.value)
+      //Player.setFadeVolume(event.target.value, 100)
+    },
   },
 }
 </script>

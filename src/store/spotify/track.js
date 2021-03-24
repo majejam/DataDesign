@@ -3,6 +3,7 @@ import Vue from 'vue'
 const state = {
   recentlyPlayed: [],
   currentPlaybackDevice: 0,
+  playerInit: false,
   searchData: {
     artists: {
       items: [],
@@ -18,6 +19,9 @@ const getters = {
   getRecentlyPlayed(state) {
     return state.recentlyPlayed
   },
+  getPlayerInit(state) {
+    return state.playerInit
+  },
   getCurrentPlaybackDevice(state) {
     return state.currentPlaybackDevice
   },
@@ -32,6 +36,9 @@ const getters = {
 const mutations = {
   setRecentlyPlayed(state, data) {
     state.recentlyPlayed = data
+  },
+  setPlayerInit(state, data) {
+    state.playerInit = data
   },
   setCurrentPlaybackDevice(state, data) {
     state.currentPlaybackDevice = data
