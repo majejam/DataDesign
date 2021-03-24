@@ -3,11 +3,14 @@ import Bus from '@/utils/bus.js'
 import Store from '@/store'
 class Player {
   constructor() {
-    this.hasToken = false
-    this.hasInit = false
-    this.playerisInit = false
-    this.apiisInit = false
     this.player = null
+    this.hasInit = false
+
+    this.status = {
+      readyToInit: false,
+      hasInit: false,
+      apiHasInit: false,
+    }
 
     this.volume = {
       current: 0.1,
@@ -18,69 +21,29 @@ class Player {
   init() {
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
-      this.hasToken = true
 
-      if (this.playerisInit) this.initPlayer()
-      else this.apiisInit = true
+      if (this.status.readyToInit) this.initPlayer()
+      else this.status.apiHasInit = true
     })
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-      if (this.apiisInit) this.initPlayer()
-      else this.playerisInit = true
+      if (this.status.apiHasInit) this.initPlayer()
+      else this.status.readyToInit = true
     }
   }
 
   initPlayer() {
-    console.log('init player')
+    console.log('Player initialization')
     const token = Store.getters.getTokens['access_token']
-    console.log(token)
     this.player = new window.Spotify.Player({
-      name: 'Create ur festival',
+      name: 'Create your festival',
       volume: 0,
       getOAuthToken: cb => {
         cb(token)
       },
     })
 
-    // Error handling
-    this.player.addListener('initialization_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('authentication_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('account_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('playback_error', ({ message }) => {
-      console.error(message)
-    })
-
-    // Playback status updates
-    this.player.addListener('player_state_changed', state => {
-      console.log(state)
-    })
-
-    // Ready
-    this.player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id)
-      Store.commit('setCurrentPlaybackDevice', device_id)
-      Store.commit('setPlayerInit', true)
-      console.log(this.player)
-      this.hasInit = true
-      Bus.$emit('PlayerInit')
-    })
-
-    // Not Ready
-    this.player.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id)
-    })
-
-    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
-      console.log('Currently Playing', current_track)
-      console.log('Position in Song', position)
-      console.log('Duration of Song', duration)
-    })
+    this.setEvents()
 
     // Connect to the player!
     this.player.connect()
@@ -95,7 +58,6 @@ class Player {
       clearInterval(this.interval)
       const step = 0.01
       const isAdd = level - this.volume.current > 0 ? true : false
-      console.log('VALUE : ', isAdd)
       this.volume.current = level
       this.interval = setInterval(() => {
         if (this.volume.target <= level && isAdd) {
@@ -127,6 +89,55 @@ class Player {
       })
     })
     //Store.dispatch('playTrack', data[current].$data.uri)
+  }
+
+  /**
+   * Event function
+   */
+
+  playerReady(_e) {
+    console.log('Ready with Device ID', _e.device_id)
+    Store.commit('setCurrentPlaybackDevice', _e.device_id)
+    Store.commit('setPlayerInit', true)
+    Bus.$emit('PlayerInit')
+    this.status.hasInit = true
+  }
+
+  /**
+   * Events
+   */
+  setEvents() {
+    this._playerReady = this.playerReady.bind(this)
+    // Error handling
+    this.player.addListener('initialization_error', ({ message }) => {
+      console.error(message)
+    })
+    this.player.addListener('authentication_error', ({ message }) => {
+      console.error(message)
+    })
+    this.player.addListener('account_error', ({ message }) => {
+      console.error(message)
+    })
+    this.player.addListener('playback_error', ({ message }) => {
+      console.error(message)
+    })
+
+    // Playback status updates
+    //this.player.addListener('player_state_changed')
+
+    // Ready
+    this.player.addListener('ready', this._playerReady)
+
+    // Not Ready
+    this.player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id)
+    })
+    /*
+    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
+      console.log('Currently Playing', current_track)
+      console.log('Position in Song', position)
+      console.log('Duration of Song', duration)
+    })*/
   }
 }
 

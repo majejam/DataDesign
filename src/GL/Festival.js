@@ -1,5 +1,3 @@
-import Bus from '@/utils/bus.js'
-
 import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
 import Concert from '@/GL/Concert.js'
@@ -8,7 +6,6 @@ import Player from '@/GL/Player.js'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
     this.$concertsData = concertsData
-    this.canPlayMusic = false
     this.$opt = opt
     this.festival = {
       container: null,
@@ -107,6 +104,7 @@ export default class Festival {
     this.createFestivalGrounds()
     this.createFestivalGrounds()
   }
+
   positionConcertRow(concertPerRow) {
     this.concertPosition = new Array()
     this.concerts = new Array()
@@ -168,18 +166,23 @@ export default class Festival {
   }
 
   getNearestConcert(currentX, currentY) {
-    //console.log(currentX, currentY)
-    //(A.x - B.x)² + (A.y - B.y)²
+    /**
+     * Finds nearest concert using pythagoras formula,
+     * loop through array of concert, check position & compare to world current position
+     * First loop finds distance from world pos & checkMinDistance finds the nearest concert
+     */
 
     this.concerts.forEach(concert => {
       concert.setCurrentDistance(this.pythagoreCalc(currentX, currentY, concert.getMiddlePosition().x / this.festival.container.width, concert.getMiddlePosition().y / this.festival.container.height))
     })
-    //console.log(this.concerts[8].concert.distance)
-    this.getMinDistance(this.concerts)
-    //console.log(this.getMinDistance(this.concerts))
+    this.checkMinDistance(this.concerts)
   }
 
-  getMinDistance(data) {
+  checkMinDistance(data) {
+    /**
+     * Fastest algorithm for finding smallest number in a array of objects,
+     * if nearest one isn't the current one => play the corresponding music
+     */
     var lowest = Number.POSITIVE_INFINITY
     var highest = Number.NEGATIVE_INFINITY
     var tmp
@@ -193,13 +196,10 @@ export default class Festival {
       if (tmp > highest) highest = tmp
     }
     if (data[current].$data.name !== this.festival.currentConcertName) {
-      console.log('Now playing : ', this.festival.currentConcertName)
-      //Store.dispatch('playTrack', data[current].$data.uri)
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri)
-      console.log(this.canPlayMusic)
       this.festival.currentConcertName = data[current].$data.name
+      console.log('Now playing : ', this.festival.currentConcertName)
     }
-    //console.log(data[current].$data.name, lowest)
   }
 
   pythagoreCalc(cx, cy, tx, ty) {
@@ -216,10 +216,6 @@ export default class Festival {
     /**
      * Binding functions
      */
-    Bus.$on('PlayerInit', () => {
-      console.log('Init done')
-      this.canPlayMusic = true
-    })
     this._update = this.update.bind(this)
     //Engine.$app.ticker.add(this._update)
   }
