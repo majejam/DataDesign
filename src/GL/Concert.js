@@ -40,7 +40,7 @@ export default class Concert {
     this.concert.container.zIndex = 2
     this.createConcertGrounds()
     this.createConcertName()
-    this.createCrowd(10, 100 * (this.$data.popularity / 100))
+    this.createCrowd(10, 10 * (this.$data.popularity / 100))
     this.concertInteractivity(true)
     this.$festival.addChild(this.concert.container)
   }

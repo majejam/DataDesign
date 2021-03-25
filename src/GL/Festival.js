@@ -3,6 +3,7 @@ import World from '@/GL/World.js'
 import Concert from '@/GL/Concert.js'
 import Store from '@/store'
 import Player from '@/GL/Player.js'
+import Person from '@/GL/Person.js'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
     this.$concertsData = this.sortConcert(concertsData)
@@ -39,7 +40,15 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
+    this.person = new Person(this)
     //this.centerWorld()
+    this.person.moveToRandomConcerts()
+
+    setInterval(() => {
+      if (Math.random() * 10 > 9) {
+        //this.person.moveToRandomConcerts()
+      }
+    }, 5000)
 
     World.addChild(this.festival.container)
   }
