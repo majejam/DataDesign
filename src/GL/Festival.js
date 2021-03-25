@@ -5,7 +5,7 @@ import Store from '@/store'
 import Player from '@/GL/Player.js'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
-    this.$concertsData = concertsData
+    this.$concertsData = this.sortConcert(concertsData)
     this.$opt = opt
     this.festival = {
       container: null,
@@ -138,11 +138,26 @@ export default class Festival {
         count++
       }
     })
+  }
 
-    console.log(this.concerts)
-    this.concerts.forEach(concert => {
-      console.log(concert.getMiddlePosition().x / this.festival.container.width)
+  sortConcert(array) {
+    /**
+     * Generate an array with the most listenned tracks at the middle of the array
+     * For that, we separate de the array in three seperate one : even indexes, odd indexes, and first result
+     * Then we reverse the array of odd indexes, place it in first, then push the first result & then the even indexes array
+     * That means that given an array of [1, 2, 3, 4, 5, 6, 7] => [6, 4, 2] + [1] + [3, 5, 7]
+     */
+    const arr = [...array]
+    const firstElement = new Array(arr.shift())
+    const oddArray = arr.filter(function (element, index) {
+      return index % 2 === 0
     })
+    const evenArray = arr.filter(function (element, index) {
+      return index % 2 === 1
+    })
+
+    const sortedArray = [...oddArray.reverse(), ...firstElement, ...evenArray]
+    return sortedArray
   }
 
   getBiggerHeight(pastValues) {

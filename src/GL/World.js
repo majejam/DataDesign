@@ -25,7 +25,9 @@ class World {
     this.$el = el
     this.storeData = Store.getters.getTopTracksFeatures
     this.createWorldContainer()
-    this.draggable = new Draggable(this.$el)
+    this.draggable = new Draggable(this.$el, {
+      speed: 1.4,
+    })
 
     this.festival = new Festival(this.storeData, {
       x: 0,
@@ -61,6 +63,10 @@ class World {
   addChild(child) {
     this.world.container.addChild(child)
     this.centerWorld()
+
+    setTimeout(() => {
+      this.centerWorld()
+    }, 2000)
   }
 
   onResize() {

@@ -3,8 +3,9 @@
 import Engine from '@/GL/Engine.js'
 
 export default class Draggable {
-  constructor(el) {
+  constructor(el, opt = {}) {
     this.$el = el
+    this.$opt = opt
     this.position = {
       x: 0,
       y: 0,
@@ -26,6 +27,7 @@ export default class Draggable {
         y: 0,
       },
     }
+    this.speed = this.$opt.speed ? this.$opt.speed : 1
     this.viewport = {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -71,8 +73,8 @@ export default class Draggable {
   }
 
   updatePosition() {
-    this.position.x -= this.cursor.delta.x * 1000
-    this.position.y -= this.cursor.delta.y * 1000
+    this.position.x -= this.cursor.delta.x * 1000 * this.speed
+    this.position.y -= this.cursor.delta.y * 1000 * this.speed * 0.8
   }
 
   updateWorldPosition() {
