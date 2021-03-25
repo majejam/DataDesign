@@ -13,12 +13,12 @@ export default class Person {
         width: this.$opt.width ? this.$opt.width : 100,
         height: this.$opt.height ? this.$opt.height : 100,
       },
-      maxSpeed: 1.5,
+      maxSpeed: Math.random() + 0.5,
       target: new Engine.PIXI.Point(2500, 1800),
       steerStrengh: 1,
       wanderStrengh: 0.6,
       static: true,
-      position: new Engine.PIXI.Point(2500, 1800),
+      position: new Engine.PIXI.Point(1000 + Math.random() * 2000, 500 + Math.random() * 2000),
       velocity: new Engine.PIXI.Point(),
       acceleration: new Engine.PIXI.Point(),
       delta: new Engine.PIXI.Point(0.1, 0.1),
@@ -31,6 +31,8 @@ export default class Person {
   init() {
     this.setEvents()
     this.createPerson()
+
+    this.moveToRandomConcerts()
   }
 
   createPerson() {
@@ -81,7 +83,7 @@ export default class Person {
   moveToRandomConcerts() {
     this.selectedConcert = this.$festival.concerts[Math.round(Math.random() * this.$festival.concerts.length - 1)]
     console.log('Moving to.. ', this.selectedConcert.$data.artists[0].name)
-    this.moveTo(this.selectedConcert.getMiddlePosition().x, this.selectedConcert.getMiddlePosition().y)
+    this.moveTo(this.selectedConcert.getMiddlePosition().x + (Math.random() - 0.5) * 200, this.selectedConcert.getMiddlePosition().y + (Math.random() - 0.5) * 200)
   }
 
   moveInsideConcert() {

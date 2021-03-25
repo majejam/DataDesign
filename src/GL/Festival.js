@@ -40,15 +40,11 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.person = new Person(this)
-    //this.centerWorld()
-    this.person.moveToRandomConcerts()
+    this.persons = new Array()
 
-    setInterval(() => {
-      if (Math.random() * 10 > 9) {
-        //this.person.moveToRandomConcerts()
-      }
-    }, 5000)
+    for (let index = 0; index < 20; index++) {
+      this.persons.push(new Person(this))
+    }
 
     World.addChild(this.festival.container)
   }
