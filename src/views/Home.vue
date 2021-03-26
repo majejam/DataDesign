@@ -34,6 +34,7 @@ import Header from '@/components/shared/Header.vue'
 
 import Engine from '@/GL/Engine.js'
 import Player from '@/GL/Player.js'
+import Bus from '@/utils/bus.js'
 
 export default {
   components: { Header },
@@ -47,9 +48,9 @@ export default {
   beforeMount() {},
   mounted() {
     Player.init()
-    setTimeout(() => {
+    Bus.$on('PlayerInit', () => {
       Engine.init(this.$refs.renderer)
-    }, 2000)
+    })
   },
   methods: {
     setVolume(event) {

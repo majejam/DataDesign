@@ -5,6 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
+    this.isAllowed = false
 
     this.status = {
       readyToInit: false,
@@ -80,6 +81,11 @@ class Player {
 
   changeTrackFade(uri) {
     //console.log(uri);
+    if (!this.isAllowed) {
+      console.warn('Player was set on not allowed')
+      return false
+    }
+
     this.setFadeVolume(0, 100).then(() => {
       console.log('Switching track...')
       Store.dispatch('playTrack', uri).then(() => {

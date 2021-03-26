@@ -21,7 +21,7 @@ class Engine {
     // Listen for frame updates
     this.$app.ticker.add(this._update)
 
-    World.init(this.$el)
+    this.loadSpriteSheet()
 
     Bus.$on('resize', this._onResize)
 
@@ -58,6 +58,25 @@ class Engine {
 
   update() {
     //this.container.rotation -= 0.01 * delta
+  }
+
+  /**
+   * Load spritesheet
+   */
+
+  loadSpriteSheet() {
+    this._setup = this.setup.bind(this)
+    this.loader = new this.PIXI.Loader()
+    this.loader.add('spritesheet/spritesheet.json').load(this._setup)
+  }
+
+  setup() {
+    console.log('Setup sprite')
+    // get a reference to the sprite sheet we've just loaded:
+    this.spritesheet = this.loader.resources['spritesheet/spritesheet.json'].spritesheet
+
+    console.log(this.spritesheet)
+    World.init(this.$el)
   }
 
   /**
