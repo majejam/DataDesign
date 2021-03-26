@@ -42,7 +42,7 @@ export default class Festival {
     this.createFestivalGrounds()
     this.persons = new Array()
 
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 1; index++) {
       this.persons.push(new Person(this))
     }
 

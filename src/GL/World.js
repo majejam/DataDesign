@@ -1,6 +1,7 @@
 //import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
+import Cull from '@/GL/Cull.js'
 import Draggable from '@/GL/Draggable.js'
 import Festival from '@/GL/Festival.js'
 import Store from '@/store'
@@ -26,13 +27,15 @@ class World {
     this.storeData = Store.getters.getTopTracksFeatures
     this.createWorldContainer()
     this.draggable = new Draggable(this.$el, {
-      speed: 1.4,
+      speed: 1.8,
     })
 
     this.festival = new Festival(this.storeData, {
       x: 0,
       y: 0,
     })
+
+    this.cull = new Cull(this.world)
 
     this.currentFestival = this.festival
     this.setEvents()

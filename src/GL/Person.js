@@ -18,7 +18,7 @@ export default class Person {
       steerStrengh: 1,
       wanderStrengh: 0.6,
       static: true,
-      position: new Engine.PIXI.Point(Math.random() * this.$festival.festival.container.width, Math.random() * this.$festival.festival.container.height),
+      position: new Engine.PIXI.Point(Math.random() * this.$festival.festival.container.width - 200, Math.random() * this.$festival.festival.container.height - 200),
       velocity: new Engine.PIXI.Point(),
       acceleration: new Engine.PIXI.Point(),
       delta: new Engine.PIXI.Point(0.1, 0.1),
@@ -34,14 +34,18 @@ export default class Person {
 
   init() {
     this.setEvents()
+    this.person.position.x = 0
+    this.person.position.y = 0
     this.createPerson()
 
-    this.moveToRandomConcerts()
+    console.log('hello')
+
+    /*this.moveToRandomConcerts()
 
     this.interval = setInterval(() => {
       if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
       else if (this.person.static) this.moveToRandomConcerts()
-    }, this.person.decisionDuration)
+    }, this.person.decisionDuration)*/
   }
 
   createPerson() {
@@ -57,6 +61,7 @@ export default class Person {
 
   update(delta) {
     this.time += delta
+    //console.log(this.person.position)
     if (this.person.static) return
 
     //console.log(this.clamp(this.person.target.x - this.person.position.x, -1, 1), this.normalize(this.person.target.y - this.person.position.y, 1, -1))
@@ -150,7 +155,7 @@ export default class Person {
      * Binding functions
      */
     this._update = this.update.bind(this)
-    Engine.$app.ticker.add(this._update)
+    //Engine.$app.ticker.add(this._update)
   }
 
   removeEvents() {}
