@@ -1,6 +1,7 @@
 //import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
+import World from '@/GL/World.js'
 //import Store from '@/store'
 export default class Concert {
   constructor(festival, data = null, opt = {}) {
@@ -23,6 +24,7 @@ export default class Concert {
         container: null,
         data: new Array(),
       },
+      isVisible: false,
       distance: 0,
     }
     this.init()
@@ -31,8 +33,6 @@ export default class Concert {
   init() {
     this.setEvents()
     this.createConcert()
-
-    console.log(this.$data.popularity / 100, Math.abs(Math.exp(this.$data.audio_features.danceability + 0.001) / Math.exp(1)))
   }
 
   createConcert() {
@@ -116,7 +116,15 @@ export default class Concert {
     this.concert.container.addChild(child)
   }
 
-  update() {}
+  update() {
+    this.concert.isVisible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
+    if (this.concert.isVisible) {
+      this.concert.container.visible = true
+    } else {
+      this.concert.container.visible = false
+      return
+    }
+  }
 
   /**
    * Getters
@@ -150,7 +158,7 @@ export default class Concert {
      * Binding functions
      */
     this._update = this.update.bind(this)
-    //Engine.$app.ticker.add(this._update)
+    Engine.$app.ticker.add(this._update)
   }
 
   removeEvents() {}

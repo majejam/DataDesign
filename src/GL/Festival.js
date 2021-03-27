@@ -40,11 +40,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.persons = new Array()
-
-    for (let index = 0; index < 1; index++) {
-      this.persons.push(new Person(this))
-    }
+    this.generatePersons(1000)
 
     World.addChild(this.festival.container)
   }
@@ -165,6 +161,20 @@ export default class Festival {
     return sortedArray
   }
 
+  generatePersons(nbOfPersons) {
+    this.persons = new Array()
+
+    for (let index = 0; index < nbOfPersons; index++) {
+      this.persons.push(new Person(this))
+    }
+  }
+
+  removePersons() {
+    this.persons.forEach(person => {
+      person.destroy()
+    })
+  }
+
   getBiggerHeight(pastValues) {
     let maxHeight = 0
     pastValues.forEach(value => {
@@ -177,12 +187,21 @@ export default class Festival {
     this.festival.container.addChild(child)
   }
 
+  removeChild(child) {
+    this.festival.container.removeChild(child)
+  }
+
   hideFestival() {
     this.festival.container.visible = false
   }
 
   showFestival() {
     this.festival.container.visible = true
+  }
+
+  destroy() {
+    World.world.container.removeChild(this.festival.container)
+    this.removePersons()
   }
 
   getNearestConcert(currentX, currentY) {

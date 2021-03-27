@@ -26,6 +26,7 @@ class World {
     this.$el = el
     this.storeData = Store.getters.getTopTracksFeatures
     this.createWorldContainer()
+    this.cull = new Cull(this.world)
     this.draggable = new Draggable(this.$el, {
       speed: 1.8,
     })
@@ -35,9 +36,8 @@ class World {
       y: 0,
     })
 
-    this.cull = new Cull(this.world)
-
     this.currentFestival = this.festival
+
     this.setEvents()
   }
 
@@ -66,10 +66,8 @@ class World {
   addChild(child) {
     this.world.container.addChild(child)
     this.centerWorld()
-
-    setTimeout(() => {
-      this.centerWorld()
-    }, 2000)
+    this._center = this.centerWorld.bind(this)
+    Engine.$app.ticker.addOnce(this._center)
   }
 
   onResize() {
