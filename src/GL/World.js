@@ -1,6 +1,7 @@
 //import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
+import Cull from '@/GL/Cull.js'
 import Draggable from '@/GL/Draggable.js'
 import Festival from '@/GL/Festival.js'
 import Store from '@/store'
@@ -25,8 +26,9 @@ class World {
     this.$el = el
     this.storeData = Store.getters.getTopTracksFeatures
     this.createWorldContainer()
+    this.cull = new Cull(this.world)
     this.draggable = new Draggable(this.$el, {
-      speed: 1.4,
+      speed: 1.8,
     })
 
     this.festival = new Festival(this.storeData, {
@@ -35,6 +37,7 @@ class World {
     })
 
     this.currentFestival = this.festival
+
     this.setEvents()
   }
 
@@ -63,10 +66,8 @@ class World {
   addChild(child) {
     this.world.container.addChild(child)
     this.centerWorld()
-
-    setTimeout(() => {
-      this.centerWorld()
-    }, 2000)
+    this._center = this.centerWorld.bind(this)
+    Engine.$app.ticker.addOnce(this._center)
   }
 
   onResize() {
