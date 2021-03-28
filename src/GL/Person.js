@@ -26,7 +26,7 @@ export default class Person {
       desiredPosition: new Engine.PIXI.Point(),
       distance: 0,
       isVisible: false,
-      decisionDuration: 10000 + Math.round(Math.random() * 20000),
+      decisionDuration: Math.round(Math.random() * 50000),
     }
 
     this.selectedConcert = this.$festival.concerts[Math.round(Math.random() * (this.$festival.concerts.length - 1))]
@@ -36,16 +36,11 @@ export default class Person {
 
   init() {
     this.setEvents()
-    //this.person.position.x = 1600
-    //this.person.position.y = 1600
     this.createPerson()
 
-    this.moveToRandomConcerts()
+    this.teleportRandomConcerts()
 
-    this.interval = setInterval(() => {
-      if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
-      else if (this.person.static) this.moveToRandomConcerts()
-    }, this.person.decisionDuration)
+    this.decisionLoop()
   }
 
   createPerson() {
@@ -65,6 +60,15 @@ export default class Person {
     this.person.graphics.beginFill(this.person.color)
     this.person.graphics.drawRect(0, 0, this.person.size.width, this.person.size.height)
     this.person.graphics.endFill()
+  }
+
+  decisionLoop() {
+    this.interval = setInterval(() => {
+      if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
+      else if (this.person.static) this.moveToRandomConcerts()
+
+      this.person.decisionDuration = 10000 + Math.round(Math.random() * 20000)
+    }, this.person.decisionDuration)
   }
 
   update(delta) {
@@ -132,15 +136,27 @@ export default class Person {
   }
 
   moveToRandomConcerts() {
-    this.selectedConcert = this.$festival.concerts[Math.round(Math.random() * (this.$festival.concerts.length - 1))]
+    this.selectedConcert = this.$festival.pickWeightedConcert()
     //console.log('Moving to.. ', this.selectedConcert.$data.artists[0].name)
-    this.moveTo(this.selectedConcert.getMiddlePosition().x + (Math.random() - 0.5) * 200, this.selectedConcert.getMiddlePosition().y + (Math.random() - 0.5) * 200)
+    this.moveTo(
+      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
+      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
+    )
+  }
+
+  teleportRandomConcerts() {
+    this.selectedConcert = this.$festival.pickWeightedConcert()
+    //console.log('Moving to.. ', this.selectedConcert.$data.artists[0].name)
+    this.teleport(
+      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
+      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
+    )
   }
 
   moveInsideConcert() {
     this.moveTo(
-      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 2,
-      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 2
+      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
+      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
     )
   }
 
@@ -148,6 +164,13 @@ export default class Person {
     this.person.static = false
     this.changeColor(0xff00f0)
     this.person.target.set(x, y)
+  }
+
+  teleport(x, y) {
+    this.person.static = false
+    this.changeColor(0xff00f0)
+    this.person.target.set(x, y)
+    this.person.position.set(x, y)
   }
 
   normalize(val, max, min) {

@@ -4,9 +4,12 @@ import Concert from '@/GL/Concert.js'
 import Store from '@/store'
 import Player from '@/GL/Player.js'
 import Person from '@/GL/Person.js'
+import Chance from 'chance'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
+    this.chance = new Chance()
     this.$concertsData = this.sortConcert(concertsData)
+    this.weightedConcert = this.generateWeightedConcertArray(this.$concertsData)
     this.$opt = opt
     this.festival = {
       container: null,
@@ -40,7 +43,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.generatePersons(1000)
+    this.generatePersons(300)
 
     World.addChild(this.festival.container)
   }
@@ -159,6 +162,31 @@ export default class Festival {
 
     const sortedArray = [...oddArray.reverse(), ...firstElement, ...evenArray]
     return sortedArray
+  }
+
+  generateWeightedConcertArray() {
+    /**
+     * Create popularity array,
+     * determines min & max value of array
+     * Normalize popularity concert array from range [min, max] to [0, 1]
+     * then create array with corresponding pourcentages
+     */
+    const arr = [...this.$concertsData]
+    const popularityMap = arr.map(x => x.popularity)
+    const max = Math.max(...popularityMap)
+    const min = Math.min(...popularityMap) / 1.1 //prevents minimum to be 0
+    const normalizedMap = popularityMap.map(x => this.normalize(x, max, min))
+    const total = normalizedMap.reduce((a, b) => a + b)
+    const weight = normalizedMap.map(x => (x * 100) / total)
+    return weight
+  }
+
+  pickWeightedConcert() {
+    return this.chance.weighted(this.concerts, this.weightedConcert)
+  }
+
+  normalize(val, max, min) {
+    return (val - min) / (max - min)
   }
 
   generatePersons(nbOfPersons) {
