@@ -43,7 +43,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.generatePersons(300)
+    this.generatePersons(100)
 
     World.addChild(this.festival.container)
   }

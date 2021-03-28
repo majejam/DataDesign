@@ -8,8 +8,9 @@ export default class Person {
     this.$festival = festival
     this.$opt = opt
     this.person = {
+      container: null,
       graphics: null,
-      color: this.$opt.color ? this.$opt.color : 0xff00f0,
+      color: this.$opt.color ? this.$opt.color : 0xff87f0,
       size: {
         width: this.$opt.width ? this.$opt.width : 100,
         height: this.$opt.height ? this.$opt.height : 100,
@@ -18,15 +19,18 @@ export default class Person {
       target: new Engine.PIXI.Point(2500, 1800),
       steerStrengh: 1,
       wanderStrengh: 0.6,
-      static: true,
+      static: false,
       position: new Engine.PIXI.Point(Math.random() * this.$festival.festival.container.width - 200, Math.random() * this.$festival.festival.container.height - 200),
       velocity: new Engine.PIXI.Point(),
       acceleration: new Engine.PIXI.Point(),
-      delta: new Engine.PIXI.Point(0.1, 0.1),
+      delta: new Engine.PIXI.Point(0.01, 0.01),
       desiredPosition: new Engine.PIXI.Point(),
       distance: 0,
       isVisible: false,
-      decisionDuration: Math.round(Math.random() * 50000),
+      baseDecisionTime: 10000,
+      decisionMaxOffset: 50000,
+      decisionDuration: Math.round(Math.random() * 5000),
+      changedState: false,
     }
 
     this.selectedConcert = this.$festival.concerts[Math.round(Math.random() * (this.$festival.concerts.length - 1))]
@@ -36,22 +40,29 @@ export default class Person {
 
   init() {
     this.setEvents()
+
     this.createPerson()
 
     this.teleportRandomConcerts()
 
-    this.decisionLoop()
+    this.decision(this.person.decisionDuration)
   }
 
   createPerson() {
+    this.person.container = new Engine.PIXI.Container()
+    this.person.container.zIndex = 2
+    this.person.container.x = this.person.position.x
+    this.person.container.y = this.person.position.y
+    this.createPersonGraphics()
+    this.$festival.addChild(this.person.container)
+  }
+
+  createPersonGraphics() {
     this.person.graphics = new Engine.PIXI.Graphics()
     this.person.graphics.beginFill(this.person.color)
     this.person.graphics.drawRect(0, 0, this.person.size.width, this.person.size.height)
     this.person.graphics.endFill()
-    this.person.graphics.zIndex = 2
-    this.person.graphics.x = this.person.position.x
-    this.person.graphics.y = this.person.position.y
-    this.$festival.addChild(this.person.graphics)
+    this.person.container.addChild(this.person.graphics)
   }
 
   changeColor(color) {
@@ -62,35 +73,85 @@ export default class Person {
     this.person.graphics.endFill()
   }
 
-  decisionLoop() {
-    this.interval = setInterval(() => {
+  /**
+   * IA
+   */
+
+  decision(time) {
+    if (this.timeout) clearTimeout(this.timeout)
+    this.timeout = setTimeout(() => {
       if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
       else if (this.person.static) this.moveToRandomConcerts()
 
-      this.person.decisionDuration = 10000 + Math.round(Math.random() * 20000)
-    }, this.person.decisionDuration)
+      this.person.decisionDuration = this.person.baseDecisionTime + Math.round(Math.random() * this.person.decisionMaxOffset)
+      this.decision(this.person.decisionDuration)
+    }, time)
   }
+
+  /**
+   * Animations
+   */
+
+  createAnimation() {
+    // create an animated sprite
+    this.animatedCapguy = new Engine.PIXI.AnimatedSprite(Engine.spritesheet.animations['dancingman'])
+    // set speed, start playback and add it to the stage
+    this.animatedCapguy.animationSpeed = this.$data.audio_features.danceability / 3
+    this.animatedCapguy.play()
+    this.animatedCapguy.position.x = this.person.position.x
+    this.animatedCapguy.position.y = this.person.position.y
+    this.concert.crowd.container.addChild(this.animatedCapguy)
+  }
+
+  /**
+   * States handlers
+   */
+
+  checkIfArrivedToDestination() {
+    if (Math.round(this.person.position.x) == Math.round(this.person.target.x) && Math.round(this.person.position.y) == Math.round(this.person.target.y)) {
+      this.person.static = true
+      if (!this.person.changedState) {
+        this.person.changedState = true
+        this.checkState(true)
+      }
+    }
+  }
+
+  checkState(once) {
+    if (this.person.static) {
+      this.changeColor(0x5678ff)
+    } else if (!this.person.static && this.person.position.x > this.person.target.x) {
+      this.changeColor(0xff00f0)
+    } else if (!this.person.static && this.person.position.x < this.person.target.x) {
+      this.changeColor(0xfffff0)
+    }
+
+    if (!this.person.static)
+      if (!once) {
+        this.person.changedState = false
+      }
+  }
+
+  /**
+   * Mouvement & methods
+   */
 
   update(delta) {
     this.time += delta
     this.person.isVisible = World.cull.isInViewport(this.person.position.x, this.person.position.y, 100, 100)
     if (this.person.isVisible) {
-      this.person.graphics.visible = true
+      this.person.container.visible = true
       this.complexPositionCalculation()
     } else {
-      this.person.graphics.visible = false
+      this.person.container.visible = false
       this.simplePositionCalculation()
     }
 
-    this.person.graphics.x = this.person.position.x
-    this.person.graphics.y = this.person.position.y
+    this.person.container.x = this.person.position.x
+    this.person.container.y = this.person.position.y
+    this.person.container.zIndex = Math.round(this.person.position.y)
 
-    if (Math.round(this.person.position.x) == Math.round(this.person.target.x) && Math.round(this.person.position.y) == Math.round(this.person.target.y)) {
-      this.person.static = true
-      if (this.person.color !== 0x5678ff) {
-        this.changeColor(0x5678ff)
-      }
-    }
+    this.checkIfArrivedToDestination()
   }
 
   complexPositionCalculation() {
@@ -107,13 +168,13 @@ export default class Person {
     )
 
     if (Math.round(this.person.position.x) == Math.round(this.person.target.x)) {
-      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.4)
+      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.2)
     } else {
       this.person.acceleration.x = this.lerp(this.person.acceleration.x, this.person.velocity.x, this.person.delta.x)
     }
 
     if (Math.round(this.person.position.y) == Math.round(this.person.target.y)) {
-      this.person.acceleration.y = this.lerp(this.person.acceleration.y, 0, 0.4)
+      this.person.acceleration.y = this.lerp(this.person.acceleration.y, 0, 0.2)
     } else {
       this.person.acceleration.y = this.lerp(this.person.acceleration.y, this.person.velocity.y, this.person.delta.y)
     }
@@ -162,15 +223,15 @@ export default class Person {
 
   moveTo(x, y) {
     this.person.static = false
-    this.changeColor(0xff00f0)
     this.person.target.set(x, y)
+    this.checkState(false)
   }
 
   teleport(x, y) {
     this.person.static = false
-    this.changeColor(0xff00f0)
     this.person.target.set(x, y)
     this.person.position.set(x, y)
+    this.checkState(false)
   }
 
   normalize(val, max, min) {
@@ -219,7 +280,7 @@ export default class Person {
 
   destroy() {
     this.removeEvents()
-    clearInterval(this.interval)
-    this.$festival.removeChild(this.person.graphics)
+    clearTimeout(this.timeout)
+    this.$festival.removeChild(this.person.container)
   }
 }
