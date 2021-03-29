@@ -11,7 +11,7 @@ export default class Concert {
     this.concert = {
       container: null,
       graphics: null,
-      color: this.$opt.color ? this.$opt.color : 0xff0000,
+      color: this.$opt.color ? this.$opt.color : 0xff7171,
       size: {
         width: this.$opt.width ? this.$opt.width : 500,
         height: this.$opt.height ? this.$opt.height : 500,

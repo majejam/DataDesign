@@ -119,11 +119,11 @@ export default class Person {
 
   checkState(once) {
     if (this.person.static) {
-      this.changeColor(0x5678ff)
+      this.changeColor(0x9fd8df)
     } else if (!this.person.static && this.person.position.x > this.person.target.x) {
-      this.changeColor(0xff00f0)
+      this.changeColor(0xb8b5ff)
     } else if (!this.person.static && this.person.position.x < this.person.target.x) {
-      this.changeColor(0xfffff0)
+      this.changeColor(0x7868e6)
     }
 
     if (!this.person.static)

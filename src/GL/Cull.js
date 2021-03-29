@@ -6,6 +6,8 @@ export default class Cull {
   constructor(viewport) {
     this.$viewport = viewport
 
+    this.margin = 100
+
     this.bounds = {
       x: 0,
       y: 0,
@@ -29,10 +31,10 @@ export default class Cull {
 
   update() {
     //console.log(this.bounds.x, this.bounds.y)
-    this.bounds.x = Math.abs(this.$viewport.container.position.x - this.$viewport.container.width / 2)
-    this.bounds.y = Math.abs(this.$viewport.container.position.y - this.$viewport.container.height / 2)
-    this.bounds.width = this.bounds.x + Engine.$app.screen.width
-    this.bounds.height = this.bounds.y + Engine.$app.screen.height
+    this.bounds.x = Math.abs(this.$viewport.container.position.x - this.$viewport.container.width / 2 + this.margin)
+    this.bounds.y = Math.abs(this.$viewport.container.position.y - this.$viewport.container.height / 2 + this.margin)
+    this.bounds.width = this.bounds.x + Engine.$app.screen.width + this.margin
+    this.bounds.height = this.bounds.y + Engine.$app.screen.height + this.margin
     //console.log(this.bounds.width, this.bounds.height)
   }
 

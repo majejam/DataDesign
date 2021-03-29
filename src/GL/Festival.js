@@ -15,7 +15,7 @@ export default class Festival {
       container: null,
       graphics: null,
       currentConcertName: '',
-      color: this.$opt.color ? this.$opt.color : 0xffff00,
+      color: this.$opt.color ? this.$opt.color : 0xf0e4d7,
       size: {
         width: this.$opt.width ? this.$opt.width : 2000,
         height: this.$opt.height ? this.$opt.height : 2000,
@@ -43,7 +43,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.generatePersons(100)
+    this.generatePersons(300)
 
     World.addChild(this.festival.container)
   }

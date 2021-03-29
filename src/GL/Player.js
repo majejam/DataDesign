@@ -5,7 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = false
+    this.isAllowed = true
 
     this.status = {
       readyToInit: false,
@@ -63,12 +63,10 @@ class Player {
       this.interval = setInterval(() => {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
-          console.log(Math.pow(this.volume.target, 2))
           this.player.setVolume(Math.pow(this.volume.target, 2))
           if (this.volume.target > 1 - step) this.volume.target = 1
         } else if (this.volume.target > level && !isAdd) {
           this.volume.target -= step
-          console.log(Math.pow(this.volume.target, 2))
           this.player.setVolume(Math.pow(this.volume.target, 2))
           if (this.volume.target < step) this.volume.target = 0
         } else {
