@@ -21,8 +21,8 @@ export default class Festival {
         height: this.$opt.height ? this.$opt.height : 2000,
       },
       margin: {
-        x: this.$opt.marginx ? this.$opt.marginxx : 50,
-        y: this.$opt.marginy ? this.$opt.marginxy : 50,
+        x: this.$opt.marginx ? this.$opt.marginx : 200,
+        y: this.$opt.marginy ? this.$opt.marginy : 200,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,
