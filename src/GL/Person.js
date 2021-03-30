@@ -29,7 +29,7 @@ export default class Person {
       isVisible: false,
       baseDecisionTime: 10000,
       decisionMaxOffset: 50000,
-      decisionDuration: Math.round(Math.random() * 5000),
+      decisionDuration: Math.round(Math.random() * 50000),
       changedState: false,
     }
 
@@ -149,7 +149,7 @@ export default class Person {
 
     this.person.container.x = this.person.position.x
     this.person.container.y = this.person.position.y
-    this.person.container.zIndex = Math.round(this.person.position.y)
+    this.person.container.zIndex = Math.round(this.person.position.y + 100)
 
     this.checkIfArrivedToDestination()
   }
@@ -198,27 +198,16 @@ export default class Person {
 
   moveToRandomConcerts() {
     this.selectedConcert = this.$festival.pickWeightedConcert()
-    //console.log('Moving to.. ', this.selectedConcert.$data.artists[0].name)
-    this.moveTo(
-      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
-      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
-    )
+    this.moveTo(this.selectedConcert.getConcertCrowdPosition(100).x, this.selectedConcert.getConcertCrowdPosition(100).y)
   }
 
   teleportRandomConcerts() {
     this.selectedConcert = this.$festival.pickWeightedConcert()
-    //console.log('Moving to.. ', this.selectedConcert.$data.artists[0].name)
-    this.teleport(
-      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
-      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
-    )
+    this.teleport(this.selectedConcert.getConcertCrowdPosition(100).x, this.selectedConcert.getConcertCrowdPosition(100).y)
   }
 
   moveInsideConcert() {
-    this.moveTo(
-      this.selectedConcert.getMiddlePosition().x + ((Math.random() - 0.5) * this.selectedConcert.concert.size.width) / 1.2,
-      this.selectedConcert.getMiddlePosition().y + ((Math.random() - 0.5) * this.selectedConcert.concert.size.height) / 1.2
-    )
+    this.moveTo(this.selectedConcert.getConcertCrowdPosition(100).x, this.selectedConcert.getConcertCrowdPosition(100).y)
   }
 
   moveTo(x, y) {
