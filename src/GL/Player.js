@@ -5,7 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = false
+    this.isAllowed = true
 
     this.status = {
       readyToInit: false,
@@ -20,6 +20,7 @@ class Player {
   }
 
   init() {
+    Store.commit('setPlayerInit', false)
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
 
@@ -49,8 +50,20 @@ class Player {
     // Connect to the player!
     this.player.connect()
 
+    this.audio = new Audio('audio/ambience_compress.mp3')
+    this.audio.volume = 0.2
+    this.audio.loop = true
+
     Bus.$on('PlayerInit', () => {
       console.log('Init done')
+    })
+  }
+
+  playAmbience() {
+    this.audio.play().catch(() => {
+      setTimeout(() => {
+        this.playAmbience()
+      }, 1000)
     })
   }
 
@@ -84,10 +97,10 @@ class Player {
       return false
     }
 
-    this.setFadeVolume(0, 100).then(() => {
+    this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
       Store.dispatch('playTrack', uri).then(() => {
-        this.setFadeVolume(0.2, 100).then(() => {
+        this.setFadeVolume(0.8, 50).then(() => {
           console.log('Volume set to normal')
         })
       })

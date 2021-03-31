@@ -19,13 +19,16 @@ const routes = [
             next()
           })
           .catch(() => {
-            next('/login')
+            store.commit('setCode', '')
+            //next('/login')
           })
         next()
       } else if (store.getters.isAuthenticated && !store.getters.isRefreshToken) {
         next()
       } else {
-        next('/login')
+        store.commit('setCode', '')
+        next()
+        //next('/login')
       }
     },
   },
@@ -52,10 +55,10 @@ const routes = [
             next('/')
           })
           .catch(() => {
-            next('/login')
+            store.commit('setCode', '')
           })
       } else {
-        next('/login')
+        store.commit('setCode', '')
       }
     },
   },

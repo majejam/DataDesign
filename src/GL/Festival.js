@@ -21,8 +21,8 @@ export default class Festival {
         height: this.$opt.height ? this.$opt.height : 2000,
       },
       margin: {
-        x: this.$opt.marginx ? this.$opt.marginx : 200,
-        y: this.$opt.marginy ? this.$opt.marginy : 200,
+        x: this.$opt.marginx ? this.$opt.marginx : 500,
+        y: this.$opt.marginy ? this.$opt.marginy : 500,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,
@@ -43,6 +43,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
+    this.positionTreeRandom(100, 10000, 1.5)
     this.generatePersons(300)
 
     World.addChild(this.festival.container)
@@ -59,68 +60,69 @@ export default class Festival {
 
   createFestivalGrounds() {
     this.festival.graphics = new Engine.PIXI.Graphics()
-    this.festival.graphics.beginFill(this.festival.color)
+    this.festival.graphics.beginFill(this.festival.color, 0)
     this.festival.graphics.drawRect(0, 0, this.festival.container.width + this.festival.margin.x * 2, this.festival.container.height + this.festival.margin.y * 2)
     this.festival.graphics.endFill()
+
+    //this.festival.graphics.visible = false
     this.festival.graphics.zIndex = 1
     this.addChild(this.festival.graphics)
   }
 
-  createConcerts() {
-    this.positionConcertRow(5)
+  createTree(x, y, w, h) {
+    const container = new Engine.PIXI.Container()
+    const graphics = new Engine.PIXI.Graphics()
+    graphics.beginFill(0x00ff00)
+    graphics.drawRect(x, y, w, h)
+    graphics.endFill()
+    container.zIndex = y + h
+    container.addChild(graphics)
+    this.addChild(container)
   }
 
-  positionConcertRandom(numberOfConcert, maxTries) {
-    let placedConcert = new Array()
-    this.concerts = new Array()
+  createConcerts() {
+    this.positionConcertRow(5, 200, 200)
+  }
+
+  positionTreeRandom(numberOfTree, maxTries, overlay) {
+    let placedTree = [...this.concertPosition]
     let count = 0
-    while (count < maxTries && placedConcert.length < numberOfConcert) {
-      let xPos = Math.random() * this.festival.size.width
-      let yPos = Math.random() * this.festival.size.height
-      let rWidth = 500 + Math.random() * 1000
-      let rHeight = 200 + Math.random() * 200
+    let nbPlaced = 0
+    while (count < maxTries && nbPlaced < numberOfTree) {
+      let xPos = this.festival.margin.x + Math.random() * (this.festival.container.width - this.festival.margin.x * 2)
+      let yPos = this.festival.margin.y + Math.random() * (this.festival.container.height - this.festival.margin.y * 2)
       let isGood = true
-      let index = 0
-      for (let i = 0; i < placedConcert.length && isGood; i++) {
+      for (let i = 0; i < placedTree.length && isGood; i++) {
         if (
-          placedConcert[i].x < xPos + placedConcert[i].width &&
-          placedConcert[i].x + placedConcert[i].width > xPos &&
-          placedConcert[i].y < yPos + placedConcert[i].height &&
-          placedConcert[i].y + placedConcert[i].height > yPos
+          placedTree[i].x < xPos + placedTree[i].width / overlay &&
+          placedTree[i].x + placedTree[i].width / overlay > xPos &&
+          placedTree[i].y < yPos + placedTree[i].height / overlay &&
+          placedTree[i].y + placedTree[i].height / overlay > yPos
         )
           isGood = false
-        else index = i
       }
       if (isGood) {
-        placedConcert.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
-        this.concerts.push(
-          new Concert(this, this.$concertsData[index], {
-            x: xPos,
-            y: yPos,
-            width: rWidth,
-            height: rHeight,
-          })
-        )
+        placedTree.push({ x: xPos, y: yPos, width: 500, height: 500 })
+        this.createTree(xPos, yPos, 100, 200)
+        nbPlaced++
       }
       count++
     }
-    console.log(placedConcert, count)
-    this.createFestivalGrounds()
-    this.createFestivalGrounds()
+    console.log('Placed ', nbPlaced, ' tree in ', count, ' tries')
   }
 
-  positionConcertRow(concertPerRow) {
+  positionConcertRow(concertPerRow, baseOffset, randomOffset) {
     this.concertPosition = new Array()
     this.concerts = new Array()
     let count = 0
     let row = 0
 
     this.$concertsData.forEach((concert, index) => {
-      let xPos = count > 0 ? 50 + Math.random() * 100 + this.concertPosition[index - 1].x + this.concertPosition[index - 1].width : this.festival.margin.x
+      let xPos = count > 0 ? baseOffset + Math.random() * randomOffset + this.concertPosition[index - 1].x + this.concertPosition[index - 1].width : this.festival.margin.x
       let yPos = 0
       if (row > 0) {
         let temp = [...this.concertPosition]
-        yPos = 50 + Math.random() * 100 + this.concertPosition[index - 1 - count].y + this.getBiggerHeight(temp.splice((row - 1) * concertPerRow, concertPerRow))
+        yPos = baseOffset + Math.random() * randomOffset + this.concertPosition[index - 1 - count].y + this.getBiggerHeight(temp.splice((row - 1) * concertPerRow, concertPerRow))
       } else {
         yPos = this.festival.margin.y
       }

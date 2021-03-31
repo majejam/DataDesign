@@ -6,6 +6,7 @@ const state = {
   code: '',
   tokens: {},
   refresh_token: '',
+  isLogged: false,
   user: {
     images: [
       {
@@ -137,7 +138,7 @@ const actions = {
   },
   logoutUser({ commit }) {
     commit('clearState')
-    router.replace('/login')
+    router.go()
   },
 }
 
