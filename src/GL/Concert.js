@@ -35,7 +35,7 @@ export default class Concert {
     this.screen = {
       container: null,
       graphics: null,
-      bounds: { x: 300, y: -100, w: 300, h: 200 },
+      bounds: { x: 100, y: -100, w: 300, h: 200 },
     }
     this.crowd = {
       graphics: null,
@@ -72,7 +72,7 @@ export default class Concert {
   createScene() {
     this.positionScene()
     this.scene.graphics = this.createGraphics(this.concert.container.x + this.scene.bounds.x, this.concert.container.y + this.scene.bounds.y, this.scene.bounds.w, this.scene.bounds.h, 0xff0000)
-    this.scene.graphics.zIndex = this.concert.container.y + this.scene.graphics.y + this.scene.bounds.h
+    this.scene.graphics.zIndex = this.concert.container.y + this.scene.bounds.y + this.scene.bounds.h
     this.$festival.addChild(this.scene.graphics)
   }
 
@@ -87,13 +87,21 @@ export default class Concert {
 
   createScreen() {
     this.screen.container = new Engine.PIXI.Container()
-    this.screen.container.x = this.concert.container.x + this.screen.bounds.x
-    this.screen.container.y = this.concert.container.y + this.screen.bounds.y
     this.screen.graphics = this.createGraphics(0, 0, this.screen.bounds.w, this.screen.bounds.h, 0x09ff00)
-    this.screen.graphics.skew.y = -0.2
+
+    if (this.isSceneRight()) {
+      this.screen.container.x = this.concert.container.x + this.concert.container.width - this.screen.bounds.x - this.screen.bounds.w
+      this.screen.graphics.skew.y = 0.2
+      this.screen.container.y = this.concert.container.y + this.screen.bounds.y - 50
+    } else {
+      this.screen.container.x = this.concert.container.x + this.screen.bounds.x
+      this.screen.graphics.skew.y = -0.2
+      this.screen.container.y = this.concert.container.y + this.screen.bounds.y
+    }
+
     this.screen.container.zIndex = this.concert.container.y + this.screen.graphics.y + this.screen.bounds.h
     this.screen.container.addChild(this.screen.graphics)
-    this.screen.container.addChild(this.createName())
+    this.screen.container.addChild(this.createName(0.2))
     this.$festival.addChild(this.screen.container)
   }
 
@@ -105,7 +113,11 @@ export default class Concert {
     return graphics
   }
 
-  createName() {
+  isSceneRight() {
+    return this.scene.bounds.x > this.concert.container.width / 2
+  }
+
+  createName(skew) {
     const style = new Engine.PIXI.TextStyle({
       breakWords: true,
       fontSize: 48,
@@ -119,7 +131,10 @@ export default class Concert {
     let text = new Engine.PIXI.Text(this.substr(this.$data.artists[0].name), style)
     text.position.x = this.screen.bounds.w / 2 - text.width / 2
     text.position.y = this.screen.bounds.h / 2 - text.height / 1.5
-    text.skew.y = -0.2
+
+    if (this.isSceneRight()) text.skew.y = skew
+    else text.skew.y = -skew
+
     return text
   }
 
@@ -135,7 +150,7 @@ export default class Concert {
     this.crowd.bounds.h = this.concert.container.height
     this.crowd.bounds.y = 0
 
-    if (this.scene.bounds.x > this.concert.container.width / 2) this.crowd.bounds.x = 0
+    if (this.isSceneRight()) this.crowd.bounds.x = 0
     else this.crowd.bounds.x = this.concert.container.width - this.crowd.bounds.w
   }
 
@@ -179,13 +194,8 @@ export default class Concert {
   }
 
   update() {
-    this.concert.isVisible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
-    if (this.concert.isVisible) {
-      this.concert.container.visible = true
-    } else {
-      this.concert.container.visible = false
-      return
-    }
+    this.concert.container.visible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
+    this.screen.container.visible = World.cull.isInViewport(this.screen.container.position.x, this.screen.container.position.y, this.screen.container.width, this.screen.container.height)
   }
 
   /**

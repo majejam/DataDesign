@@ -1,14 +1,10 @@
-//import Bus from '@/utils/bus.js'
-
 import Engine from '@/GL/Engine.js'
 import GUI from '@/utils/GUI.js'
-
 import * as PixiFilters from 'pixi-filters'
 
 export default class Filters {
   constructor(container) {
     this.$container = container
-
     this.createFilters()
   }
 

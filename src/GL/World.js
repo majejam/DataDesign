@@ -6,6 +6,7 @@ import Draggable from '@/GL/Draggable.js'
 import Festival from '@/GL/Festival.js'
 import Store from '@/store'
 import Filters from '@/GL/Filters.js'
+import Player from '@/GL/Player.js'
 
 class World {
   constructor() {
@@ -50,6 +51,8 @@ class World {
     this.setEvents()
 
     console.log('World Init done')
+
+    Player.playAmbience()
   }
 
   /**
