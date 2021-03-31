@@ -5,7 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = true
+    this.isAllowed = false
 
     this.status = {
       readyToInit: false,
@@ -50,7 +50,7 @@ class Player {
     // Connect to the player!
     this.player.connect()
 
-    this.audio = new Audio('audio/ambience_compress.mp3')
+    this.audio = new Audio('audio/ambience.mp3')
     this.audio.volume = 0.2
     this.audio.loop = true
 
@@ -60,6 +60,7 @@ class Player {
   }
 
   playAmbience() {
+    if (!this.isAllowed) return
     this.audio.play().catch(() => {
       setTimeout(() => {
         this.playAmbience()
@@ -70,7 +71,7 @@ class Player {
   setFadeVolume(level, timing) {
     return new Promise(resolve => {
       clearInterval(this.interval)
-      const step = 0.01
+      const step = 0.05
       const isAdd = level - this.volume.current > 0 ? true : false
       this.volume.current = level
       this.interval = setInterval(() => {
