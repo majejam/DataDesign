@@ -50,7 +50,7 @@ class Player {
     // Connect to the player!
     this.player.connect()
 
-    this.audio = new Audio('audio/ambience.mp3')
+    this.audio = new Audio('audio/ambience_compress.mp3')
     this.audio.volume = 0.2
     this.audio.loop = true
 
