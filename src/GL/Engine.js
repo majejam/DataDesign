@@ -40,6 +40,7 @@ class Engine {
     this.$app = new PIXI.Application({
       antialias: true,
       autoResize: true,
+      backgroundColor: 0xf0e4d7,
       //resolution: devicePixelRatio,
     })
 
@@ -53,6 +54,7 @@ class Engine {
   onResize() {
     console.log('resize')
     this.$app.renderer.resize(this.$el.offsetWidth, this.$el.offsetHeight)
+    World.onResize()
     //this.container.position.set(this.$app.screen.width / 2, this.$app.screen.height / 2)
   }
 

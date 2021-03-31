@@ -21,8 +21,8 @@ export default class Festival {
         height: this.$opt.height ? this.$opt.height : 2000,
       },
       margin: {
-        x: this.$opt.marginx ? this.$opt.marginx : 200,
-        y: this.$opt.marginy ? this.$opt.marginy : 200,
+        x: this.$opt.marginx ? this.$opt.marginx : 500,
+        y: this.$opt.marginy ? this.$opt.marginy : 500,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,
@@ -59,9 +59,11 @@ export default class Festival {
 
   createFestivalGrounds() {
     this.festival.graphics = new Engine.PIXI.Graphics()
-    this.festival.graphics.beginFill(this.festival.color)
+    this.festival.graphics.beginFill(this.festival.color, 0)
     this.festival.graphics.drawRect(0, 0, this.festival.container.width + this.festival.margin.x * 2, this.festival.container.height + this.festival.margin.y * 2)
     this.festival.graphics.endFill()
+
+    //this.festival.graphics.visible = false
     this.festival.graphics.zIndex = 1
     this.addChild(this.festival.graphics)
   }

@@ -20,6 +20,7 @@ class Player {
   }
 
   init() {
+    Store.commit('setPlayerInit', false)
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
 

@@ -23,6 +23,14 @@ class World {
         },
       },
     }
+
+    this.background = {
+      graphics: null,
+    }
+
+    this.post = {
+      container: null,
+    }
   }
 
   init(el) {
@@ -42,6 +50,8 @@ class World {
     this.currentFestival = this.festival
 
     this.setEvents()
+
+    console.log('World Init done')
   }
 
   /**
@@ -52,9 +62,36 @@ class World {
 
     this.createFilters()
 
+    this.createBackground()
+
     this.centerWorld()
 
     Engine.$app.stage.addChild(this.world.container)
+  }
+
+  createBackground() {
+    this.background.graphics = new Engine.PIXI.Graphics()
+    this.background.graphics.beginTextureFill({
+      texture: this.gradient('#FF666F', '#F8AE84', '#FEC961'),
+    })
+    this.background.graphics.drawRect(0, 0, Engine.$app.screen.width, Engine.$app.screen.height)
+    this.background.graphics.endFill()
+    this.background.graphics.zIndex = 1
+    Engine.$app.stage.addChild(this.background.graphics)
+  }
+
+  gradient(from, middle, to) {
+    const c = document.createElement('canvas')
+    const ctx = c.getContext('2d')
+    ctx.canvas.width = Engine.$app.screen.width
+    ctx.canvas.height = Engine.$app.screen.height
+    const grd = ctx.createLinearGradient(0, 0, 1, Engine.$app.screen.height)
+    grd.addColorStop(0, from)
+    grd.addColorStop(0.5, middle)
+    grd.addColorStop(1, to)
+    ctx.fillStyle = grd
+    ctx.fillRect(0, 0, Engine.$app.screen.width, Engine.$app.screen.width)
+    return new Engine.PIXI.Texture.from(c)
   }
 
   createFilters() {
@@ -63,8 +100,7 @@ class World {
     this.blurFilter()
     this.CRTFilter()
     this.TiltShift()
-    console.log(Engine.PIXI.filters)
-    console.log(this.world.container.filters)
+
     this.world.container.filters = [this.blur, this.tilt, this.crt]
   }
 
@@ -91,6 +127,7 @@ class World {
       },
       this._updateBlur
     )
+    this.updateBlur()
   }
 
   updateBlur() {
@@ -119,19 +156,55 @@ class World {
       'CRT',
       'noise',
       {
-        default: 0,
+        default: 0.05,
         min: 0,
         max: 1,
         step: 0.01,
       },
       this._updateCRT
     )
+    GUI.addValue(
+      'CRT',
+      'vignetting',
+      {
+        default: 0.3,
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
+      this._updateCRT
+    )
+    GUI.addValue(
+      'CRT',
+      'vignettingAlpha',
+      {
+        default: 0.3,
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
+      this._updateCRT
+    )
+    GUI.addValue(
+      'CRT',
+      'vignettingBlur',
+      {
+        default: 0.3,
+        min: 0,
+        max: 1,
+        step: 0.01,
+      },
+      this._updateCRT
+    )
+    this.updateCRT()
   }
 
   updateCRT() {
-    console.log(this.crt)
     this.crt.enabled = GUI.datas.CRT.enabled
     this.crt.noise = GUI.datas.CRT.noise
+    this.crt.vignetting = GUI.datas.CRT.vignetting
+    this.crt.vignettingAlpha = GUI.datas.CRT.vignettingAlpha
+    this.crt.vignettingBlur = GUI.datas.CRT.vignettingBlur
   }
 
   TiltShift() {
@@ -145,7 +218,7 @@ class World {
       'Tilt',
       'enabled',
       {
-        default: true,
+        default: false,
       },
       this._updateTiltShift
     )
@@ -188,6 +261,8 @@ class World {
     this.world.container.pivot.x = this.world.container.width / 2
     this.world.container.pivot.y = this.world.container.height / 2
 
+    this.world.container.zIndex = 2
+
     this.world.container.scale.x = this.world.container.scale.y = 1
   }
 
@@ -200,6 +275,8 @@ class World {
 
   onResize() {
     console.log('resize')
+    this.background.graphics.width = Engine.$app.screen.width
+    this.background.graphics.height = Engine.$app.screen.height
   }
 
   update() {
@@ -214,18 +291,25 @@ class World {
    */
 
   updateWorldPosition() {
-    this.checkBounds()
+    this.checkBounds(0.02)
 
     this.world.container.x = this.draggable.getPosition().x + Engine.$app.screen.width / 2
     this.world.container.y = this.draggable.getPosition().y + Engine.$app.screen.height / 2
   }
 
-  checkBounds() {
-    if (this.normalizeWorldPos().x > 1) this.draggable.setPositionX(-(this.world.container.width / 2 - Engine.$app.screen.width / 2))
-    else if (this.normalizeWorldPos().x < 0) this.draggable.setPositionX(this.world.container.width / 2 - Engine.$app.screen.width / 2)
+  checkBounds(margin) {
+    if (this.normalizeWorldPos().x > 1 - margin) this.draggable.setPositionX(-(this.world.container.width / 2 - Engine.$app.screen.width / 2) + this.getMargins(margin).x)
+    else if (this.normalizeWorldPos().x < 0 + margin) this.draggable.setPositionX(this.world.container.width / 2 - Engine.$app.screen.width / 2 - this.getMargins(margin).x)
 
-    if (this.normalizeWorldPos().y > 1) this.draggable.setPositionY(-(this.world.container.height / 2 - Engine.$app.screen.height / 2))
-    else if (this.normalizeWorldPos().y < 0) this.draggable.setPositionY(this.world.container.height / 2 - Engine.$app.screen.height / 2)
+    if (this.normalizeWorldPos().y > 1 - margin) this.draggable.setPositionY(-(this.world.container.height / 2 - Engine.$app.screen.height / 2) + this.getMargins(margin).y)
+    else if (this.normalizeWorldPos().y < 0 + margin) this.draggable.setPositionY(this.world.container.height / 2 - Engine.$app.screen.height / 2 - this.getMargins(margin).y)
+  }
+
+  getMargins(margin) {
+    return {
+      x: margin * (this.world.container.width - Engine.$app.screen.width + 0.5),
+      y: margin * (this.world.container.height - Engine.$app.screen.height + 0.5),
+    }
   }
 
   normalizeWorldPos() {
