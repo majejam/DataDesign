@@ -41,7 +41,7 @@ export default {
   name: 'Festival',
   data() {
     return {
-      volume: 0,
+      volume: this.$store.getters.getVolume,
       targetVolume: 0,
     }
   },
@@ -62,6 +62,7 @@ export default {
     setVolume(event) {
       //this.volume = event.target.value
       console.log(event.target.value)
+      Player.setGlobalVolume(event.target.value)
       //Player.setFadeVolume(event.target.value, 100)
     },
   },

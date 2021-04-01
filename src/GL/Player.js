@@ -5,7 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = false
+    this.isAllowed = true
 
     this.status = {
       readyToInit: false,
@@ -39,7 +39,7 @@ class Player {
     const token = Store.getters.getTokens['access_token']
     this.player = new window.Spotify.Player({
       name: 'Create your festival',
-      volume: 0,
+      volume: Store.getters.getVolume,
       getOAuthToken: cb => {
         cb(token)
       },
@@ -51,7 +51,7 @@ class Player {
     this.player.connect()
 
     this.audio = new Audio('audio/ambience.mp3')
-    this.audio.volume = 0.2
+    this.audio.volume = Store.getters.getVolume * 0.2
     this.audio.loop = true
 
     Bus.$on('PlayerInit', () => {
@@ -68,6 +68,18 @@ class Player {
     })
   }
 
+  setAmbienceVolume() {
+    this.audio.volume = Store.getters.getVolume * 0.4
+  }
+
+  setGlobalVolume(value) {
+    Store.commit('setVolume', value)
+
+    this.setAmbienceVolume()
+
+    this.setFadeVolume(Store.getters.getVolume, 50)
+  }
+
   setFadeVolume(level, timing) {
     return new Promise(resolve => {
       clearInterval(this.interval)
@@ -77,12 +89,12 @@ class Player {
       this.interval = setInterval(() => {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
-          this.player.setVolume(Math.pow(this.volume.target, 2))
-          if (this.volume.target > 1 - step) this.volume.target = 1
+          if (this.volume.target > level - step) this.volume.target = level
+          this.player.setVolume(Math.round(this.volume.target * 100) / 100)
         } else if (this.volume.target > level && !isAdd) {
           this.volume.target -= step
-          this.player.setVolume(Math.pow(this.volume.target, 2))
           if (this.volume.target < step) this.volume.target = 0
+          this.player.setVolume(Math.round(this.volume.target * 100) / 100)
         } else {
           clearInterval(this.interval)
           resolve('finish')
@@ -101,7 +113,7 @@ class Player {
     this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
       Store.dispatch('playTrack', uri).then(() => {
-        this.setFadeVolume(0.8, 50).then(() => {
+        this.setFadeVolume(Store.getters.getVolume, 50).then(() => {
           console.log('Volume set to normal')
         })
       })
@@ -128,16 +140,16 @@ class Player {
     this._playerReady = this.playerReady.bind(this)
     // Error handling
     this.player.addListener('initialization_error', ({ message }) => {
-      console.error(message)
+      console.warn(message)
     })
     this.player.addListener('authentication_error', ({ message }) => {
-      console.error(message)
+      console.warn(message)
     })
     this.player.addListener('account_error', ({ message }) => {
-      console.error(message)
+      console.warn(message)
     })
     this.player.addListener('playback_error', ({ message }) => {
-      console.error(message)
+      console.warn(message)
     })
 
     // Playback status updates
