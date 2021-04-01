@@ -5,7 +5,7 @@ class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = true
+    this.isAllowed = false
 
     this.status = {
       readyToInit: false,
@@ -23,6 +23,11 @@ class Player {
     Store.commit('setPlayerInit', false)
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
+
+      setInterval(() => {
+        console.log('Refreshed token')
+        Store.dispatch('refreshToken')
+      }, 60000 * 30)
 
       if (this.status.readyToInit) this.initPlayer()
       else this.status.apiHasInit = true
