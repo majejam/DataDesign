@@ -7,6 +7,7 @@ const state = {
   tokens: {},
   refresh_token: '',
   isLogged: false,
+  isDemo: false,
   volume: 1,
   user: {
     images: [
@@ -39,6 +40,9 @@ const getters = {
   isAuthenticated(state) {
     return state.code !== ''
   },
+  getDemo(state) {
+    return state.isDemo
+  },
 }
 
 const mutations = {
@@ -57,6 +61,9 @@ const mutations = {
   setVolume(state, data) {
     state.volume = data
   },
+  setDemo(state, data) {
+    state.isDemo = data
+  },
   clearState(state) {
     state.code = ''
     state.tokens = {}
@@ -67,6 +74,9 @@ const mutations = {
         },
       ],
     }
+  },
+  setAllState(state, data) {
+    state = data
   },
 }
 

@@ -110,6 +110,10 @@ class Player {
 
   changeTrackFade(uri) {
     //console.log(uri);
+    if (!this.status.hasInit) {
+      console.warn('Player was not ready (might be demo mode)')
+      return false
+    }
     if (!this.isAllowed) {
       console.warn('Player was set on not allowed')
       return false

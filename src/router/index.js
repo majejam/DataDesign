@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home.vue'
+import Home from '@/views/Home'
 import Login from '@/views/Login'
+import Demo from '@/views/Demo'
 import store from '@/store'
 
 Vue.use(VueRouter)
@@ -36,6 +37,18 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    beforeEnter(to, from, next) {
+      if (store.getters.isAuthenticated) {
+        next('/')
+      } else {
+        next()
+      }
+    },
+  },
+  {
+    path: '/demo',
+    name: 'Demo',
+    component: Demo,
     beforeEnter(to, from, next) {
       if (store.getters.isAuthenticated) {
         next('/')
