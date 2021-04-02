@@ -1,6 +1,7 @@
 <template>
   <div>
     <button @click.prevent="signIn()">Sign in to spotify</button>
+    <router-link to="/demo"> Test the demo </router-link>
   </div>
 </template>
 
