@@ -43,7 +43,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.positionTreeRandom(100, 10000, 1.5)
+    this.positionTreeRandom(100, 2500, 1.5)
     this.generatePersons(300)
 
     World.addChild(this.festival.container)
@@ -102,7 +102,7 @@ export default class Festival {
           isGood = false
       }
       if (isGood) {
-        placedTree.push({ x: xPos, y: yPos, width: 500, height: 500 })
+        placedTree.push({ x: xPos, y: yPos, width: 350, height: 500 })
         this.createTree(xPos, yPos, 100, 200)
         nbPlaced++
       }
@@ -195,7 +195,7 @@ export default class Festival {
     this.persons = new Array()
 
     for (let index = 0; index < nbOfPersons; index++) {
-      this.persons.push(new Person(this))
+      this.persons.push(new Person(this, index))
     }
   }
 
@@ -267,7 +267,7 @@ export default class Festival {
     if (data[current].$data.name !== this.festival.currentConcertName) {
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri)
       this.festival.currentConcertName = data[current].$data.name
-      console.log('Now playing : ', this.festival.currentConcertName)
+      console.log('Now playing : ', this.festival.currentConcertName, data[current].$data)
     }
   }
 

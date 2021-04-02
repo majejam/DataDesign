@@ -53,7 +53,6 @@ const mutations = {
 
 const actions = {
   playTrack({ getters }, uri) {
-    console.log(uri)
     /**
      * {
   "uris": [ "spotify:track:18lKp9uRyR2xJZFvg8ZWUC"],
