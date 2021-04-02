@@ -8,7 +8,7 @@
       <label for="volume">Volume</label>
     </div>
 
-    <img :src="$store.getters.getUser.images[0].url" alt="" srcset="" />
+    <img v-if="$store.getters.getUser.images.length" :src="$store.getters.getUser.images[0].url" alt="" srcset="" />
     <pre>
  USER INFO
     {{ this.$store.getters.getUser }}
@@ -47,6 +47,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
+    console.log(this.$store.state)
     Player.init()
 
     if (this.$store.getters.getPlayerInit) {

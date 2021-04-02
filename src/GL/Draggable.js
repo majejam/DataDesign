@@ -122,6 +122,21 @@ export default class Draggable {
     this.setCursor(_e)
   }
 
+  touchDown(_e) {
+    this.setCursor(_e.touches[0])
+    this.cursor.hold = true
+    this.startCursor(_e.touches[0])
+  }
+
+  touchUp() {
+    this.cursor.hold = false
+    this.resetDeltas()
+  }
+
+  touchMove(_e) {
+    this.setCursor(_e.touches[0])
+  }
+
   /**
    * EVENTS
    */
@@ -133,12 +148,27 @@ export default class Draggable {
     this._mousedown = this.mouseDown.bind(this)
     this._mouseup = this.mouseUp.bind(this)
     this._mousemove = this.mouseMove.bind(this)
+    this._touchdown = this.touchDown.bind(this)
+    this._touchup = this.touchUp.bind(this)
+    this._touchmove = this.touchMove.bind(this)
     this._update = this.update.bind(this)
 
+    /**
+     * Mouse events
+     */
     this.$el.addEventListener('mousedown', this._mousedown)
     this.$el.addEventListener('mouseup', this._mouseup)
     this.$el.addEventListener('mouseout', this._mouseup)
     this.$el.addEventListener('mousemove', this._mousemove)
+
+    /**
+     * Touch events
+     */
+    this.$el.addEventListener('touchstart', this._touchdown)
+    this.$el.addEventListener('touchmove', this._touchmove)
+    this.$el.addEventListener('touchend', this._touchup)
+    this.$el.addEventListener('touchcancel', this._touchup)
+
     Engine.$app.ticker.add(this._update)
   }
 
@@ -147,6 +177,11 @@ export default class Draggable {
     this.$el.removeEventListener('mouseup', this._mouseup)
     this.$el.removeEventListener('mouseout', this._mouseup)
     this.$el.removeEventListener('mousemove', this._mousemove)
+    this.$el.removeEventListener('touchstart', this._touchdown)
+    this.$el.removeEventListener('touchmove', this._touchmove)
+    this.$el.removeEventListener('touchend', this._touchup)
+    this.$el.removeEventListener('touchcancel', this._touchup)
+
     Engine.$app.ticker.remove(this._update)
   }
 

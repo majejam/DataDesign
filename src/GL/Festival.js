@@ -8,12 +8,17 @@ import Chance from 'chance'
 export default class Festival {
   constructor(concertsData = null, opt = {}) {
     this.chance = new Chance()
+    if (concertsData.length === 0) {
+      console.error('NO CONCERT DATA')
+      return
+    }
     this.$concertsData = this.sortConcert(concertsData)
     this.weightedConcert = this.generateWeightedConcertArray(this.$concertsData)
     this.$opt = opt
     this.festival = {
       container: null,
       graphics: null,
+      ground: null,
       currentConcertName: '',
       color: this.$opt.color ? this.$opt.color : 0xf0e4d7,
       size: {
@@ -44,7 +49,7 @@ export default class Festival {
     this.createConcerts()
     this.createFestivalGrounds()
     this.positionTreeRandom(100, 2500, 1.5)
-    this.generatePersons(300)
+    this.generatePersons(200)
 
     World.addChild(this.festival.container)
   }
@@ -59,6 +64,11 @@ export default class Festival {
   }
 
   createFestivalGrounds() {
+    this.festival.ground = new Engine.PIXI.TilingSprite(
+      Engine.spritesheet.textures['floor.png'],
+      this.festival.container.width + this.festival.margin.x * 2,
+      this.festival.container.height + this.festival.margin.y * 2
+    )
     this.festival.graphics = new Engine.PIXI.Graphics()
     this.festival.graphics.beginFill(this.festival.color, 0)
     this.festival.graphics.drawRect(0, 0, this.festival.container.width + this.festival.margin.x * 2, this.festival.container.height + this.festival.margin.y * 2)
@@ -67,6 +77,7 @@ export default class Festival {
     //this.festival.graphics.visible = false
     this.festival.graphics.zIndex = 1
     this.addChild(this.festival.graphics)
+    this.addChild(this.festival.ground)
   }
 
   createTree(x, y, w, h) {
@@ -265,7 +276,7 @@ export default class Festival {
       if (tmp > highest) highest = tmp
     }
     if (data[current].$data.name !== this.festival.currentConcertName) {
-      if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri)
+      if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri, data[current].$data.artists[0].id)
       this.festival.currentConcertName = data[current].$data.name
       console.log('Now playing : ', this.festival.currentConcertName, data[current].$data)
     }

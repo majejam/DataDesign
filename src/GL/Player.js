@@ -1,11 +1,12 @@
 import Bus from '@/utils/bus.js'
 
 import Store from '@/store'
+import router from '@/router'
 class Player {
   constructor() {
     this.player = null
     this.hasInit = false
-    this.isAllowed = true
+    this.isAllowed = false
 
     this.status = {
       readyToInit: false,
@@ -108,7 +109,10 @@ class Player {
     })
   }
 
-  changeTrackFade(uri) {
+  changeTrackFade(uri, artist_id) {
+    console.log(artist_id)
+
+    //Store.dispatch('playTracks', { uri: uri, artist: artist_id })
     //console.log(uri);
     if (!this.status.hasInit) {
       console.warn('Player was not ready (might be demo mode)')
@@ -121,7 +125,7 @@ class Player {
 
     this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
-      Store.dispatch('playTrack', uri).then(() => {
+      Store.dispatch('playTrack', [uri]).then(() => {
         this.setFadeVolume(Store.getters.getVolume, 50).then(() => {
           console.log('Volume set to normal')
         })
@@ -156,6 +160,11 @@ class Player {
     })
     this.player.addListener('account_error', ({ message }) => {
       console.warn(message)
+      Store.commit('setPlayerInit', false)
+      Bus.$emit('PlayerInit')
+      Store.commit('clearState', false)
+      this.status.hasInit = false
+      router.push('Demo')
     })
     this.player.addListener('playback_error', ({ message }) => {
       console.warn(message)

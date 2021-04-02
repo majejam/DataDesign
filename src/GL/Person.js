@@ -163,8 +163,8 @@ export default class Person {
 
   energeticDance(time) {
     // If very danceable song
-    if (this.selectedConcert.$data.audio_features.danceability > 0.45) {
-      const energetic_factor = 5 + 15 * (1 - this.selectedConcert.$data.audio_features.danceability)
+    if (this.selectedConcert.$data.audio_features.energy > 0.45) {
+      const energetic_factor = 5 + 15 * (1 - this.selectedConcert.$data.audio_features.energy)
       this.person.graphics.position.y = Math.sin((this.person.maxSpeed * time) / energetic_factor) * 10
     } else {
       this.person.graphics.position.y = 0
