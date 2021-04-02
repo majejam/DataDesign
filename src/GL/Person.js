@@ -4,7 +4,8 @@ import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
 //import Store from '@/store'
 export default class Person {
-  constructor(festival, opt = {}) {
+  constructor(festival, id, opt = {}) {
+    this.$id = id
     this.$festival = festival
     this.$opt = opt
     this.person = {
@@ -27,7 +28,7 @@ export default class Person {
       desiredPosition: new Engine.PIXI.Point(),
       distance: 0,
       isVisible: false,
-      baseDecisionTime: 10000,
+      baseDecisionTime: 5000,
       decisionMaxOffset: 50000,
       decisionDuration: Math.round(Math.random() * 50000),
       changedState: false,
@@ -147,11 +148,29 @@ export default class Person {
       this.simplePositionCalculation()
     }
 
+    if (this.person.static) {
+      //console.log(this.$id, this.selectedConcert.$data.audio_features.danceability)
+
+      this.energeticDance(this.time)
+    }
+
     this.person.container.x = this.person.position.x
     this.person.container.y = this.person.position.y
     this.person.container.zIndex = Math.round(this.person.position.y + 100)
 
     this.checkIfArrivedToDestination()
+  }
+
+  energeticDance(time) {
+    // If very danceable song
+    if (this.selectedConcert.$data.audio_features.danceability > 0.45) {
+      const energetic_factor = 5 + 15 * (1 - this.selectedConcert.$data.audio_features.danceability)
+      this.person.graphics.position.y = Math.sin((this.person.maxSpeed * time) / energetic_factor) * 10
+    } else {
+      this.person.graphics.position.y = 0
+    }
+
+    //console.log(this.$id, this.selectedConcert.$data.audio_features.danceability)
   }
 
   complexPositionCalculation() {

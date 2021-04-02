@@ -195,7 +195,7 @@ export default class Festival {
     this.persons = new Array()
 
     for (let index = 0; index < nbOfPersons; index++) {
-      this.persons.push(new Person(this))
+      this.persons.push(new Person(this, index))
     }
   }
 
@@ -267,7 +267,7 @@ export default class Festival {
     if (data[current].$data.name !== this.festival.currentConcertName) {
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri)
       this.festival.currentConcertName = data[current].$data.name
-      console.log('Now playing : ', this.festival.currentConcertName)
+      console.log('Now playing : ', this.festival.currentConcertName, data[current].$data)
     }
   }
 

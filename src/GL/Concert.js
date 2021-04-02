@@ -42,6 +42,8 @@ export default class Concert {
       bounds: { x: 300, y: 0, w: 300, h: 200 },
     }
 
+    this.stands = new Array()
+
     this.blasters = new Array()
 
     this.init()
@@ -60,6 +62,7 @@ export default class Concert {
     this.createScene()
     this.createScreen()
     this.createCrowdZone()
+    this.createStand()
     this.concertInteractivity(false)
     this.$festival.addChild(this.concert.container)
   }
@@ -88,28 +91,45 @@ export default class Concert {
     else this.scene.bounds.x = Math.random() * 50
   }
 
-  createScreen() {
+  createScreen(ratio = 2.3) {
     this.screen.container = new Engine.PIXI.Container()
-    //this.screen.graphics = this.createGraphics(0, 0, this.screen.bounds.w, this.screen.bounds.h, 0x09ff00)
-
     this.screen.graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures['screen.png'])
-    this.screen.graphics.height = 905 / 2.3 //ratio screen
+    this.screen.graphics.height = this.screen.graphics.height / ratio //ratio screen
     if (this.isSceneRight()) {
       this.screen.graphics.y = 0
-      this.screen.container.x = this.concert.container.x + this.concert.container.width - this.screen.bounds.x - this.screen.bounds.w
-      this.screen.graphics.width = -744 / 2.3
+      this.screen.container.x = this.concert.container.x + this.concert.container.width - this.concert.container.width * 0.1 - this.screen.bounds.w
+      this.screen.graphics.width = -this.screen.graphics.width / ratio
       this.screen.graphics.anchor.x = 1
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y - 100
     } else {
       this.screen.graphics.y = this.screen.bounds.y
-      this.screen.container.x = this.concert.container.x + this.screen.bounds.x
-      this.screen.graphics.width = 744 / 2.3
+      this.screen.container.x = this.concert.container.x + this.concert.container.width * 0.1
+      this.screen.graphics.width = this.screen.graphics.width / ratio
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y
     }
     this.screen.container.zIndex = this.concert.container.y + this.screen.graphics.y + this.screen.bounds.h
     this.screen.container.addChild(this.screen.graphics)
     this.screen.container.addChild(this.createName(0.54))
     this.$festival.addChild(this.screen.container)
+  }
+
+  createStand() {
+    const nbOfStand = Math.floor((3 * this.$data.popularity) / 100)
+    console.log(nbOfStand, this.$data.popularity)
+
+    for (let index = 0; index < nbOfStand; index++) {
+      const graphics = this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
+      if (!this.isSceneRight()) graphics.position.x = this.concert.container.width - 300 - 350 * index
+      else graphics.position.x = 350 * index
+
+      graphics.position.y = Math.round((Math.random() - 0.5) * 50)
+
+      graphics.zIndex = this.concert.container.y + graphics.position.y
+
+      console.log(graphics.zIndex)
+      this.stands.push(graphics)
+      this.$festival.addChild(graphics)
+    }
   }
 
   createGraphics(x, y, w, h, color) {
@@ -248,6 +268,12 @@ export default class Concert {
   update() {
     this.concert.container.visible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
     this.screen.container.visible = World.cull.isInViewport(this.screen.container.position.x, this.screen.container.position.y, this.screen.container.width, this.screen.container.height)
+
+    if (this.blasters.length > 0) {
+      this.blasters.forEach(blaster => {
+        blaster.visible = World.cull.isInViewport(blaster.position.x, blaster.position.y, blaster.width, blaster.height)
+      })
+    }
   }
 
   /**
