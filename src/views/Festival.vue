@@ -110,6 +110,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   cursor: grab;
+  font-family: var(--font-primary);
 
   &--grab {
     cursor: grabbing;
