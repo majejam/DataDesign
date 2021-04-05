@@ -33,6 +33,7 @@ export default class Festival {
         x: this.$opt.x ? this.$opt.x : 0,
         y: this.$opt.y ? this.$opt.y : 0,
       },
+      trees: new Array(),
     }
     this.init()
   }
@@ -81,14 +82,15 @@ export default class Festival {
   }
 
   createTree(x, y, w, h) {
-    const container = new Engine.PIXI.Container()
-    const graphics = new Engine.PIXI.Graphics()
-    graphics.beginFill(0x00ff00)
-    graphics.drawRect(x, y, w, h)
-    graphics.endFill()
-    container.zIndex = y + h
-    container.addChild(graphics)
-    this.addChild(container)
+    const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['tree.png'])
+    sprite.position.x = x
+    sprite.position.y = y
+    sprite.height = h
+    sprite.width = w
+    sprite.zIndex = y + h
+
+    this.festival.trees.push(sprite)
+    this.addChild(sprite)
   }
 
   createConcerts() {
@@ -114,7 +116,7 @@ export default class Festival {
       }
       if (isGood) {
         placedTree.push({ x: xPos, y: yPos, width: 350, height: 500 })
-        this.createTree(xPos, yPos, 100, 200)
+        this.createTree(xPos, yPos, 100 + Math.random() * 100, 300 + Math.random() * 200)
         nbPlaced++
       }
       count++
@@ -260,7 +262,7 @@ export default class Festival {
 
   checkMinDistance(data) {
     /**
-     * Fastest algorithm for finding smallest number in a array of objects,
+     * Fastest algorithm for finding smalest number in a array of objects,
      * if nearest one isn't the current one => play the corresponding music
      */
     var lowest = Number.POSITIVE_INFINITY
@@ -286,7 +288,11 @@ export default class Festival {
     return Math.pow(cx - tx, 2) + Math.pow(cy - ty, 2)
   }
 
-  update() {}
+  update() {
+    this.festival.trees.forEach(tree => {
+      tree.visible = World.cull.isInViewport(tree.position.x, tree.position.y, tree.width, tree.height)
+    })
+  }
 
   /**
    * EVENTS
@@ -297,7 +303,7 @@ export default class Festival {
      * Binding functions
      */
     this._update = this.update.bind(this)
-    //Engine.$app.ticker.add(this._update)
+    Engine.$app.ticker.add(this._update)
   }
 
   removeEvents() {}

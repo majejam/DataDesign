@@ -8,6 +8,7 @@ const state = {
   refresh_token: '',
   isLogged: false,
   isDemo: false,
+  loading_message: 'Loading api info',
   volume: 1,
   user: {
     images: [
@@ -43,6 +44,9 @@ const getters = {
   getDemo(state) {
     return state.isDemo
   },
+  getLoadingMessage(state) {
+    return state.loading_message
+  },
 }
 
 const mutations = {
@@ -57,6 +61,9 @@ const mutations = {
   },
   setUser(state, data) {
     state.user = data
+  },
+  setLoadingMessage(state, data) {
+    state.loading_message = data
   },
   setVolume(state, data) {
     state.volume = data

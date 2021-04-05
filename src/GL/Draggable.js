@@ -1,4 +1,4 @@
-//import Bus from '@/utils/bus.js'
+import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
 
@@ -111,11 +111,13 @@ export default class Draggable {
   mouseDown(_e) {
     this.cursor.hold = true
     this.startCursor(_e)
+    Bus.$emit('grabbing', true)
   }
 
   mouseUp() {
     this.cursor.hold = false
     this.resetDeltas()
+    Bus.$emit('grabbing', false)
   }
 
   mouseMove(_e) {
@@ -126,11 +128,13 @@ export default class Draggable {
     this.setCursor(_e.touches[0])
     this.cursor.hold = true
     this.startCursor(_e.touches[0])
+    Bus.$emit('grabbing', true)
   }
 
   touchUp() {
     this.cursor.hold = false
     this.resetDeltas()
+    Bus.$emit('grabbing', false)
   }
 
   touchMove(_e) {

@@ -91,7 +91,7 @@ export default class Concert {
     else this.scene.bounds.x = Math.random() * 50
   }
 
-  createScreen(ratio = 2.3) {
+  createScreen(ratio = 1.15) {
     this.screen.container = new Engine.PIXI.Container()
     this.screen.graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures['screen.png'])
     this.screen.graphics.height = this.screen.graphics.height / ratio //ratio screen
@@ -115,8 +115,6 @@ export default class Concert {
 
   createStand() {
     const nbOfStand = Math.floor((3 * this.$data.popularity) / 100)
-    console.log(nbOfStand, this.$data.popularity)
-
     for (let index = 0; index < nbOfStand; index++) {
       const graphics = this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
       if (!this.isSceneRight()) graphics.position.x = this.concert.container.width - 300 - 350 * index
@@ -125,8 +123,6 @@ export default class Concert {
       graphics.position.y = Math.round((Math.random() - 0.5) * 50)
 
       graphics.zIndex = this.concert.container.y + graphics.position.y
-
-      console.log(graphics.zIndex)
       this.stands.push(graphics)
       this.$festival.addChild(graphics)
     }
@@ -196,17 +192,14 @@ export default class Concert {
   }
 
   createBlasters(x, y, w, h) {
-    const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['blasters.png'])
+    let sprite_name = this.isSceneRight() ? 'blasters_r.png' : 'blasters.png'
+    const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[sprite_name])
     sprite.position.x = x
     sprite.position.y = y
     sprite.height = h
     sprite.zIndex = y + h
+    sprite.width = w
 
-    if (Math.round(Math.random())) sprite.width = w
-    else {
-      sprite.width = w
-      sprite.anchor.x = 1
-    }
     this.blasters.push(sprite)
     this.$festival.addChild(sprite)
   }

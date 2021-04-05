@@ -1,4 +1,4 @@
-//import Bus from '@/utils/bus.js'
+import Bus from '@/utils/bus.js'
 
 import Engine from '@/GL/Engine.js'
 import Cull from '@/GL/Cull.js'
@@ -51,6 +51,7 @@ class World {
     this.setEvents()
 
     console.log('World Init done')
+    Bus.$emit('loaded')
 
     Player.playAmbience()
   }

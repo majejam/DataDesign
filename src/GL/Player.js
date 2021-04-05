@@ -42,6 +42,7 @@ class Player {
 
   initPlayer() {
     console.log('Player initialization')
+    Store.commit('setLoadingMessage', 'Player initialization')
     const token = Store.getters.getTokens['access_token']
     this.player = new window.Spotify.Player({
       name: 'Create your festival',

@@ -8,6 +8,14 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":313},
 	"sourceSize": {"w":353,"h":313}
 },
+"blasters_r.png":
+{
+	"frame": {"x":0,"y":313,"w":353,"h":313},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":313},
+	"sourceSize": {"w":353,"h":313}
+},
 "dancingman_01.png":
 {
 	"frame": {"x":0,"y":0,"w":100,"h":100},
@@ -42,19 +50,27 @@
 },
 "floor.png":
 {
-	"frame": {"x":0,"y":905,"w":1920,"h":1242},
+	"frame": {"x":0,"y":766,"w":512,"h":512},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":1920,"h":1242},
-	"sourceSize": {"w":1920,"h":1242}
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
+	"sourceSize": {"w":512,"h":512}
 },
 "screen.png":
 {
-	"frame": {"x":753,"y":0,"w":744,"h":905},
+	"frame": {"x":353,"y":313,"w":372,"h":453},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":744,"h":905},
-	"sourceSize": {"w":744,"h":905}
+	"spriteSourceSize": {"x":0,"y":0,"w":372,"h":453},
+	"sourceSize": {"w":372,"h":453}
+},
+"tree.png":
+{
+	"frame": {"x":512,"y":766,"w":190,"h":665},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":190,"h":665},
+	"sourceSize": {"w":190,"h":665}
 }},
 "animations": {
 	"dancingman": ["dancingman_01.png","dancingman_02.png","dancingman_03.png","dancingman_04.png"]
@@ -64,8 +80,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":1920,"h":2147},
+	"size": {"w":753,"h":1431},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:a16726c7599c1ffc4f43533edd8aa051:3ebc2e1123af74b943ec0cc113f63297:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:e1829f0f196810ddaa06557240a2d7cc:95b0fe071047eaced2df2cce7e041a80:729adc6043343cfda41c447ce8f464d6$"
 }
 }

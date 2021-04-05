@@ -1,6 +1,7 @@
 import Bus from '@/utils/bus.js'
 
 import * as PIXI from 'pixi.js'
+import Store from '@/store'
 
 import World from '@/GL/World.js'
 
@@ -34,6 +35,7 @@ class Engine {
    * Renderer setup
    */
   initRenderer() {
+    Store.commit('setLoadingMessage', 'Engine initialization')
     // The application will create a renderer using WebGL, if possible,
     // with a fallback to a canvas render. It will also setup the ticker
     // and the root stage PIXI.Container
@@ -69,6 +71,8 @@ class Engine {
   loadSpriteSheet() {
     this._setup = this.setup.bind(this)
     this.loader = new this.PIXI.Loader()
+
+    Store.commit('setLoadingMessage', 'Loading sprite')
     this.loader.add('spritesheet/spritesheet.json').load(this._setup)
   }
 
