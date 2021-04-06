@@ -4,6 +4,7 @@ import Store from '@/store'
 import router from '@/router'
 class Player {
   constructor() {
+    this.currenturi = ''
     this.player = null
     this.hasInit = false
     this.isAllowed = true
@@ -84,7 +85,9 @@ class Player {
     Store.commit('setVolume', value)
     this.setAmbienceVolume()
     const volume = Store.getters.getVolume
-    this.setFadeVolume(volume, 50)
+    this.setFadeVolume(volume, 100)
+
+    if (volume == 0) this.changeTrackFade(this.currenturi)
   }
 
   setFadeVolume(level, timing) {
@@ -122,6 +125,7 @@ class Player {
   mute() {}
 
   changeTrackFade(uri) {
+    this.currenturi = uri
     if (!this.status.hasInit) {
       console.warn('Player was not ready (might be demo mode)')
       return false
@@ -131,11 +135,11 @@ class Player {
       return false
     }
 
-    this.setFadeVolume(0, 50).then(() => {
+    this.setFadeVolume(0, 100).then(() => {
       console.log('Switching track...')
       Store.dispatch('playTrack', [uri]).then(() => {
         const volume = Store.getters.getVolume
-        this.setFadeVolume(volume, 50).then(() => {
+        this.setFadeVolume(volume, 100).then(() => {
           console.log('Volume set to normal')
         })
       })

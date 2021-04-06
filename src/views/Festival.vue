@@ -69,7 +69,7 @@ export default {
   methods: {
     setVolume(_e) {
       this.volume = parseFloat(_e.target.value)
-      Player.setGlobalVolume(parseFloat(_e.target.value))
+      Player.setGlobalVolume(parseFloat(this.volume))
     },
     changeCursor(_e) {
       this.grabbing = _e
