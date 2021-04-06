@@ -81,13 +81,13 @@ export default class Festival {
     this.addChild(this.festival.ground)
   }
 
-  createTree(x, y, w, h) {
+  createTree(x, y, ratio) {
     const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['tree.png'])
     sprite.position.x = x
     sprite.position.y = y
-    sprite.height = h
-    sprite.width = w
-    sprite.zIndex = y + h
+    sprite.height = sprite.height / ratio
+    sprite.width = sprite.width / ratio
+    sprite.zIndex = y + sprite.height
 
     this.festival.trees.push(sprite)
     this.addChild(sprite)
@@ -116,7 +116,7 @@ export default class Festival {
       }
       if (isGood) {
         placedTree.push({ x: xPos, y: yPos, width: 350, height: 500 })
-        this.createTree(xPos, yPos, 100 + Math.random() * 100, 300 + Math.random() * 200)
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
         nbPlaced++
       }
       count++

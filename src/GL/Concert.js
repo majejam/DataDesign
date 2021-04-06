@@ -116,13 +116,16 @@ export default class Concert {
   createStand() {
     const nbOfStand = Math.floor((3 * this.$data.popularity) / 100)
     for (let index = 0; index < nbOfStand; index++) {
-      const graphics = this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
-      if (!this.isSceneRight()) graphics.position.x = this.concert.container.width - 300 - 350 * index
-      else graphics.position.x = 350 * index
+      const graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures['stand_left.png']) //this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
+      graphics.width = graphics.width / 1.5
+      graphics.height = graphics.height / 1.5
+      graphics.position.y = this.concert.container.y - graphics.height
+      if (!this.isSceneRight()) graphics.position.x = this.concert.container.x + this.concert.container.width - 300 - 350 * index
+      else graphics.position.x = this.concert.container.x + 350 * index
 
-      graphics.position.y = Math.round((Math.random() - 0.5) * 50)
-
-      graphics.zIndex = this.concert.container.y + graphics.position.y
+      //graphics.position.y = Math.round((Math.random() - 0.5) * 50)
+      console.log(graphics)
+      graphics.zIndex = graphics.position.y + graphics.height
       this.stands.push(graphics)
       this.$festival.addChild(graphics)
     }

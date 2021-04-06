@@ -31,6 +31,7 @@ export default {
   &--primary {
     color: white;
     background-color: #ff6a71;
+    font-weight: 600;
   }
 
   &--secondary {
@@ -40,6 +41,7 @@ export default {
 
   &__content {
     text-decoration: none;
+    font-weight: 600 !important;
   }
 
   .demo-link {
