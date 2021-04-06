@@ -44,7 +44,6 @@ class Player {
     console.log('Player initialization')
     Store.commit('setLoadingMessage', 'Player initialization')
     const token = Store.getters.getTokens['access_token']
-    console.log(Store.getters.getVolume)
     this.player = new window.Spotify.Player({
       name: 'Create your festival',
       volume: Store.getters.getVolume,
@@ -82,7 +81,6 @@ class Player {
   }
 
   setGlobalVolume(value) {
-    console.log('SET GLOBAL')
     Store.commit('setVolume', value)
     this.setAmbienceVolume()
     const volume = Store.getters.getVolume
@@ -90,8 +88,6 @@ class Player {
   }
 
   setFadeVolume(level, timing) {
-    console.log(level - this.volume.current)
-
     return new Promise(resolve => {
       clearInterval(this.interval)
       const step = 0.05
@@ -125,11 +121,7 @@ class Player {
 
   mute() {}
 
-  changeTrackFade(uri, artist_id) {
-    console.log(artist_id)
-
-    //Store.dispatch('playTracks', { uri: uri, artist: artist_id })
-    //console.log(uri);
+  changeTrackFade(uri) {
     if (!this.status.hasInit) {
       console.warn('Player was not ready (might be demo mode)')
       return false

@@ -49,7 +49,7 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
-    this.positionTreeRandom(100, 2500, 1.5)
+    this.positionTreeRandom(100, 2500, 1.2)
     this.generatePersons(200)
 
     World.addChild(this.festival.container)
@@ -82,7 +82,9 @@ export default class Festival {
   }
 
   createTree(x, y, ratio) {
-    const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['tree.png'])
+    let tree_sprite = this.chance.pickone(['tree.png', 'tree_big_heavy.png', 'tree_small_heavy.png'])
+
+    const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[tree_sprite])
     sprite.position.x = x
     sprite.position.y = y
     sprite.height = sprite.height / ratio
@@ -115,7 +117,7 @@ export default class Festival {
           isGood = false
       }
       if (isGood) {
-        placedTree.push({ x: xPos, y: yPos, width: 350, height: 500 })
+        placedTree.push({ x: xPos, y: yPos, width: 200, height: 400 })
         this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
         nbPlaced++
       }

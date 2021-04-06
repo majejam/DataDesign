@@ -149,7 +149,6 @@ const actions = {
       )
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data)
           commit('setToken', res.data)
           Bus.$emit('ApiInit')
         } else {

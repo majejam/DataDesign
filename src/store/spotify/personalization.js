@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import router from '@/router'
 
 const state = {
   topArtist: [],
@@ -42,13 +41,11 @@ const mutations = {
 
 const actions = {
   initPersonalization({ dispatch }) {
-    console.log(router.currentRoute.fullPath)
     console.log('initPersonalization')
     dispatch('getUserTopArtists')
     dispatch('getUserTopTracks')
   },
   getUserTopArtists({ getters, commit, dispatch }) {
-    console.log(getters.getTokens['access_token'])
     Vue.axios
       .get(`https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5`, {
         headers: {

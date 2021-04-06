@@ -149,8 +149,6 @@ export default class Person {
     }
 
     if (this.person.static) {
-      //console.log(this.$id, this.selectedConcert.$data.audio_features.danceability)
-
       this.energeticDance(this.time)
     }
 
@@ -169,8 +167,6 @@ export default class Person {
     } else {
       this.person.graphics.position.y = 0
     }
-
-    //console.log(this.$id, this.selectedConcert.$data.audio_features.danceability)
   }
 
   complexPositionCalculation() {

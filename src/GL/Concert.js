@@ -8,6 +8,7 @@ export default class Concert {
     this.$festival = festival
     this.$data = data
     this.$opt = opt
+    this.debug = false
     this.concert = {
       container: null,
       graphics: null,
@@ -72,6 +73,8 @@ export default class Concert {
 
     this.concert.container.x = this.concert.position.x
     this.concert.container.y = this.concert.position.y
+    if (this.debug) this.concert.graphics.alpha = 1
+    else this.concert.graphics.alpha = 0
     this.addChild(this.concert.graphics)
   }
 
@@ -99,7 +102,7 @@ export default class Concert {
       this.screen.graphics.y = 0
       this.screen.container.x = this.concert.container.x + this.concert.container.width - this.concert.container.width * 0.1 - this.screen.bounds.w
       this.screen.graphics.width = -this.screen.graphics.width / ratio
-      this.screen.graphics.anchor.x = 1
+      this.screen.graphics.anchor.x = 0.5
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y - 100
     } else {
       this.screen.graphics.y = this.screen.bounds.y
@@ -107,16 +110,18 @@ export default class Concert {
       this.screen.graphics.width = this.screen.graphics.width / ratio
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y
     }
-    this.screen.container.zIndex = this.concert.container.y + this.screen.graphics.y + this.screen.bounds.h
     this.screen.container.addChild(this.screen.graphics)
     this.screen.container.addChild(this.createName(0.54))
+    this.screen.container.scale.x = this.screen.container.scale.y = 0.5 + (this.$data.popularity / 100) * 0.5
+    this.screen.container.zIndex = this.concert.container.y + this.screen.graphics.y + this.screen.graphics.height * this.screen.container.scale.y
     this.$festival.addChild(this.screen.container)
   }
 
   createStand() {
     const nbOfStand = Math.floor((3 * this.$data.popularity) / 100)
     for (let index = 0; index < nbOfStand; index++) {
-      const graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures['stand_left.png']) //this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
+      let stand_sprite = this.$festival.chance.pickone(['stand_left.png', 'stand_right.png'])
+      const graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures[stand_sprite]) //this.createGraphics(this.concert.container.x, this.concert.container.y - 200, 300, 200, 0xffff00)
       graphics.width = graphics.width / 1.5
       graphics.height = graphics.height / 1.5
       graphics.position.y = this.concert.container.y - graphics.height
@@ -124,7 +129,6 @@ export default class Concert {
       else graphics.position.x = this.concert.container.x + 350 * index
 
       //graphics.position.y = Math.round((Math.random() - 0.5) * 50)
-      console.log(graphics)
       graphics.zIndex = graphics.position.y + graphics.height
       this.stands.push(graphics)
       this.$festival.addChild(graphics)
@@ -190,18 +194,18 @@ export default class Concert {
     this.positionCrowd()
     this.crowd.graphics = this.createGraphics(this.concert.container.x + this.crowd.bounds.x, this.concert.container.y + this.crowd.bounds.y, this.crowd.bounds.w, this.crowd.bounds.h, 0xf5c0c0)
     this.crowd.graphics.zIndex = 3
-    this.$festival.addChild(this.crowd.graphics)
+    if (this.debug) this.$festival.addChild(this.crowd.graphics)
     this.positionBlastersRandom(Math.ceil((4 * this.$data.popularity) / 100), 50)
   }
 
-  createBlasters(x, y, w, h) {
+  createBlasters(x, y, ratio) {
     let sprite_name = this.isSceneRight() ? 'blasters_r.png' : 'blasters.png'
     const sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[sprite_name])
     sprite.position.x = x
     sprite.position.y = y
-    sprite.height = h
-    sprite.zIndex = y + h
-    sprite.width = w
+    sprite.height = sprite.height / ratio
+    sprite.width = sprite.width / ratio
+    sprite.zIndex = y + sprite.height
 
     this.blasters.push(sprite)
     this.$festival.addChild(sprite)
@@ -213,7 +217,7 @@ export default class Concert {
     let nbPlaced = 0
     while (count < maxTries && nbPlaced < numberOfBlaster) {
       let xPos = this.getConcertCrowdPosition(100, 100).x
-      let yPos = this.getConcertCrowdPosition(100, 100).y + 100
+      let yPos = this.getConcertCrowdPosition(100, 100).y
       let isGood = true
       for (let i = 0; i < placedBlasters.length && isGood; i++) {
         if (
@@ -226,20 +230,17 @@ export default class Concert {
       }
       if (isGood) {
         placedBlasters.push({ x: xPos, y: yPos, width: 200, height: 200 })
-        this.createBlasters(xPos, yPos, 353 / 2, 313 / 2)
+        this.createBlasters(xPos, yPos, 2)
         nbPlaced++
       }
       count++
     }
-    //console.log('Placed ', nbPlaced, ' blasters in ', count, ' tries')
   }
 
   concertInteractivity(bool) {
     if (bool) {
       this.concert.container.interactive = true
       this.concert.container.on('mousedown', () => {
-        //console.log(this.$data.uri)
-        //this.$festival.hideFestival()
         //Store.dispatch('playTrack', this.$data.uri)
       })
     }

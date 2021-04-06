@@ -72,9 +72,6 @@ export default {
         smooth: true,
       })
     },
-    test(_e) {
-      console.log(_e)
-    },
     signIn() {
       let url =
         'https://accounts.spotify.com/authorize?' +

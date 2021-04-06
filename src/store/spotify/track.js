@@ -53,8 +53,6 @@ const mutations = {
 
 const actions = {
   playTracks({ getters, dispatch }, opt) {
-    console.log(opt)
-
     Vue.axios
       .get(`https://api.spotify.com/v1/artists/${opt.artist}/top-tracks?market=FR`, {
         headers: {

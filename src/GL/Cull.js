@@ -16,8 +16,6 @@ export default class Cull {
     }
 
     this.setEvents()
-
-    console.log(this.$viewport)
   }
 
   init() {}
@@ -30,20 +28,16 @@ export default class Cull {
   }
 
   update() {
-    //console.log(this.bounds.x, this.bounds.y)
     this.bounds.x = Math.abs(this.$viewport.container.position.x - this.$viewport.container.width / 2 + this.margin)
     this.bounds.y = Math.abs(this.$viewport.container.position.y - this.$viewport.container.height / 2 + this.margin)
     this.bounds.width = this.bounds.x + Engine.$app.screen.width + this.margin
     this.bounds.height = this.bounds.y + Engine.$app.screen.height + this.margin
-    //console.log(this.bounds.width, this.bounds.height)
   }
 
   isInViewport(target_x, target_y, target_width, target_height) {
     if (target_x > this.bounds.x - target_width && target_x < this.bounds.width + target_width && target_y > this.bounds.y - target_height && target_y < this.bounds.height + target_height) {
-      //console.log('visible ')
       return true
     } else {
-      //console.log('not visible')
       return false
     }
   }
