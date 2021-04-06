@@ -47,7 +47,7 @@ export default {
     return {
       volume: this.$store.getters.getVolume,
       targetVolume: 0,
-      debug: true,
+      debug: false,
       grabbing: false,
       loaded: false,
     }
@@ -84,7 +84,6 @@ export default {
       Bus.$on('loaded', this._setLoaded)
     },
   },
-
   computed: {
     classes() {
       return [

@@ -37,13 +37,38 @@
   text-align: left;
 }
 
-.main-description {
-  font-family: var(--font-primary);
-  color: white;
+.h1-title {
+  font-family: var(--font-decorative);
+  font-size: rem(104px);
+  font-weight: 700;
+  line-height: rem(120px);
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.section-title {
+  font-family: var(--font-decorative);
+  font-size: rem(56px);
+  font-weight: 700;
+  line-height: rem(64px);
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.section-description {
+  font-family: var(--font-secondary);
   font-size: rem(22px);
-  font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: rem(29px);
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.main-description {
+  font-family: var(--font-secondary);
+  font-size: rem(32px);
+  font-weight: 500;
+  line-height: rem(42px);
   letter-spacing: 0em;
   text-align: left;
 }

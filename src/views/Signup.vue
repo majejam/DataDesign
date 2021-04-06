@@ -2,32 +2,39 @@
   <div class="scroll_height">
     <div ref="data_scroll_container" class="main-column-inner scroll_bg u-flex-column" data-scroll-container>
       <div data-scroll-section class="section section_jumbotron grid grid-column grid-start">
-        <h1 class="main-title">Festivaly.</h1>
-        <p>Experience the festival you deserve. Anytime. Anywhere.</p>
-        <div>
-          <Button primary @click.native="signIn()">Sign in to spotify</Button>
-          <Button secondary><router-link to="/demo"> Test the demo </router-link></Button>
+        <h1 class="h1-title">Festivaly.</h1>
+        <p class="main-description">Experience your musical festival. Curated by your Spotify tastes.</p>
+        <div class="section_jumbotron_button grid grid-between">
+          <Button primary @click.native="signIn()">Discover your festival</Button>
+          <Button secondary><router-link class="demo-link" to="/demo"> Experience a demo</router-link></Button>
         </div>
       </div>
-      <div data-scroll-section class="section section_paragraph grid grid-column">
-        <h2 class="main-title" data-scroll data-scroll-direction="horizontal" data-scroll-speed="1">The concept</h2>
-        <p class="main-description" data-scroll data-scroll-direction="horizontal">
-          We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? In Festivaly, you get the
-          chance to roam between all your top artists stages in a cute isometric world.
-        </p>
+      <div data-scroll-section>
+        <Section
+          title="The concept"
+          description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
+          In Festivaly, you get the chance to roam between all your top artists stages in a cute isometric world.
+        "
+        />
       </div>
-      <div data-scroll-section class="section section_paragraph section_paragraph_r grid grid-column">
-        <h2 class="main-title" data-scroll data-scroll-direction="horizontal" data-scroll-speed="-1">How it works</h2>
-        <p class="main-description" data-scroll data-scroll-direction="horizontal">
-          The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months. <br /><br />
+
+      <div data-scroll-section>
+        <Section
+          title="How it works"
+          description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months. <br /><br />
           Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br />
           <br />
-          Songs you love are then played through Spotify Web Playback SDK.
-        </p>
+          Songs you love are then played through Spotify Web Playback SDK."
+          right
+        />
       </div>
       <div data-scroll-section class="section section_credit grid grid-column">
-        <h2 class="main-title" data-scroll :data-scroll-call="test" data-scroll-speed="3">Credit</h2>
-        <p class="main-description" data-scroll data-scroll-speed="2">Thomas Lacroix, Morgane Lapisardi & Yoan Gross</p>
+        <h2 class="section-title" data-scroll :data-scroll-call="test" data-scroll-speed="3">Credit</h2>
+        <p class="section-description" data-scroll data-scroll-speed="2">
+          Thomas Lacroix, developer <br />
+          Morgane Lapisardi, illustrator<br />
+          Yoan Gross, designer
+        </p>
       </div>
     </div>
   </div>
@@ -37,8 +44,9 @@
 import querystring from 'querystring'
 import LocomotiveScroll from 'locomotive-scroll'
 import Button from '@/components/shared/Button.vue'
+import Section from '@/components/home/Section.vue'
 export default {
-  components: { Button },
+  components: { Button, Section },
   data() {
     return {
       scroll: null,
@@ -73,11 +81,13 @@ export default {
     this.scroll.destroy()
   },
   activated() {
-    this.init()
+    setTimeout(() => {
+      this.init()
 
-    this.$nextTick(() => {
-      //this.scroll.update()
-    })
+      this.$nextTick(() => {
+        this.scroll.update()
+      })
+    }, 100)
   },
 }
 </script>
@@ -94,21 +104,31 @@ export default {
 .section {
   width: 50%;
   margin: 70px 0;
+  color: white;
 
   &_jumbotron {
     margin: 0;
     height: 100vh;
-  }
 
-  &_paragraph {
-    &_r {
-      margin-left: auto;
+    h1 {
+      margin-bottom: 16px;
+    }
+
+    p {
+      margin-bottom: 40px;
+    }
+
+    &_button {
+      width: 100%;
     }
   }
 
   &_credit {
-    height: 100vh;
+    height: 50vh;
     width: 100%;
+    p {
+      text-align: center;
+    }
   }
 }
 </style>

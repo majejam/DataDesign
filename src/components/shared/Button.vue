@@ -17,6 +17,8 @@ export default {
 </script>
 <style lang="scss">
 .Button {
+  font-family: var(--font-secondary);
+  font-weight: 600;
   height: 60px;
   min-width: 288px;
   color: inherit;
@@ -38,6 +40,11 @@ export default {
 
   &__content {
     text-decoration: none;
+  }
+
+  .demo-link {
+    text-decoration: none;
+    color: white;
   }
 }
 </style>
