@@ -3,7 +3,6 @@
     <div class="renderer" ref="renderer" :class="classes"></div>
     <Loader v-if="!loaded" />
     <Header />
-    <button class="cta-font" @click="Player.volume(0.5)">up volume</button>
     <div>
       <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
       <label for="volume">Volume</label>
@@ -69,7 +68,8 @@ export default {
   },
   methods: {
     setVolume(_e) {
-      Player.setGlobalVolume(_e.target.value)
+      this.volume = parseFloat(_e.target.value)
+      Player.setGlobalVolume(parseFloat(_e.target.value))
     },
     changeCursor(_e) {
       this.grabbing = _e
