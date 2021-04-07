@@ -96,13 +96,13 @@ export default class Concert {
 
   createScreen(ratio = 1.15) {
     this.screen.container = new Engine.PIXI.Container()
-    this.screen.graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures['screen.png'])
+    let sprite_name = this.isSceneRight() ? 'screen_right.png' : 'screen.png'
+    this.screen.graphics = new Engine.PIXI.Sprite(Engine.spritesheet.textures[sprite_name])
     this.screen.graphics.height = this.screen.graphics.height / ratio //ratio screen
     if (this.isSceneRight()) {
-      this.screen.graphics.y = 0
+      this.screen.graphics.y = this.screen.bounds.y / 2
+      this.screen.graphics.width = this.screen.graphics.width / ratio
       this.screen.container.x = this.concert.container.x + this.concert.container.width - this.concert.container.width * 0.1 - this.screen.bounds.w
-      this.screen.graphics.width = -this.screen.graphics.width / ratio
-      this.screen.graphics.anchor.x = 0.5
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y - 100
     } else {
       this.screen.graphics.y = this.screen.bounds.y
@@ -163,8 +163,8 @@ export default class Concert {
 
     if (this.isSceneRight()) {
       text.skew.y = skew
-      text.position.y = this.screen.bounds.h / 2 - text.height / 4
-      text.position.x = this.screen.bounds.w / 2 - text.width / 2.5
+      text.position.y = this.screen.bounds.h / 2 - text.height / 2
+      text.position.x = this.screen.bounds.w / 2 - text.width / 2
     } else {
       text.skew.y = -skew
       text.position.y = this.screen.bounds.h / 2 - text.height / 4

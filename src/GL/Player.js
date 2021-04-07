@@ -53,6 +53,8 @@ class Player {
       },
     })
 
+    this.volume.current = Store.getters.getVolume
+
     this.setEvents()
 
     // Connect to the player!
@@ -78,25 +80,35 @@ class Player {
 
   setAmbienceVolume() {
     const volume = Store.getters.getVolume
-    this.audio.volume = Math.round(volume * 0.4 * 10) / 10
+    this.audio.volume = Math.round(volume * 0.6 * 10) / 10
   }
 
   setGlobalVolume(value) {
     Store.commit('setVolume', value)
     this.setAmbienceVolume()
     const volume = Store.getters.getVolume
-    this.setFadeVolume(volume, 100)
 
-    if (volume == 0) this.changeTrackFade(this.currenturi)
+    if (volume == 0) {
+      this.volume.current = 0
+      this.setFadeVolume(0, 100)
+    } else {
+      this.setFadeVolume(volume, 100)
+    }
   }
 
   setFadeVolume(level, timing) {
+    console.log(level)
     return new Promise(resolve => {
       clearInterval(this.interval)
       const step = 0.05
       const isAdd = level - this.volume.current > 0 ? true : false
-      const isMuted = level - this.volume.current === 0 ? true : false
+      if (level === 0 && this.volume.current === 0) {
+        this.volume.target = 0
+        this.player.setVolume(0.0001)
+        resolve('finish')
+      }
       this.volume.current = level
+
       this.interval = setInterval(() => {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
@@ -111,9 +123,6 @@ class Player {
             this.volume.target -= step
             this.player.setVolume(Math.floor(this.volume.target * 100) / 100)
           }
-        } else if (isMuted) {
-          this.volume.target = 0
-          this.player.setVolume(0.0001)
         } else {
           clearInterval(this.interval)
           resolve('finish')
@@ -135,11 +144,11 @@ class Player {
       return false
     }
 
-    this.setFadeVolume(0, 100).then(() => {
+    this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
       Store.dispatch('playTrack', [uri]).then(() => {
         const volume = Store.getters.getVolume
-        this.setFadeVolume(volume, 100).then(() => {
+        this.setFadeVolume(volume, 50).then(() => {
           console.log('Volume set to normal')
         })
       })

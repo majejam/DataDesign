@@ -159,12 +159,28 @@ export default {
 
     &_images {
       width: 50%;
+      position: relative;
       height: 100%;
 
       &--single {
-        width: 20%;
-        height: 20%;
-        background: grey;
+        width: 200px;
+        height: auto;
+        flex: 1;
+
+        &:nth-child(1) {
+          position: absolute;
+          background: grey;
+        }
+
+        &:nth-child(2) {
+          position: absolute;
+          background: pink;
+        }
+
+        &:nth-child(3) {
+          position: absolute;
+          background: yellow;
+        }
       }
     }
   }
