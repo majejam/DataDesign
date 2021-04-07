@@ -11,10 +11,11 @@ export default class Person {
     this.person = {
       container: null,
       graphics: null,
+      sprite: null,
       color: this.$opt.color ? this.$opt.color : 0xff87f0,
       size: {
-        width: this.$opt.width ? this.$opt.width : 100,
-        height: this.$opt.height ? this.$opt.height : 100,
+        width: this.$opt.width ? this.$opt.width : 200,
+        height: this.$opt.height ? this.$opt.height : 200,
       },
       maxSpeed: Math.random() + 1,
       target: new Engine.PIXI.Point(2500, 1800),
@@ -59,11 +60,14 @@ export default class Person {
   }
 
   createPersonGraphics() {
+    this.person.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['character.png'])
     this.person.graphics = new Engine.PIXI.Graphics()
+    this.person.sprite.scale.x = this.person.sprite.scale.y = 0.8
     this.person.graphics.beginFill(this.person.color)
     this.person.graphics.drawRect(0, 0, this.person.size.width, this.person.size.height)
     this.person.graphics.endFill()
-    this.person.container.addChild(this.person.graphics)
+    this.person.container.addChild(this.person.sprite)
+    //this.person.container.addChild(this.person.graphics)
   }
 
   changeColor(color) {
@@ -154,14 +158,14 @@ export default class Person {
 
     this.person.container.x = this.person.position.x
     this.person.container.y = this.person.position.y
-    this.person.container.zIndex = Math.round(this.person.position.y + 100)
+    this.person.container.zIndex = Math.round(this.person.position.y + this.person.size.height)
 
     this.checkIfArrivedToDestination()
   }
 
   energeticDance(time) {
     // If very danceable song
-    if (this.selectedConcert.$data.audio_features.energy > 0.45) {
+    if (this.selectedConcert.$data.audio_features.energy > 0.48) {
       const energetic_factor = 5 + 15 * (1 - this.selectedConcert.$data.audio_features.energy)
       this.person.graphics.position.y = Math.sin((this.person.maxSpeed * time) / energetic_factor) * 10
     } else {
