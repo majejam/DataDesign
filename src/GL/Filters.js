@@ -1,6 +1,7 @@
 import Engine from '@/GL/Engine.js'
 import GUI from '@/utils/GUI.js'
 import * as PixiFilters from 'pixi-filters'
+import Store from '@/store'
 
 export default class Filters {
   constructor(container) {
@@ -12,12 +13,53 @@ export default class Filters {
     GUI.setFolder('Filters')
 
     this.blurFilter()
+    this.colorFilter()
     this.CRTFilter()
     this.TiltShift()
 
     this.setEvents()
 
     this.$container.filters = [this.blur, this.tilt, this.crt]
+    Engine.$app.stage.filters = [this.color]
+  }
+
+  updateFilters() {
+    this.updateColor()
+  }
+
+  colorFilter() {
+    this._updateColor = this.updateColor.bind(this)
+    this.color = new Engine.PIXI.filters.ColorMatrixFilter()
+    GUI.setFolder('Color', 'Filters')
+    GUI.addValue(
+      'Color',
+      'enabled',
+      {
+        default: true,
+      },
+      this._updateColor
+    )
+    GUI.addValue(
+      'Color',
+      'hue',
+      {
+        default: 30,
+        min: 0,
+        max: 360,
+        step: 1,
+      },
+      this._updateCRT
+    )
+    this.updateColor()
+  }
+
+  updateColor() {
+    this.color.enabled = GUI.datas.Color.enabled
+    this.color.reset()
+    //this.color.technicolor(GUI.datas.Color.technicolor)
+
+    if (Store.getters.getCurrentFestival === 'normal') this.color.hue(0, true)
+    else this.color.hue(340, true)
   }
 
   blurFilter() {

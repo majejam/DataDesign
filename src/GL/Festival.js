@@ -1,4 +1,5 @@
 import Engine from '@/GL/Engine.js'
+import Bus from '@/utils/bus.js'
 import World from '@/GL/World.js'
 import Concert from '@/GL/Concert.js'
 import Store from '@/store'
@@ -41,6 +42,8 @@ export default class Festival {
   init() {
     this.setEvents()
     this.createFestival()
+    console.log('Festival created')
+    Bus.$emit('loaded')
   }
 
   createFestival() {

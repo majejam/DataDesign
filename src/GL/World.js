@@ -51,9 +51,22 @@ class World {
     this.setEvents()
 
     console.log('World Init done')
-    Bus.$emit('loaded')
 
     Player.playAmbience()
+  }
+
+  createNewFestival() {
+    this.currentFestival.destroy()
+    this.storeData = Store.getters.getTopTracksFeatures
+
+    setTimeout(() => {
+      this.festival = new Festival(this.storeData, {
+        x: 0,
+        y: 0,
+      })
+      this.filters.updateFilters()
+      this.currentFestival = this.festival
+    }, 100)
   }
 
   /**
@@ -169,7 +182,9 @@ class World {
      * Binding functions
      */
     this._update = this.update.bind(this)
+    this._createNewFestival = this.createNewFestival.bind(this)
     Engine.$app.ticker.add(this._update)
+    Bus.$on('NewFestival', this._createNewFestival)
   }
 
   removeEvents() {

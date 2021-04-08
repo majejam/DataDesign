@@ -82,6 +82,9 @@ export default {
       this._setLoaded = this.setLoaded.bind(this)
       Bus.$on('grabbing', this._changeCursor)
       Bus.$on('loaded', this._setLoaded)
+      Bus.$on('NewFestival', () => {
+        this.loaded = false
+      })
     },
   },
   computed: {
