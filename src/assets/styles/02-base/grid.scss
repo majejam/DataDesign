@@ -101,7 +101,7 @@ $padmobile: 0;
 }
 
 :root {
-  --column-width: 940px;
+  --column-width: 1224px;
 }
 
 .main-column {
@@ -112,4 +112,18 @@ $padmobile: 0;
     width: 90%;
     margin: 0 auto;
   }
+}
+
+.main-column-inner {
+  width: 100%;
+  padding: 0 calc((100vw - var(--column-width)) / 2);
+
+  @include media('<960px') {
+    width: 100%;
+    padding: 0 5%;
+  }
+}
+
+.fixed_column {
+  right: calc((100vw - var(--column-width)) / 2);
 }

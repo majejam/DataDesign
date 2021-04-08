@@ -4,6 +4,7 @@ const state = {
   recentlyPlayed: [],
   currentPlaybackDevice: 0,
   playerInit: false,
+  currentSong: '',
   searchData: {
     artists: {
       items: [],
@@ -28,6 +29,9 @@ const getters = {
   getSearchData(state) {
     return state.searchData
   },
+  getCurrentSong(state) {
+    return state.currentSong
+  },
   getUserTop(state) {
     return state.userTop
   },
@@ -43,6 +47,9 @@ const mutations = {
   setCurrentPlaybackDevice(state, data) {
     state.currentPlaybackDevice = data
   },
+  setCurrentSong(state, data) {
+    state.currentSong = data
+  },
   setSearchData(state, data) {
     state.searchData = data
   },
@@ -52,8 +59,27 @@ const mutations = {
 }
 
 const actions = {
-  playTrack({ getters }, uri) {
-    console.log(uri)
+  playTracks({ getters, dispatch }, opt) {
+    Vue.axios
+      .get(`https://api.spotify.com/v1/artists/${opt.artist}/top-tracks?market=FR`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + getters.getTokens['access_token'],
+        },
+      })
+      .then(res => {
+        console.log(res.data.tracks)
+        let tracks_uri = res.data.tracks.map(obj => {
+          return obj.uri
+        })
+        tracks_uri = [opt.uri, ...tracks_uri]
+        tracks_uri = [...new Set(tracks_uri)]
+        console.log(tracks_uri)
+        dispatch('playTrack', tracks_uri)
+      })
+  },
+
+  playTrack({ getters }, uris) {
     /**
      * {
   "uris": [ "spotify:track:18lKp9uRyR2xJZFvg8ZWUC"],
@@ -64,7 +90,7 @@ const actions = {
       .put(
         `https://api.spotify.com/v1/me/player/play?device_id=${getters.getCurrentPlaybackDevice}`,
         JSON.stringify({
-          uris: [uri],
+          uris: uris,
           position_ms: 0,
         }),
         {

@@ -1,6 +1,7 @@
 import Bus from '@/utils/bus.js'
 
 import * as PIXI from 'pixi.js'
+import Store from '@/store'
 
 import World from '@/GL/World.js'
 
@@ -21,7 +22,7 @@ class Engine {
     // Listen for frame updates
     this.$app.ticker.add(this._update)
 
-    World.init(this.$el)
+    this.loadSpriteSheet()
 
     Bus.$on('resize', this._onResize)
 
@@ -34,12 +35,14 @@ class Engine {
    * Renderer setup
    */
   initRenderer() {
+    Store.commit('setLoadingMessage', 'Engine initialization')
     // The application will create a renderer using WebGL, if possible,
     // with a fallback to a canvas render. It will also setup the ticker
     // and the root stage PIXI.Container
     this.$app = new PIXI.Application({
       antialias: true,
       autoResize: true,
+      backgroundColor: 0xf0e4d7,
       //resolution: devicePixelRatio,
     })
 
@@ -53,11 +56,32 @@ class Engine {
   onResize() {
     console.log('resize')
     this.$app.renderer.resize(this.$el.offsetWidth, this.$el.offsetHeight)
+    World.onResize()
     //this.container.position.set(this.$app.screen.width / 2, this.$app.screen.height / 2)
   }
 
   update() {
     //this.container.rotation -= 0.01 * delta
+  }
+
+  /**
+   * Load spritesheet
+   */
+
+  loadSpriteSheet() {
+    this._setup = this.setup.bind(this)
+    this.loader = new this.PIXI.Loader()
+
+    Store.commit('setLoadingMessage', 'Loading sprite')
+    this.loader.add('spritesheet/spritesheet.json').load(this._setup)
+  }
+
+  setup() {
+    console.log('Sprite loaded !')
+    // get a reference to the sprite sheet we've just loaded:
+    this.spritesheet = this.loader.resources['spritesheet/spritesheet.json'].spritesheet
+    console.log(this.spritesheet)
+    World.init(this.$el)
   }
 
   /**

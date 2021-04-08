@@ -1,13 +1,19 @@
 import Bus from '@/utils/bus.js'
 
 import Store from '@/store'
+import router from '@/router'
 class Player {
   constructor() {
-    this.hasToken = false
-    this.hasInit = false
-    this.playerisInit = false
-    this.apiisInit = false
+    this.currenturi = ''
     this.player = null
+    this.hasInit = false
+    this.isAllowed = true
+
+    this.status = {
+      readyToInit: false,
+      hasInit: false,
+      apiHasInit: false,
+    }
 
     this.volume = {
       current: 0.1,
@@ -16,98 +22,107 @@ class Player {
   }
 
   init() {
+    Store.commit('setPlayerInit', false)
     Bus.$on('ApiInit', () => {
       console.log('Bus init api')
-      this.hasToken = true
 
-      if (this.playerisInit) this.initPlayer()
-      else this.apiisInit = true
+      setInterval(() => {
+        console.log('Refreshed token')
+        Store.dispatch('refreshToken')
+      }, 60000 * 30)
+
+      if (this.status.readyToInit) this.initPlayer()
+      else this.status.apiHasInit = true
     })
 
     window.onSpotifyWebPlaybackSDKReady = () => {
-      if (this.apiisInit) this.initPlayer()
-      else this.playerisInit = true
+      if (this.status.apiHasInit) this.initPlayer()
+      else this.status.readyToInit = true
     }
   }
 
   initPlayer() {
-    console.log('init player')
+    console.log('Player initialization')
+    Store.commit('setLoadingMessage', 'Player initialization')
     const token = Store.getters.getTokens['access_token']
-    console.log(token)
     this.player = new window.Spotify.Player({
-      name: 'Create ur festival',
-      volume: 0,
+      name: 'Create your festival',
+      volume: Store.getters.getVolume,
       getOAuthToken: cb => {
         cb(token)
       },
     })
 
-    // Error handling
-    this.player.addListener('initialization_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('authentication_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('account_error', ({ message }) => {
-      console.error(message)
-    })
-    this.player.addListener('playback_error', ({ message }) => {
-      console.error(message)
-    })
+    this.volume.current = Store.getters.getVolume
 
-    // Playback status updates
-    this.player.addListener('player_state_changed', state => {
-      console.log(state)
-    })
-
-    // Ready
-    this.player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id)
-      Store.commit('setCurrentPlaybackDevice', device_id)
-      Store.commit('setPlayerInit', true)
-      console.log(this.player)
-      this.hasInit = true
-      Bus.$emit('PlayerInit')
-    })
-
-    // Not Ready
-    this.player.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id)
-    })
-
-    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
-      console.log('Currently Playing', current_track)
-      console.log('Position in Song', position)
-      console.log('Duration of Song', duration)
-    })
+    this.setEvents()
 
     // Connect to the player!
     this.player.connect()
+
+    this.audio = new Audio('audio/ambience.mp3')
+    this.audio.volume = Store.getters.getVolume * 0.4
+    this.audio.loop = true
 
     Bus.$on('PlayerInit', () => {
       console.log('Init done')
     })
   }
 
+  playAmbience() {
+    if (!this.isAllowed) return
+    this.audio.play().catch(() => {
+      setTimeout(() => {
+        this.playAmbience()
+      }, 1000)
+    })
+  }
+
+  setAmbienceVolume() {
+    const volume = Store.getters.getVolume
+    this.audio.volume = Math.round(volume * 0.6 * 10) / 10
+  }
+
+  setGlobalVolume(value) {
+    Store.commit('setVolume', value)
+    this.setAmbienceVolume()
+    const volume = Store.getters.getVolume
+
+    if (volume == 0) {
+      this.volume.current = 0
+      this.setFadeVolume(0, 100)
+    } else {
+      this.setFadeVolume(volume, 100)
+    }
+  }
+
   setFadeVolume(level, timing) {
+    console.log(level)
     return new Promise(resolve => {
       clearInterval(this.interval)
-      const step = 0.01
+      const step = 0.05
       const isAdd = level - this.volume.current > 0 ? true : false
-      console.log('VALUE : ', isAdd)
+      if (level === 0 && this.volume.current === 0) {
+        this.volume.target = 0
+        this.player.setVolume(0.0001)
+        resolve('finish')
+      }
       this.volume.current = level
+
       this.interval = setInterval(() => {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
-          console.log(Math.pow(this.volume.target, 2))
-          this.player.setVolume(Math.pow(this.volume.target, 2))
-          if (this.volume.target > 1 - step) this.volume.target = 1
+          if (this.volume.target > level - step) this.volume.target = level
+          //console.log(this.volume.target)
+          this.player.setVolume(Math.round(this.volume.target * 100) / 100)
         } else if (this.volume.target > level && !isAdd) {
-          this.volume.target -= step
-          console.log(Math.pow(this.volume.target, 2))
-          this.player.setVolume(Math.pow(this.volume.target, 2))
-          if (this.volume.target < step) this.volume.target = 0
+          if (this.volume.target < 0.01) {
+            this.volume.target = 0
+            this.player.setVolume(0.0001)
+          } else {
+            this.volume.target -= step
+            this.player.setVolume(Math.floor(this.volume.target * 100) / 100)
+          }
         } else {
           clearInterval(this.interval)
           resolve('finish')
@@ -116,17 +131,83 @@ class Player {
     })
   }
 
+  mute() {}
+
   changeTrackFade(uri) {
-    //console.log(uri);
-    this.setFadeVolume(0, 100).then(() => {
+    this.currenturi = uri
+    if (!this.status.hasInit) {
+      console.warn('Player was not ready (might be demo mode)')
+      return false
+    }
+    if (!this.isAllowed) {
+      console.warn('Player was set on not allowed')
+      return false
+    }
+
+    this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
-      Store.dispatch('playTrack', uri).then(() => {
-        this.setFadeVolume(0.2, 100).then(() => {
+      Store.dispatch('playTrack', [uri]).then(() => {
+        const volume = Store.getters.getVolume
+        this.setFadeVolume(volume, 50).then(() => {
           console.log('Volume set to normal')
         })
       })
     })
     //Store.dispatch('playTrack', data[current].$data.uri)
+  }
+
+  /**
+   * Event function
+   */
+
+  playerReady(_e) {
+    console.log('Ready with Device ID', _e.device_id)
+    Store.commit('setCurrentPlaybackDevice', _e.device_id)
+    Store.commit('setPlayerInit', true)
+    Bus.$emit('PlayerInit')
+    this.status.hasInit = true
+  }
+
+  /**
+   * Events
+   */
+  setEvents() {
+    this._playerReady = this.playerReady.bind(this)
+    // Error handling
+    this.player.addListener('initialization_error', ({ message }) => {
+      console.warn(message)
+    })
+    this.player.addListener('authentication_error', ({ message }) => {
+      console.warn(message)
+    })
+    this.player.addListener('account_error', ({ message }) => {
+      console.warn(message)
+      Store.commit('setPlayerInit', false)
+      Bus.$emit('PlayerInit')
+      Store.commit('clearState', false)
+      this.status.hasInit = false
+      router.push('Demo')
+    })
+    this.player.addListener('playback_error', ({ message }) => {
+      console.warn(message)
+    })
+
+    // Playback status updates
+    //this.player.addListener('player_state_changed')
+
+    // Ready
+    this.player.addListener('ready', this._playerReady)
+
+    // Not Ready
+    this.player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id)
+    })
+    /*
+    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
+      console.log('Currently Playing', current_track)
+      console.log('Position in Song', position)
+      console.log('Duration of Song', duration)
+    })*/
   }
 }
 

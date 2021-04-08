@@ -16,6 +16,17 @@
   align-items: center;
 }
 
+.u-flex-column {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
+  flex-flow: column;
+}
+
+.u-flex-end {
+  align-items: flex-end;
+}
+
 .no-scroll {
   height: 100vh;
   overflow: hidden;

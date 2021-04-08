@@ -6,6 +6,10 @@ const state = {
   code: '',
   tokens: {},
   refresh_token: '',
+  isLogged: false,
+  isDemo: false,
+  loading_message: 'Loading api info',
+  volume: 1,
   user: {
     images: [
       {
@@ -31,8 +35,17 @@ const getters = {
   getUser(state) {
     return state.user
   },
+  getVolume(state) {
+    return state.volume
+  },
   isAuthenticated(state) {
     return state.code !== ''
+  },
+  getDemo(state) {
+    return state.isDemo
+  },
+  getLoadingMessage(state) {
+    return state.loading_message
   },
 }
 
@@ -49,6 +62,15 @@ const mutations = {
   setUser(state, data) {
     state.user = data
   },
+  setLoadingMessage(state, data) {
+    state.loading_message = data
+  },
+  setVolume(state, data) {
+    state.volume = data
+  },
+  setDemo(state, data) {
+    state.isDemo = data
+  },
   clearState(state) {
     state.code = ''
     state.tokens = {}
@@ -59,6 +81,9 @@ const mutations = {
         },
       ],
     }
+  },
+  setAllState(state, data) {
+    state = data
   },
 }
 
@@ -124,7 +149,6 @@ const actions = {
       )
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data)
           commit('setToken', res.data)
           Bus.$emit('ApiInit')
         } else {
@@ -137,7 +161,7 @@ const actions = {
   },
   logoutUser({ commit }) {
     commit('clearState')
-    router.replace('/login')
+    router.go()
   },
 }
 

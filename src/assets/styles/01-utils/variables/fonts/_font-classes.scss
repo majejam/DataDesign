@@ -28,14 +28,59 @@
 
 .main-title {
   font-family: var(--font-primary);
-  font-size: rem(24px);
+  color: white;
+  font-size: rem(56px);
+  font-style: normal;
   font-weight: 700;
-  line-height: rem(32px);
+  line-height: rem(65px);
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.h1-title {
+  font-family: var(--font-decorative);
+  font-size: rem(104px);
+  font-weight: 700;
+  line-height: rem(120px);
+  letter-spacing: 0.05em;
+  text-align: left;
+
+  @include media('<sm') {
+    font-size: rem(56px);
+    line-height: rem(65px);
+    text-align: center;
+  }
+}
+
+.section-title {
+  font-family: var(--font-decorative);
+  font-size: rem(56px);
+  font-weight: 700;
+  line-height: rem(64px);
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.section-description {
+  font-family: var(--font-secondary);
+  font-size: rem(22px);
+  font-weight: 500;
+  line-height: rem(29px);
+  letter-spacing: 0em;
+  text-align: left;
 }
 
 .main-description {
-  font-family: var(--font-primary);
-  font-size: rem(16px);
-  font-weight: 400;
-  line-height: rem(27px);
+  font-family: var(--font-secondary);
+  font-size: rem(32px);
+  font-weight: 500;
+  line-height: rem(42px);
+  letter-spacing: 0em;
+  text-align: left;
+
+  @include media('<sm') {
+    font-size: rem(18px);
+    line-height: rem(23px);
+    text-align: center;
+  }
 }

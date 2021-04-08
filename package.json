@@ -9,6 +9,10 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "chance": "^1.1.7",
+    "dat.gui": "^0.7.7",
+    "locomotive-scroll": "^4.1.1",
+    "pixi-filters": "^4.0.0",
     "pixi.js": "^6.0.0",
     "prettier": "^2.2.1",
     "vue": "^2.6.11",

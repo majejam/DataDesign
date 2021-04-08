@@ -1,10 +1,12 @@
 import Vue from 'vue'
-import router from '@/router'
+import Bus from '@/utils/bus.js'
 
 const state = {
   topArtist: [],
   topTracks: [],
   topTracksFeatures: [],
+  topIds: [],
+  currentFestival: 'normal',
 }
 
 const getters = {
@@ -17,6 +19,12 @@ const getters = {
   getTopTracksFeatures(state) {
     return state.topTracksFeatures
   },
+  getTopIds(state) {
+    return state.topIds
+  },
+  getCurrentFestival(state) {
+    return state.currentFestival
+  },
 }
 
 const mutations = {
@@ -28,6 +36,12 @@ const mutations = {
   },
   setTopTracksFeatures(state, data) {
     state.topTracksFeatures = data
+  },
+  setTopIds(state, data) {
+    state.topIds = data
+  },
+  setCurrentFestival(state, data) {
+    state.currentFestival = data
   },
   clearTopArtist(state) {
     state.topArtist = []
@@ -42,13 +56,11 @@ const mutations = {
 
 const actions = {
   initPersonalization({ dispatch }) {
-    console.log(router.currentRoute.fullPath)
     console.log('initPersonalization')
     dispatch('getUserTopArtists')
     dispatch('getUserTopTracks')
   },
   getUserTopArtists({ getters, commit, dispatch }) {
-    console.log(getters.getTokens['access_token'])
     Vue.axios
       .get(`https://api.spotify.com/v1/me/top/artists?time_range=medium_term&limit=5`, {
         headers: {
@@ -81,11 +93,15 @@ const actions = {
       .then(res => {
         if (res.status === 200) {
           commit('setTopTracks', res.data)
+          console.log('TOP TRACKS')
           console.log(res.data.items)
           let ids = res.data.items.map(obj => {
             return obj.id
           })
           dispatch('getAudioFeatures', ids.toString())
+          commit('setTopIds', ids.slice(0, 5))
+          commit('setCurrentFestival', 'normal')
+          //dispatch('getRecommendation', ids.slice(0, 5).toString())
         } else {
           console.log('getUserTopTracksError')
         }
@@ -120,6 +136,36 @@ const actions = {
           })
           console.log(dataUniqueArtist)
           commit('setTopTracksFeatures', dataUniqueArtist)
+          //Bus.$emit('NewData')
+          Bus.$emit('NewFestival')
+        } else {
+          console.log('getAudioFeaturesError')
+        }
+      })
+      .catch(() => {
+        //dispatch('logoutUser')
+      })
+  },
+  getRecommendation({ getters, commit, dispatch }, uris) {
+    Vue.axios
+      .get(`https://api.spotify.com/v1/recommendations?limit=20&market=FR&seed_tracks=${uris}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + getters.getTokens['access_token'],
+        },
+      })
+      .then(res => {
+        if (res.status === 200) {
+          Object.defineProperty(res.data, 'items', Object.getOwnPropertyDescriptor(res.data, 'tracks'))
+          delete res.data['tracks']
+          commit('setTopTracks', res.data)
+          console.log(res.data)
+          let ids = res.data.items.map(obj => {
+            return obj.id
+          })
+          console.log(ids)
+          commit('setCurrentFestival', 'recommended')
+          dispatch('getAudioFeatures', ids.toString())
         } else {
           console.log('getAudioFeaturesError')
         }
