@@ -144,8 +144,8 @@ export default class Festival {
       } else {
         yPos = this.festival.margin.y
       }
-      let rWidth = ((1500 + Math.random() * 400) * concert.popularity) / 100
-      let rHeight = ((1100 + Math.random() * 200) * concert.popularity) / 100
+      let rWidth = 500 + ((1100 + Math.random() * 400) * concert.popularity) / 100
+      let rHeight = 300 + ((900 + Math.random() * 200) * concert.popularity) / 100
       this.concertPosition.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
       this.concerts.push(
         new Concert(this, concert, {

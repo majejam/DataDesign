@@ -48,8 +48,8 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 400px;
-    width: 400px;
+    height: 300px;
+    width: 300px;
     transform: translate(-50%, -50%);
     z-index: 15;
     background: var(--neutral-white);
@@ -58,8 +58,9 @@ export default {
     border: solid 10px var(--primary-base);
 
     @include media('<md') {
-      height: 220px;
-      width: 220px;
+      height: 164px;
+      width: 164px;
+      border: solid 8px var(--primary-base);
     }
 
     img {
