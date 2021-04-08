@@ -57,6 +57,11 @@ export default {
     transition: ease-in-out 0.3s 0.3s opacity;
     border: solid 10px var(--primary-base);
 
+    @include media('<md') {
+      height: 220px;
+      width: 220px;
+    }
+
     img {
       width: 100%;
     }

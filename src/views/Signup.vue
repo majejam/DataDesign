@@ -113,6 +113,10 @@ export default {
   position: fixed;
   bottom: 50px;
   z-index: 10;
+
+  @include media('<md') {
+    display: none;
+  }
 }
 
 .scroll_bg {
@@ -137,12 +141,20 @@ export default {
   z-index: 2;
   color: white;
 
+  @include media('<md') {
+    width: 100%;
+  }
+
   &_jumbotron {
     margin: 0;
     height: 100vh;
 
     h1 {
       margin-bottom: 16px;
+
+      @include media('<sm') {
+        width: 100%;
+      }
     }
 
     p {
@@ -152,12 +164,19 @@ export default {
     &_button {
       width: 100%;
 
+      @include media('<sm') {
+        justify-content: center !important;
+      }
+
       &--single {
         max-width: 288px;
+
+        @include media('<sm') {
+          margin-bottom: 50px;
+        }
         span {
           margin-top: 8px;
           font-family: var(--font-secondary);
-          font-size: rem(14px);
           font-weight: 500;
           line-height: rem(18px);
           text-align: center;

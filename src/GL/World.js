@@ -66,7 +66,7 @@ class World {
       })
       this.filters.updateFilters()
       this.currentFestival = this.festival
-    }, 3000)
+    }, 1000)
   }
 
   /**
@@ -98,14 +98,16 @@ class World {
   gradient(from, middle, to) {
     const c = document.createElement('canvas')
     const ctx = c.getContext('2d')
+    //document.body.appendChild(c)
     ctx.canvas.width = Engine.$app.screen.width
     ctx.canvas.height = Engine.$app.screen.height
+    console.log(Engine.$app.screen.width, Engine.$app.screen.height)
     const grd = ctx.createLinearGradient(0, 0, 1, Engine.$app.screen.height)
     grd.addColorStop(0, from)
     grd.addColorStop(0.5, middle)
     grd.addColorStop(1, to)
     ctx.fillStyle = grd
-    ctx.fillRect(0, 0, Engine.$app.screen.width, Engine.$app.screen.width)
+    ctx.fillRect(0, 0, Engine.$app.screen.width, Engine.$app.screen.height)
     return new Engine.PIXI.Texture.from(c)
   }
 

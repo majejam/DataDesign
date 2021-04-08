@@ -42,6 +42,7 @@ export default {
   &__content {
     text-decoration: none;
     font-weight: 600 !important;
+    font-size: rem(14px);
   }
 
   .demo-link {

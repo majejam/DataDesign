@@ -37,6 +37,10 @@ export default {
   margin: 70px 0;
   color: white;
 
+  @include media('<sm') {
+    width: 100%;
+  }
+
   &__title {
     margin-bottom: 24px;
   }

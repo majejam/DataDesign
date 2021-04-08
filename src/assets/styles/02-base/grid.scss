@@ -119,8 +119,8 @@ $padmobile: 0;
   padding: 0 calc((100vw - var(--column-width)) / 2);
 
   @include media('<960px') {
-    width: 90%;
-    margin: 0 auto;
+    width: 100%;
+    padding: 0 5%;
   }
 }
 

@@ -25,6 +25,11 @@ export default {
   bottom: 50px;
   left: 50px;
 
+  @include media('<sm') {
+    width: 80%;
+    left: 10%;
+  }
+
   &__name {
     position: absolute;
     white-space: nowrap;
