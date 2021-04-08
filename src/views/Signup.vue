@@ -1,5 +1,7 @@
 <template>
   <div class="scroll_height">
+    <img v-show="false" src="images/loader.svg" alt="svg" />
+    <img class="fixed__logo fixed_column" src="images/logo_white.svg" alt="logo festivaly" />
     <div ref="data_scroll_container" class="u-flex-column" data-scroll-container>
       <div data-scroll-section class="scroll_bg main-column-inner">
         <div class="grid grid-between">
@@ -11,7 +13,7 @@
                 <Button primary @click.native="signIn()">Discover your festival</Button>
                 <span>Requires a connection to your Spotify account through Spotify API.</span>
               </div>
-              <Button secondary><router-link class="demo-link" to="/demo"> Experience a demo</router-link></Button>
+              <Button secondary><router-link class="demo-link" to="/demo">Try the demo</router-link></Button>
             </div>
           </div>
 
@@ -107,6 +109,12 @@ export default {
   flex-flow: column;
 }
 
+.fixed__logo {
+  position: fixed;
+  bottom: 50px;
+  z-index: 10;
+}
+
 .scroll_bg {
   background: linear-gradient(180deg, #ff666f 0%, #f8ae84 50%, #fec961 100%);
 
@@ -118,9 +126,8 @@ export default {
     bottom: 0;
     left: 0;
     z-index: -1;
-    background-size: cover;
     background-image: url('../assets/images/noise.png');
-    opacity: 0.03;
+    opacity: 0.05;
   }
 }
 

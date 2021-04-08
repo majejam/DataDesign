@@ -1,7 +1,9 @@
 <template>
   <div :class="scrollClass">
-    <div class="renderer" ref="renderer" :class="classes"></div>
-    <Loader />
+    <div class="renderer" ref="renderer" :class="classes">
+      <CurrentSong :name="$store.getters.getCurrentSong" />
+    </div>
+    <Loader v-if="!loaded" />
     <Header />
     <div>
       <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
@@ -33,6 +35,7 @@
 
 <script>
 import Header from '@/components/shared/Header.vue'
+import CurrentSong from '@/components/festival/CurrentSong.vue'
 import Loader from '@/components/Loader.vue'
 
 import Engine from '@/GL/Engine.js'
@@ -40,7 +43,7 @@ import Player from '@/GL/Player.js'
 import Bus from '@/utils/bus.js'
 
 export default {
-  components: { Header, Loader },
+  components: { Header, Loader, CurrentSong },
   name: 'Festival',
   data() {
     return {

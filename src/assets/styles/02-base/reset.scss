@@ -7,6 +7,10 @@
   user-select: none;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .cdp-copy-alert-success {
   display: none !important;
 }

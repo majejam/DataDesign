@@ -4,6 +4,7 @@ const state = {
   recentlyPlayed: [],
   currentPlaybackDevice: 0,
   playerInit: false,
+  currentSong: '',
   searchData: {
     artists: {
       items: [],
@@ -28,6 +29,9 @@ const getters = {
   getSearchData(state) {
     return state.searchData
   },
+  getCurrentSong(state) {
+    return state.currentSong
+  },
   getUserTop(state) {
     return state.userTop
   },
@@ -42,6 +46,9 @@ const mutations = {
   },
   setCurrentPlaybackDevice(state, data) {
     state.currentPlaybackDevice = data
+  },
+  setCurrentSong(state, data) {
+    state.currentSong = data
   },
   setSearchData(state, data) {
     state.searchData = data

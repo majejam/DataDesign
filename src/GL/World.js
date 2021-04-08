@@ -66,7 +66,7 @@ class World {
       })
       this.filters.updateFilters()
       this.currentFestival = this.festival
-    }, 100)
+    }, 3000)
   }
 
   /**
