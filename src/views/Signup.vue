@@ -118,8 +118,9 @@ export default {
     bottom: 0;
     left: 0;
     z-index: -1;
+    background-size: cover;
     background-image: url('../assets/images/noise.png');
-    opacity: 0.05;
+    opacity: 0.03;
   }
 }
 

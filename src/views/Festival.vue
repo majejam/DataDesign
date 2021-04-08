@@ -1,7 +1,7 @@
 <template>
   <div :class="scrollClass">
     <div class="renderer" ref="renderer" :class="classes"></div>
-    <Loader v-if="!loaded" />
+    <Loader />
     <Header />
     <div>
       <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
