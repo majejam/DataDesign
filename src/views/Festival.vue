@@ -1,7 +1,7 @@
 <template>
   <div :class="scrollClass">
     <div class="renderer" ref="renderer" :class="classes">
-      <CurrentSong :name="$store.getters.getCurrentSong" />
+      <CurrentSong v-if="loaded" :name="$store.getters.getCurrentSong" />
     </div>
     <Loader v-if="!loaded" />
     <Header />

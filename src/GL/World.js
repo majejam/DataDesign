@@ -101,7 +101,6 @@ class World {
     //document.body.appendChild(c)
     ctx.canvas.width = Engine.$app.screen.width
     ctx.canvas.height = Engine.$app.screen.height
-    console.log(Engine.$app.screen.width, Engine.$app.screen.height)
     const grd = ctx.createLinearGradient(0, 0, 1, Engine.$app.screen.height)
     grd.addColorStop(0, from)
     grd.addColorStop(0.5, middle)

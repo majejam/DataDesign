@@ -34,7 +34,7 @@ class GUI {
   }
 
   setFolder(name, parentFolder = null) {
-    this.gui.show()
+    //this.gui.show()
     if (this.folders[name]) return this.warn(`The folder "${name}" already exist`)
 
     if (!parentFolder) this.folders[name] = this.gui.addFolder(name)

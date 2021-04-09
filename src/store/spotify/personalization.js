@@ -56,7 +56,7 @@ const mutations = {
 
 const actions = {
   initPersonalization({ dispatch }) {
-    console.log('initPersonalization')
+    console.log('Personnalisation initialisation')
     dispatch('getUserTopArtists')
     dispatch('getUserTopTracks')
   },
@@ -70,7 +70,6 @@ const actions = {
       })
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data)
           commit('setTopArtist', res.data)
         } else {
           console.log('getTopTracks')
@@ -93,13 +92,11 @@ const actions = {
       .then(res => {
         if (res.status === 200) {
           commit('setTopTracks', res.data)
-          console.log('TOP TRACKS')
-          console.log(res.data.items)
           let ids = res.data.items.map(obj => {
             return obj.id
           })
           dispatch('getAudioFeatures', ids.toString())
-          commit('setTopIds', ids.slice(0, 5))
+          commit('setTopIds', ids)
           commit('setCurrentFestival', 'normal')
           //dispatch('getRecommendation', ids.slice(0, 5).toString())
         } else {
@@ -134,9 +131,7 @@ const actions = {
           const dataUniqueArtist = Array.from(new Set(data.map(a => a.artists[0].id))).map(id => {
             return data.find(a => a.artists[0].id === id)
           })
-          console.log(dataUniqueArtist)
           commit('setTopTracksFeatures', dataUniqueArtist)
-          //Bus.$emit('NewData')
           Bus.$emit('NewFestival')
         } else {
           console.log('getAudioFeaturesError')
@@ -147,8 +142,9 @@ const actions = {
       })
   },
   getRecommendation({ getters, commit, dispatch }, uris) {
+    dispatch('getTracks', uris)
     Vue.axios
-      .get(`https://api.spotify.com/v1/recommendations?limit=20&market=FR&seed_tracks=${uris}`, {
+      .get(`https://api.spotify.com/v1/recommendations?limit=20&min_energy=0.1&min_valence=0.1&market=FR&seed_tracks=${uris}`, {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + getters.getTokens['access_token'],
@@ -159,11 +155,9 @@ const actions = {
           Object.defineProperty(res.data, 'items', Object.getOwnPropertyDescriptor(res.data, 'tracks'))
           delete res.data['tracks']
           commit('setTopTracks', res.data)
-          console.log(res.data)
           let ids = res.data.items.map(obj => {
             return obj.id
           })
-          console.log(ids)
           commit('setCurrentFestival', 'recommended')
           dispatch('getAudioFeatures', ids.toString())
         } else {

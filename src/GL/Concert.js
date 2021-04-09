@@ -53,6 +53,7 @@ export default class Concert {
   init() {
     this.setEvents()
     this.createConcert()
+    console.log(this.$data, this.$data.artists[0].name, this.$data.name)
   }
 
   createConcert() {

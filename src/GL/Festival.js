@@ -135,6 +135,8 @@ export default class Festival {
     let count = 0
     let row = 0
 
+    console.groupCollapsed('Concerts infos')
+
     this.$concertsData.forEach((concert, index) => {
       let xPos = count > 0 ? baseOffset + Math.random() * randomOffset + this.concertPosition[index - 1].x + this.concertPosition[index - 1].width : this.festival.margin.x
       let yPos = 0
@@ -144,8 +146,8 @@ export default class Festival {
       } else {
         yPos = this.festival.margin.y
       }
-      let rWidth = 500 + ((1100 + Math.random() * 400) * concert.popularity) / 100
-      let rHeight = 300 + ((900 + Math.random() * 200) * concert.popularity) / 100
+      let rWidth = 500 + ((800 + Math.random() * 400) * concert.popularity) / 100
+      let rHeight = 300 + ((600 + Math.random() * 200) * concert.popularity) / 100
       this.concertPosition.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
       this.concerts.push(
         new Concert(this, concert, {
@@ -162,6 +164,8 @@ export default class Festival {
         count++
       }
     })
+
+    console.groupEnd()
   }
 
   sortConcert(array) {

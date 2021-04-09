@@ -138,6 +138,22 @@ const actions = {
         }
       })
   },
+
+  getTracks({ getters }, uris) {
+    Vue.axios
+      .get(`https://api.spotify.com/v1/tracks?ids=${uris}&market=FR`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + getters.getTokens['access_token'],
+        },
+      })
+      .then(res => {
+        console.log('Seed for recommendation was based on :')
+        res.data.tracks.forEach((track, index) => {
+          console.log(index, track.name, track.artists[0].name)
+        })
+      })
+  },
 }
 
 export default {

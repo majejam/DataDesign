@@ -7,7 +7,7 @@ class Player {
     this.currenturi = ''
     this.player = null
     this.hasInit = false
-    this.isAllowed = true
+    this.isAllowed = false
 
     this.status = {
       readyToInit: false,
@@ -133,7 +133,7 @@ class Player {
 
   mute() {}
 
-  changeTrackFade(uri) {
+  changeTrackFade(uri, artist) {
     this.currenturi = uri
     if (!this.status.hasInit) {
       console.warn('Player was not ready (might be demo mode)')
@@ -146,7 +146,7 @@ class Player {
 
     this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
-      Store.dispatch('playTrack', [uri]).then(() => {
+      Store.dispatch('playTracks', { uri: uri, artist: artist }).then(() => {
         const volume = Store.getters.getVolume
         this.setFadeVolume(volume, 50).then(() => {
           console.log('Volume set to normal')

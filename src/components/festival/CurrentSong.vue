@@ -24,6 +24,7 @@ export default {
   overflow: hidden;
   bottom: 50px;
   left: 50px;
+  opacity: 0;
 
   @include media('<sm') {
     width: 80%;
@@ -47,8 +48,7 @@ export default {
       transform: translateX(0%);
       opacity: 0;
     }
-    5% {
-      transform: translateX(0%);
+    10% {
       opacity: 1;
     }
     50% {
@@ -67,5 +67,13 @@ export default {
 }
 .song-enter, .song-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.song-enter-active {
+  transition: opacity 0.5s ease-in 10s;
+}
+
+.song-enter {
+  opacity: 1;
 }
 </style>
