@@ -16,7 +16,7 @@ export default class Person {
       animation: null,
       color: this.$opt.color ? this.$opt.color : 0xff87f0,
       scale: 0.8,
-      gender: Math.round(Math.random()) ? 'man' : 'man',
+      gender: Math.round(Math.random()) ? 'girl' : 'man',
       size: {
         width: this.$opt.width ? this.$opt.width : 200,
         height: this.$opt.height ? this.$opt.height : 200,
@@ -223,7 +223,7 @@ export default class Person {
     )
 
     if (Math.round(this.person.position.x) == Math.round(this.person.target.x)) {
-      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.2)
+      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.6)
     } else {
       this.person.acceleration.x = this.lerp(this.person.acceleration.x, this.person.velocity.x, this.person.delta.x)
     }

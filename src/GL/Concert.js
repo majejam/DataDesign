@@ -247,18 +247,6 @@ export default class Concert {
     }
   }
 
-  createMan(x, y) {
-    // create an animated sprite
-    this.animatedCapguy = new Engine.PIXI.AnimatedSprite(Engine.spritesheet.animations['dancingman'])
-    // set speed, start playback and add it to the stage
-    this.animatedCapguy.animationSpeed = this.$data.audio_features.danceability / 3
-    this.animatedCapguy.play()
-    this.animatedCapguy.position.x = x
-    this.animatedCapguy.position.y = y
-    this.concert.crowd.container.addChild(this.animatedCapguy)
-    return this.animatedCapguy
-  }
-
   addChild(child) {
     this.concert.container.addChild(child)
   }

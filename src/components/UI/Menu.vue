@@ -7,7 +7,7 @@
       </button>
       <button v-if="$store.getters.getCurrentFestival !== 'normal'" class="Menu__container Menu__shuffle grid grid-nowrap" @click="recommendedConcert">
         <span class="Menu__title ui-font">Shuffle</span>
-        <img class="Menu__caret" src="images/star.svg" alt="caret icon" />
+        <img class="Menu__star" src="images/star.svg" alt="caret icon" />
       </button>
       <div class="Menu__dropdown grid grid-column grid-end">
         <div v-if="!demo" class="Menu__dropdown__volume">
