@@ -7,7 +7,7 @@ class Player {
     this.currenturi = ''
     this.player = null
     this.hasInit = false
-    this.isAllowed = false
+    this.isAllowed = true
 
     this.status = {
       readyToInit: false,
