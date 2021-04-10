@@ -188,13 +188,10 @@ class Player {
       this.status.hasInit = false
       router.push('Demo')
     })
+
     this.player.addListener('playback_error', ({ message }) => {
       console.warn(message)
     })
-
-    // Playback status updates
-    //this.player.addListener('player_state_changed')
-
     // Ready
     this.player.addListener('ready', this._playerReady)
 
@@ -202,12 +199,10 @@ class Player {
     this.player.addListener('not_ready', ({ device_id }) => {
       console.log('Device ID has gone offline', device_id)
     })
-    /*
-    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
-      console.log('Currently Playing', current_track)
-      console.log('Position in Song', position)
-      console.log('Duration of Song', duration)
-    })*/
+
+    this.player.addListener('player_state_changed', ({ track_window: { current_track } }) => {
+      if (Store.getters.getCurrentSong.id !== current_track.id) Store.dispatch('getTrack', current_track.id)
+    })
   }
 }
 

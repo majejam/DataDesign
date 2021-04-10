@@ -289,7 +289,7 @@ export default class Festival {
     if (data[current].$data.name !== this.festival.currentConcertName) {
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri, data[current].$data.artists[0].id)
       this.festival.currentConcertName = data[current].$data.name
-      Store.commit('setCurrentSong', this.festival.currentConcertName + ' - ' + data[current].$data.artists[0].name)
+      Store.commit('setCurrentSong', data[current].$data)
       console.log('Now playing : ', this.festival.currentConcertName, data[current].$data)
     }
   }

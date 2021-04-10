@@ -79,6 +79,9 @@ class Engine {
   setup() {
     // get a reference to the sprite sheet we've just loaded:
     this.spritesheet = this.loader.resources['spritesheet/spritesheet.json']
+
+    this.animations = this.spritesheet.spritesheet.animations
+    this.textures = this.spritesheet.spritesheet.textures
     console.log('Sprite loaded !', this.spritesheet)
     World.init(this.$el)
   }

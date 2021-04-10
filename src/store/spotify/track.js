@@ -68,13 +68,11 @@ const actions = {
         },
       })
       .then(res => {
-        console.log(res.data.tracks)
         let tracks_uri = res.data.tracks.map(obj => {
           return obj.uri
         })
         tracks_uri = [opt.uri, ...tracks_uri]
         tracks_uri = [...new Set(tracks_uri)]
-        console.log(tracks_uri)
         dispatch('playTrack', tracks_uri)
       })
   },
@@ -148,10 +146,23 @@ const actions = {
         },
       })
       .then(res => {
-        console.log('Seed for recommendation was based on :')
+        console.log('Seed for recommendation was based on :', res)
         res.data.tracks.forEach((track, index) => {
           console.log(index, track.name, track.artists[0].name)
         })
+      })
+  },
+
+  getTrack({ getters, commit }, uris) {
+    Vue.axios
+      .get(`https://api.spotify.com/v1/tracks?ids=${uris}&market=FR`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + getters.getTokens['access_token'],
+        },
+      })
+      .then(res => {
+        commit('setCurrentSong', res.data.tracks[0])
       })
   },
 }

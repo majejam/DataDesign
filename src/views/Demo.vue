@@ -1,33 +1,26 @@
 <template>
   <div :class="scrollClass">
     <div class="renderer" ref="renderer"></div>
+    <CurrentSong v-if="loaded" :song="$store.getters.getCurrentSong" />
+    <Menu v-if="loaded" :song="$store.getters.getCurrentSong" :demo="true" />
     <Loader v-if="!loaded" />
-    <Header />
-    <pre>
-    TOP TRACKS
-  {{ this.$store.getters.getTopTracksFeatures }}
-
-  </pre
-    >
   </div>
 </template>
 
 <script>
-import Header from '@/components/shared/Header.vue'
+import CurrentSong from '@/components/UI/CurrentSong.vue'
+import Menu from '@/components/UI/Menu.vue'
 import Loader from '@/components/Loader.vue'
 
 import Engine from '@/GL/Engine.js'
-import Player from '@/GL/Player.js'
 import DemoData from '@/assets/demo/state.json'
 import Bus from '@/utils/bus.js'
 
 export default {
-  components: { Header, Loader },
+  components: { Loader, CurrentSong, Menu },
   name: 'Demo',
   data() {
     return {
-      volume: this.$store.getters.getVolume,
-      targetVolume: 0,
       loaded: false,
     }
   },
@@ -38,9 +31,6 @@ export default {
     Engine.init(this.$refs.renderer)
   },
   methods: {
-    setVolume(_e) {
-      Player.setGlobalVolume(_e.target.value)
-    },
     setLoaded() {
       this.loaded = true
     },

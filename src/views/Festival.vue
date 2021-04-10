@@ -1,41 +1,15 @@
 <template>
   <div :class="scrollClass">
-    <div class="renderer" ref="renderer" :class="classes">
-      <CurrentSong v-if="loaded" :name="$store.getters.getCurrentSong" />
-    </div>
+    <div class="renderer" ref="renderer" :class="classes"></div>
+    <CurrentSong v-if="loaded" :song="$store.getters.getCurrentSong" />
+    <Menu v-if="loaded" :song="$store.getters.getCurrentSong" />
     <Loader v-if="!loaded" />
-    <Header />
-    <div>
-      <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
-      <label for="volume">Volume</label>
-    </div>
-
-    <img v-if="$store.getters.getUser.images.length" :src="$store.getters.getUser.images[0].url" alt="" srcset="" />
-    <div class="cta-font" v-if="debug">
-      <pre>
- USER INFO
-    {{ this.$store.getters.getUser }}
-  </pre
-      >
-      <pre>
-    TOP ARTIST
-  {{ this.$store.getters.getTopArtist }}
-
-  </pre
-      >
-      <pre>
-    TOP TRACKS
-  {{ this.$store.getters.getTopTracksFeatures }}
-
-  </pre
-      >
-    </div>
   </div>
 </template>
 
 <script>
-import Header from '@/components/shared/Header.vue'
-import CurrentSong from '@/components/festival/CurrentSong.vue'
+import CurrentSong from '@/components/UI/CurrentSong.vue'
+import Menu from '@/components/UI/Menu.vue'
 import Loader from '@/components/Loader.vue'
 
 import Engine from '@/GL/Engine.js'
@@ -43,13 +17,10 @@ import Player from '@/GL/Player.js'
 import Bus from '@/utils/bus.js'
 
 export default {
-  components: { Header, Loader, CurrentSong },
+  components: { Loader, CurrentSong, Menu },
   name: 'Festival',
   data() {
     return {
-      volume: this.$store.getters.getVolume,
-      targetVolume: 0,
-      debug: false,
       grabbing: false,
       loaded: false,
     }
@@ -61,7 +32,6 @@ export default {
     this.events()
 
     if (this.$store.getters.getPlayerInit) {
-      console.log('Already init')
       Engine.init(this.$refs.renderer)
     } else {
       Bus.$on('PlayerInit', () => {
@@ -70,10 +40,6 @@ export default {
     }
   },
   methods: {
-    setVolume(_e) {
-      this.volume = parseFloat(_e.target.value)
-      Player.setGlobalVolume(parseFloat(this.volume))
-    },
     changeCursor(_e) {
       this.grabbing = _e
     },

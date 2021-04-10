@@ -84,3 +84,11 @@
     text-align: center;
   }
 }
+
+.ui-font {
+  color: var(--neutral-white);
+  font-family: var(--font-secondary);
+  font-size: rem(14px);
+  font-weight: 500;
+  letter-spacing: 0em;
+}

@@ -108,6 +108,13 @@ export default class Draggable {
    * Event functions
    */
 
+  resize() {
+    this.viewport = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    }
+  }
+
   mouseDown(_e) {
     this.cursor.hold = true
     this.startCursor(_e)
