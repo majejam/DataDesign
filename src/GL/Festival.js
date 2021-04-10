@@ -53,7 +53,7 @@ export default class Festival {
     this.createConcerts()
     this.createFestivalGrounds()
     this.positionTreeRandom(100, 2500, 1.2)
-    this.generatePersons(200)
+    this.generatePersons(2000)
 
     World.addChild(this.festival.container)
   }
