@@ -28,7 +28,7 @@ export default class Festival {
       },
       margin: {
         x: this.$opt.marginx ? this.$opt.marginx : 500,
-        y: this.$opt.marginy ? this.$opt.marginy : 500,
+        y: this.$opt.marginy ? this.$opt.marginy : 700,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,
@@ -52,6 +52,8 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
+    this.positionSideTreeAround(100)
+    this.positionTreeAround(100)
     this.positionTreeRandom(100, 2500, 1.2)
     this.generatePersons(200)
 
@@ -77,6 +79,9 @@ export default class Festival {
     this.festival.graphics.beginFill(this.festival.color, 0)
     this.festival.graphics.drawRect(0, 0, this.festival.container.width + this.festival.margin.x * 2, this.festival.container.height + this.festival.margin.y * 2)
     this.festival.graphics.endFill()
+
+    this.festival.size.width = this.festival.container.width
+    this.festival.size.height = this.festival.container.height
 
     //this.festival.graphics.visible = false
     this.festival.graphics.zIndex = 1
@@ -127,6 +132,33 @@ export default class Festival {
       count++
     }
     console.log('Placed ', nbPlaced, ' tree in ', count, ' tries')
+  }
+  positionTreeAround(numberOfTree) {
+    for (let index = 0; index < numberOfTree; index++) {
+      if (index % 2) {
+        let xPos = Math.random() * (this.festival.size.width + this.festival.margin.x * 2)
+        let yPos = Math.random() * this.festival.margin.y * 0.5
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      } else {
+        let xPos = Math.random() * (this.festival.size.width + this.festival.margin.x * 2)
+        let yPos = this.festival.size.height + Math.random() * this.festival.margin.y
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      }
+    }
+  }
+
+  positionSideTreeAround(numberOfTree) {
+    for (let index = 0; index < numberOfTree; index++) {
+      if (index % 2) {
+        let xPos = Math.random() * this.festival.margin.x
+        let yPos = 300 + Math.random() * this.festival.size.height - 300
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      } else {
+        let xPos = this.festival.size.width + Math.random() * this.festival.margin.x * 2
+        let yPos = 300 + Math.random() * this.festival.size.height - 300
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      }
+    }
   }
 
   positionConcertRow(concertPerRow, baseOffset, randomOffset) {

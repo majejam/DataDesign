@@ -20,7 +20,6 @@ export default {
   },
   methods: {
     afterEnter() {
-      console.log(this.$refs.container.offsetWidth, this.$refs.container.offsetWidth - 32, this.$refs.text.offsetWidth)
       if (this.$refs.container.offsetWidth - 32 < this.$refs.text.offsetWidth) {
         this.isFull = true
       } else {
@@ -130,14 +129,6 @@ export default {
   transition: opacity 0.5s ease-in 0s;
 }
 .song-enter, .song-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-
-.song-enter-active {
-  //transition: opacity 0.5s ease-in 10s;
-}
-
-.song-enter {
   opacity: 0;
 }
 </style>

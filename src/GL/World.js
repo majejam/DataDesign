@@ -121,6 +121,7 @@ class World {
     this.world.container.zIndex = 2
 
     this.world.container.scale.x = this.world.container.scale.y = 1
+    console.log('World dimensions are : ', this.world.container.width, this.world.container.height)
   }
 
   addChild(child) {

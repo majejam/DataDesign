@@ -19,8 +19,7 @@ export default class Filters {
 
     this.setEvents()
 
-    this.$container.filters = [this.blur, this.tilt, this.crt]
-    Engine.$app.stage.filters = [this.color]
+    Engine.$app.stage.filters = [this.blur, this.tilt, this.crt, this.color]
   }
 
   updateFilters() {
