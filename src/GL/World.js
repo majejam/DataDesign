@@ -141,7 +141,6 @@ class World {
   update() {
     this.updateWorldPosition()
     this.currentFestival.getNearestConcert(this.getTruePosition().x, this.getTruePosition().y)
-    console.log(this.getTruePosition().x, this.normalizeWorldPos().x)
   }
 
   /**
