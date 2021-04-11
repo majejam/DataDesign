@@ -101,10 +101,13 @@ export default class Person {
     this.person.container.removeChild(this.person.animation)
 
     if (!this.selectedConcert.isSceneRight()) {
-      this.person.animation = new Engine.PIXI.Sprite(Engine.textures[this.person.gender + 'leftwalk_01.png'])
+      this.person.animation = new Engine.PIXI.AnimatedSprite(Engine.animations['girl' + 'leftdancing'])
+      this.person.animation.play()
     } else {
       this.person.animation = new Engine.PIXI.Sprite(Engine.textures[this.person.gender + 'rightwalk_01.png'])
     }
+    console.log(this.selectedConcert.$data.audio_features.danceability / 10)
+    this.person.animation.animationSpeed = this.selectedConcert.$data.audio_features.danceability / 10
     this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
     this.person.container.addChild(this.person.animation)
   }

@@ -27,7 +27,7 @@
           </div>
           <Section
             data-scroll
-            data-scroll-speed="1"
+            data-scroll-speed="3"
             right
             title="Your own festival"
             description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it?<br /><br/>
@@ -38,7 +38,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
         <div class="relative grid grid-between">
           <Section
             data-scroll
-            data-scroll-speed="1"
+            data-scroll-speed="3"
             title="Discover your next musical crushes"
             description="You might be one click away from your new favorite music. In Discovery World, each scene
           hosts an artist carefully selected based on your tastes.<br /><br /> Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
@@ -54,7 +54,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
           </div>
           <Section
             data-scroll
-            data-scroll-speed="1"
+            data-scroll-speed="3"
             title="How it works"
             description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months.<br/><br/>Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br/><br/>
 Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your top songs are combined into a unique seed. The “Discovery world” is filled by songs unknown to you that are the more relevant to the seed."
@@ -226,7 +226,7 @@ export default {
 
       @include media('<sm') {
         width: 100%;
-        display: none;
+        display: none !important;
       }
 
       &--single {
@@ -237,7 +237,7 @@ export default {
 
       &--responsive {
         @include media('<sm') {
-          display: block;
+          display: block !important;
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
@@ -251,6 +251,11 @@ export default {
   &_credit {
     height: 50vh;
     width: 100%;
+
+    @include media('<sm') {
+      height: 75vh;
+    }
+
     p {
       text-align: center;
     }

@@ -4,11 +4,13 @@
     <CurrentSong v-if="loaded" :song="$store.getters.getCurrentSong" />
     <Menu v-if="loaded" :song="$store.getters.getCurrentSong" />
     <Loader v-if="!loaded" />
+    <Pannel v-if="loaded" />
   </div>
 </template>
 
 <script>
 import CurrentSong from '@/components/UI/CurrentSong.vue'
+import Pannel from '@/components/UI/Pannel.vue'
 import Menu from '@/components/UI/Menu.vue'
 import Loader from '@/components/Loader.vue'
 
@@ -17,7 +19,7 @@ import Player from '@/GL/Player.js'
 import Bus from '@/utils/bus.js'
 
 export default {
-  components: { Loader, CurrentSong, Menu },
+  components: { Loader, CurrentSong, Pannel, Menu },
   name: 'Festival',
   data() {
     return {
