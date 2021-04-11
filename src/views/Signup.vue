@@ -30,9 +30,8 @@
             data-scroll-speed="1"
             right
             title="Your own festival"
-            description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
-          In Festivaly, you get the chance to roam between all your top artists stages in a cute isometric world.
-        "
+            description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it?<br /><br/>
+In Festivaly, vibe on your favorite artist stages within a cute isometric world!        "
           />
         </div>
 
@@ -42,7 +41,7 @@
             data-scroll-speed="1"
             title="Discover your next musical crushes"
             description="You might be one click away from your new favorite music. In Discovery World, each scene
-          hosts an artist carefully selected based on your tastes. Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
+          hosts an artist carefully selected based on your tastes.<br /><br /> Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
           />
           <div class="section_jumbotron_images grid">
             <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
@@ -63,11 +62,11 @@ Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your t
           />
         </div>
         <div class="section section_credit grid grid-column">
-          <h2 class="section-title" data-scroll data-scroll-speed="3">Credit</h2>
+          <h2 class="section-title" data-scroll data-scroll-speed="3">Credits</h2>
           <p class="section-description" data-scroll data-scroll-speed="4">
-            Thomas Lacroix, developer <br />
-            Morgane Lapisardi, illustrator<br />
-            Yoan Gross, designer
+            Thomas Lacroix, Developer <br />
+            Morgane Lapisardi, Illustrator<br />
+            Yoan Gross, Designer
           </p>
         </div>
       </div>
@@ -209,6 +208,7 @@ export default {
         }
         span {
           margin-top: 8px;
+          font-size: rem(14px);
           font-family: var(--font-secondary);
           font-weight: 500;
           line-height: rem(18px);

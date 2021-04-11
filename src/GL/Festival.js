@@ -104,7 +104,7 @@ export default class Festival {
   }
 
   createConcerts() {
-    this.positionConcertRow(5, 400, 200)
+    this.positionConcertRow(5, 500, 200)
   }
 
   positionTreeRandom(numberOfTree, maxTries, overlay) {
