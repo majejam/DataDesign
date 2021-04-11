@@ -177,9 +177,12 @@ class World {
   }
 
   getTruePosition() {
+    /**
+     * We only devide height by 1.5 to skew the final position in order to have a better feel for the nearest concert
+     */
     return {
       x: 1 - (this.world.container.position.x + this.world.container.width / 2 - Engine.$app.screen.width / 2) / this.world.container.width,
-      y: 1 - (this.world.container.position.y + this.world.container.height / 2 - Engine.$app.screen.height / 2) / this.world.container.height,
+      y: 1 - (this.world.container.position.y + this.world.container.height / 2 - Engine.$app.screen.height / 1.25) / this.world.container.height,
     }
   }
 

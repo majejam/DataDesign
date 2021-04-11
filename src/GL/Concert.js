@@ -300,9 +300,17 @@ export default class Concert {
   }
 
   getMiddlePosition() {
-    return {
-      x: this.concert.position.x + this.concert.size.width / 2,
-      y: this.concert.position.y + this.concert.size.height / 2,
+    // return the position of the scene
+    if (this.isSceneRight()) {
+      return {
+        x: this.concert.position.x + this.concert.size.width - this.concert.size.width / 4,
+        y: this.concert.position.y + this.concert.size.height / 2,
+      }
+    } else {
+      return {
+        x: this.concert.position.x + this.concert.size.width / 4,
+        y: this.concert.position.y + this.concert.size.height / 2,
+      }
     }
   }
 
