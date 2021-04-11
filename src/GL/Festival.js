@@ -318,7 +318,7 @@ export default class Festival {
       }
       if (tmp > highest) highest = tmp
     }
-    if (data[current].$data.name !== this.festival.currentConcertName) {
+    if (typeof current !== 'undefined' && data[current].$data.name !== this.festival.currentConcertName) {
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri, data[current].$data.artists[0].id)
       this.festival.currentConcertName = data[current].$data.name
       Store.commit('setCurrentSong', data[current].$data)
