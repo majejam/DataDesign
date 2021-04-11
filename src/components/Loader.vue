@@ -157,9 +157,12 @@ export default {
   }
 }
 
-.appear-enter-active,
-.appear-leave-active {
+.appear-enter-active {
   transition: opacity 0.5s ease-in 1s;
+}
+
+.appear-leave-active {
+  transition: opacity 0.5s ease-in 0s;
 }
 .appear-enter, .appear-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

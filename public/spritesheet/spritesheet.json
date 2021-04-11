@@ -2,7 +2,7 @@
 
 "blasters.png":
 {
-	"frame": {"x":1200,"y":400,"w":353,"h":313},
+	"frame": {"x":0,"y":0,"w":353,"h":313},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":313},
@@ -10,7 +10,7 @@
 },
 "blasters_r.png":
 {
-	"frame": {"x":1553,"y":400,"w":353,"h":313},
+	"frame": {"x":353,"y":0,"w":353,"h":313},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":313},
@@ -18,7 +18,7 @@
 },
 "character.png":
 {
-	"frame": {"x":0,"y":0,"w":200,"h":200},
+	"frame": {"x":706,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -26,7 +26,7 @@
 },
 "floor.png":
 {
-	"frame": {"x":435,"y":713,"w":512,"h":512},
+	"frame": {"x":906,"y":0,"w":512,"h":512},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":512},
@@ -34,7 +34,7 @@
 },
 "girlleftdancing_01.png":
 {
-	"frame": {"x":200,"y":0,"w":200,"h":200},
+	"frame": {"x":1418,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -42,7 +42,7 @@
 },
 "girlleftdancing_02.png":
 {
-	"frame": {"x":400,"y":0,"w":200,"h":200},
+	"frame": {"x":1618,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -50,7 +50,7 @@
 },
 "girlleftdancing_03.png":
 {
-	"frame": {"x":600,"y":0,"w":200,"h":200},
+	"frame": {"x":0,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -58,7 +58,7 @@
 },
 "girlleftdancing_04.png":
 {
-	"frame": {"x":800,"y":0,"w":200,"h":200},
+	"frame": {"x":200,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -66,7 +66,7 @@
 },
 "girlleftdancing_05.png":
 {
-	"frame": {"x":1000,"y":0,"w":200,"h":200},
+	"frame": {"x":400,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -74,7 +74,7 @@
 },
 "girlleftdancing_06.png":
 {
-	"frame": {"x":1200,"y":0,"w":200,"h":200},
+	"frame": {"x":600,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -82,7 +82,7 @@
 },
 "girlleftwalk_01.png":
 {
-	"frame": {"x":1400,"y":0,"w":200,"h":200},
+	"frame": {"x":800,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -90,7 +90,7 @@
 },
 "girlleftwalk_02.png":
 {
-	"frame": {"x":1600,"y":0,"w":200,"h":200},
+	"frame": {"x":1000,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -98,7 +98,7 @@
 },
 "girlleftwalk_03.png":
 {
-	"frame": {"x":0,"y":200,"w":200,"h":200},
+	"frame": {"x":1200,"y":512,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -106,7 +106,55 @@
 },
 "girlleftwalk_04.png":
 {
-	"frame": {"x":200,"y":200,"w":200,"h":200},
+	"frame": {"x":1400,"y":512,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_01.png":
+{
+	"frame": {"x":1600,"y":512,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_02.png":
+{
+	"frame": {"x":0,"y":712,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_03.png":
+{
+	"frame": {"x":200,"y":712,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_04.png":
+{
+	"frame": {"x":400,"y":712,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_05.png":
+{
+	"frame": {"x":600,"y":712,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"girlrightdancing_06.png":
+{
+	"frame": {"x":800,"y":712,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -114,7 +162,7 @@
 },
 "girlrightwalk_01.png":
 {
-	"frame": {"x":400,"y":200,"w":200,"h":200},
+	"frame": {"x":1000,"y":712,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -122,7 +170,7 @@
 },
 "girlrightwalk_02.png":
 {
-	"frame": {"x":600,"y":200,"w":200,"h":200},
+	"frame": {"x":1200,"y":712,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -130,7 +178,7 @@
 },
 "girlrightwalk_03.png":
 {
-	"frame": {"x":800,"y":200,"w":200,"h":200},
+	"frame": {"x":1400,"y":712,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -138,7 +186,55 @@
 },
 "girlrightwalk_04.png":
 {
-	"frame": {"x":1000,"y":200,"w":200,"h":200},
+	"frame": {"x":1600,"y":712,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_01.png":
+{
+	"frame": {"x":0,"y":912,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_02.png":
+{
+	"frame": {"x":200,"y":912,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_03.png":
+{
+	"frame": {"x":400,"y":912,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_04.png":
+{
+	"frame": {"x":600,"y":912,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_05.png":
+{
+	"frame": {"x":800,"y":912,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manleftdancing_06.png":
+{
+	"frame": {"x":1000,"y":912,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -146,7 +242,7 @@
 },
 "manleftwalk_01.png":
 {
-	"frame": {"x":1200,"y":200,"w":200,"h":200},
+	"frame": {"x":1200,"y":912,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -154,7 +250,7 @@
 },
 "manleftwalk_02.png":
 {
-	"frame": {"x":1400,"y":200,"w":200,"h":200},
+	"frame": {"x":1400,"y":912,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -162,7 +258,7 @@
 },
 "manleftwalk_03.png":
 {
-	"frame": {"x":1600,"y":200,"w":200,"h":200},
+	"frame": {"x":1600,"y":912,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -170,7 +266,55 @@
 },
 "manleftwalk_04.png":
 {
-	"frame": {"x":0,"y":400,"w":200,"h":200},
+	"frame": {"x":0,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_01.png":
+{
+	"frame": {"x":200,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_02.png":
+{
+	"frame": {"x":400,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_03.png":
+{
+	"frame": {"x":600,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_04.png":
+{
+	"frame": {"x":800,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_05.png":
+{
+	"frame": {"x":1000,"y":1112,"w":200,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200}
+},
+"manrightdancing_06.png":
+{
+	"frame": {"x":1200,"y":1112,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -178,7 +322,7 @@
 },
 "manrightwalk_01.png":
 {
-	"frame": {"x":200,"y":400,"w":200,"h":200},
+	"frame": {"x":1400,"y":1112,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -186,7 +330,7 @@
 },
 "manrightwalk_02.png":
 {
-	"frame": {"x":400,"y":400,"w":200,"h":200},
+	"frame": {"x":1600,"y":1112,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -194,7 +338,7 @@
 },
 "manrightwalk_03.png":
 {
-	"frame": {"x":600,"y":400,"w":200,"h":200},
+	"frame": {"x":0,"y":1312,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -202,7 +346,7 @@
 },
 "manrightwalk_04.png":
 {
-	"frame": {"x":800,"y":400,"w":200,"h":200},
+	"frame": {"x":200,"y":1312,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -210,7 +354,7 @@
 },
 "screen.png":
 {
-	"frame": {"x":1164,"y":1837,"w":745,"h":656},
+	"frame": {"x":400,"y":1312,"w":745,"h":656},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":745,"h":656},
@@ -218,7 +362,7 @@
 },
 "screen_right.png":
 {
-	"frame": {"x":697,"y":1265,"w":683,"h":572},
+	"frame": {"x":1145,"y":1312,"w":683,"h":572},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":683,"h":572},
@@ -226,7 +370,7 @@
 },
 "stand_left.png":
 {
-	"frame": {"x":0,"y":1265,"w":697,"h":491},
+	"frame": {"x":0,"y":1968,"w":697,"h":491},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":697,"h":491},
@@ -234,7 +378,7 @@
 },
 "stand_right.png":
 {
-	"frame": {"x":947,"y":713,"w":630,"h":470},
+	"frame": {"x":697,"y":1968,"w":630,"h":470},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":630,"h":470},
@@ -242,7 +386,7 @@
 },
 "test.png":
 {
-	"frame": {"x":1000,"y":400,"w":200,"h":200},
+	"frame": {"x":1327,"y":1968,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
@@ -250,7 +394,7 @@
 },
 "tree.png":
 {
-	"frame": {"x":0,"y":1837,"w":578,"h":781},
+	"frame": {"x":0,"y":2459,"w":578,"h":781},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":578,"h":781},
@@ -258,7 +402,7 @@
 },
 "tree_big_heavy.png":
 {
-	"frame": {"x":578,"y":1837,"w":586,"h":781},
+	"frame": {"x":578,"y":2459,"w":586,"h":781},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":586,"h":781},
@@ -266,7 +410,7 @@
 },
 "tree_small_heavy.png":
 {
-	"frame": {"x":0,"y":713,"w":435,"h":552},
+	"frame": {"x":1164,"y":2459,"w":435,"h":552},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":435,"h":552},
@@ -275,8 +419,11 @@
 "animations": {
 	"girlleftdancing": ["girlleftdancing_01.png","girlleftdancing_02.png","girlleftdancing_03.png","girlleftdancing_04.png","girlleftdancing_05.png","girlleftdancing_06.png"],
 	"girlleftwalk": ["girlleftwalk_01.png","girlleftwalk_02.png","girlleftwalk_03.png","girlleftwalk_04.png"],
+	"girlrightdancing": ["girlrightdancing_01.png","girlrightdancing_02.png","girlrightdancing_03.png","girlrightdancing_04.png","girlrightdancing_05.png","girlrightdancing_06.png"],
 	"girlrightwalk": ["girlrightwalk_01.png","girlrightwalk_02.png","girlrightwalk_03.png","girlrightwalk_04.png"],
+	"manleftdancing": ["manleftdancing_01.png","manleftdancing_02.png","manleftdancing_03.png","manleftdancing_04.png","manleftdancing_05.png","manleftdancing_06.png"],
 	"manleftwalk": ["manleftwalk_01.png","manleftwalk_02.png","manleftwalk_03.png","manleftwalk_04.png"],
+	"manrightdancing": ["manrightdancing_01.png","manrightdancing_02.png","manrightdancing_03.png","manrightdancing_04.png","manrightdancing_05.png","manrightdancing_06.png"],
 	"manrightwalk": ["manrightwalk_01.png","manrightwalk_02.png","manrightwalk_03.png","manrightwalk_04.png"]
 },
 "meta": {
@@ -284,8 +431,8 @@
 	"version": "1.0",
 	"image": "spritesheet.png",
 	"format": "RGBA8888",
-	"size": {"w":1909,"h":2618},
+	"size": {"w":1828,"h":3240},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0a85be0fa29a18b3baa505538741825a:36c58e33bf28989066dc45f0b909bd20:729adc6043343cfda41c447ce8f464d6$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a31e947ad72f7f513a30a5544c9b598d:aca0962d22738b7957b88ff05ee7ad9d:729adc6043343cfda41c447ce8f464d6$"
 }
 }
