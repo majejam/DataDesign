@@ -7,7 +7,7 @@
         <div class="grid grid-between">
           <div data-scroll data-scroll-speed="3" class="section section_jumbotron grid grid-column grid-start">
             <h1 class="h1-title">Festivaly.</h1>
-            <p class="main-description">Experience your musical festival. Curated by your Spotify tastes.</p>
+            <p class="main-description">Experience your musical festival. Discover your next musical crushes. Curated by your Spotify tastes.</p>
             <div class="section_jumbotron_button grid grid-between grid-start">
               <div class="grid grid-column section_jumbotron_button--single">
                 <Button primary @click.native="signIn()">Discover your festival</Button>
@@ -29,7 +29,7 @@
             data-scroll
             data-scroll-speed="3"
             right
-            title="The concept"
+            title="Your own festival"
             description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
           In Festivaly, you get the chance to roam between all your top artists stages in a cute isometric world.
         "
@@ -40,15 +40,27 @@
           <Section
             data-scroll
             data-scroll-speed="3"
-            title="How it works"
-            description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months. <br /><br />
-          Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br />
-          <br />
-          Songs you love are then played through Spotify Web Playback SDK."
+            title="Discover your next musical crushes"
+            description="You might be one click away from your new favorite music. In Discovery World, each scene
+          hosts an artist carefully selected based on your tastes. Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
           />
           <div class="section_jumbotron_images grid">
             <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
           </div>
+        </div>
+
+        <div class="grid grid-between">
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
+          </div>
+          <Section
+            data-scroll
+            data-scroll-speed="3"
+            title="How it works"
+            description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months.<br/><br/>Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br/><br/>
+Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your top songs are combined into a unique seed. The “Discovery world” is filled by songs unknown to you that are the more relevant to the seed."
+            right
+          />
         </div>
         <div class="section section_credit grid grid-column">
           <h2 class="section-title" data-scroll data-scroll-speed="3">Credit</h2>
@@ -104,9 +116,9 @@ export default {
     setTimeout(() => {
       this.init()
 
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.scroll.update()
-      })
+      }, 500)
     }, 100)
   },
 }

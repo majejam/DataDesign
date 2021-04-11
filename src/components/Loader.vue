@@ -28,6 +28,18 @@ export default {
   z-index: 10;
   overflow: hidden;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-image: url('../assets/images/noise.png');
+    opacity: 0.05;
+  }
+
   &__image {
     animation: 30s linear 0s slidein infinite;
 

@@ -6,10 +6,13 @@
         <img class="Menu__caret" src="images/caret.svg" alt="caret icon" />
       </button>
       <button v-if="$store.getters.getCurrentFestival !== 'normal'" class="Menu__container Menu__shuffle grid grid-nowrap" @click="recommendedConcert">
-        <span class="Menu__title ui-font">Shuffle</span>
+        <span class="Menu__title ui-font">New Discovery World</span>
         <img class="Menu__star" src="images/star.svg" alt="caret icon" />
       </button>
       <div class="Menu__dropdown grid grid-column grid-end">
+        <button v-if="!demo && $store.getters.getCurrentFestival !== 'normal'" class="ui-font ui-btn-mobile grid grid-nowrap" @click.prevent="recommendedConcert">
+          New discovery world <img class="Menu__dropdown__signout__icon" src="images/star.svg" alt="logout icon" />
+        </button>
         <div v-if="!demo" class="Menu__dropdown__volume">
           <label for="volume" class="ui-font">Volume</label>
           <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
@@ -124,8 +127,13 @@ export default {
 
   &__shuffle {
     position: absolute;
+    white-space: nowrap;
     top: 0;
     right: calc(100% + 8px);
+
+    @include media('<sm') {
+      display: none !important;
+    }
   }
 
   &__dropdown {
@@ -196,6 +204,15 @@ export default {
 
     .Menu__caret {
       transform: rotate(-180deg);
+    }
+  }
+
+  .ui-btn-mobile {
+    display: none;
+    padding: 0 0 10px 0;
+
+    @include media('<sm') {
+      display: flex;
     }
   }
 

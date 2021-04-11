@@ -8,7 +8,7 @@ class GUI {
 
     this.datas = {}
 
-    this.gui.show()
+    this.gui.hide()
 
     this.BlendFunction = {
       SKIP: 0,

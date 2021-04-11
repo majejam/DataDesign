@@ -149,9 +149,16 @@ export default class Concert {
   }
 
   createName(skew) {
+    const string = this.substr(this.$data.artists[0].name)
+    let fontSize = 48
+
+    if (this.lgstwrdstr(string) * 30 > this.screen.bounds.w * 0.9) {
+      fontSize = 30
+    }
+
     const style = new Engine.PIXI.TextStyle({
       breakWords: true,
-      fontSize: 48,
+      fontSize: fontSize,
       fontFamily: 'Noto Sans',
       wordWrap: true,
       wordWrapWidth: this.screen.bounds.w * 0.9,
@@ -159,7 +166,8 @@ export default class Concert {
       align: 'center',
     })
 
-    let text = new Engine.PIXI.Text(this.substr(this.$data.artists[0].name), style)
+    let text = new Engine.PIXI.Text(string, style)
+
     text.position.x = this.screen.bounds.w / 2 - text.width / 3
 
     if (this.isSceneRight()) {
@@ -173,6 +181,13 @@ export default class Concert {
     }
 
     return text
+  }
+
+  lgstwrdstr(str) {
+    let longestWord = str.split(' ').sort(function (a, b) {
+      return b.length - a.length
+    })
+    return longestWord[0].length
   }
 
   substr(string, limit = 30) {
