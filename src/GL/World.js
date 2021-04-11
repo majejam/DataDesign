@@ -140,7 +140,8 @@ class World {
 
   update() {
     this.updateWorldPosition()
-    this.currentFestival.getNearestConcert(this.normalizeWorldPos().x, this.normalizeWorldPos().y)
+    this.currentFestival.getNearestConcert(this.getTruePosition().x, this.getTruePosition().y)
+    console.log(this.getTruePosition().x, this.normalizeWorldPos().x)
   }
 
   /**
@@ -173,6 +174,13 @@ class World {
     return {
       x: -(this.draggable.getPosition().x / (this.world.container.width - Engine.$app.screen.width) - 0.5),
       y: -(this.draggable.getPosition().y / (this.world.container.height - Engine.$app.screen.height) - 0.5),
+    }
+  }
+
+  getTruePosition() {
+    return {
+      x: 1 - (this.world.container.position.x + this.world.container.width / 2 - Engine.$app.screen.width / 2) / this.world.container.width,
+      y: 1 - (this.world.container.position.y + this.world.container.height / 2 - Engine.$app.screen.height / 2) / this.world.container.height,
     }
   }
 

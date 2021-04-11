@@ -81,7 +81,7 @@ export default {
   height: 100vh;
   overflow: hidden;
   cursor: grab;
-  font-family: var(--font-primary);
+  font-family: var(--font-secondary);
 
   &--grab {
     cursor: grabbing;
@@ -96,7 +96,7 @@ export default {
 body {
   pre {
     color: red;
-    font-family: var(--font-primary);
+    font-family: var(--font-secondary);
 
     @include media('<sm') {
       color: green;

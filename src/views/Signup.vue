@@ -4,7 +4,7 @@
     <img class="fixed__logo fixed_column" src="images/logo_white.svg" alt="logo festivaly" />
     <div ref="data_scroll_container" class="u-flex-column" data-scroll-container>
       <div data-scroll-section class="scroll_bg main-column-inner">
-        <div class="grid grid-between">
+        <div class="relative grid grid-between">
           <div data-scroll data-scroll-speed="3" class="section section_jumbotron grid grid-column grid-start">
             <h1 class="h1-title">Festivaly.</h1>
             <p class="main-description">Experience your musical festival. Discover your next musical crushes. Curated by your Spotify tastes.</p>
@@ -17,17 +17,17 @@
             </div>
           </div>
 
-          <div class="section_jumbotron_images grid">
+          <div class="section_jumbotron_images section_jumbotron_images--responsive grid">
             <img class="section_jumbotron_images--single" src="images/home/home_01.png" alt="Festivaly illustration" />
           </div>
         </div>
-        <div class="grid grid-between">
+        <div class="relative grid grid-between">
           <div class="section_jumbotron_images grid">
             <img class="section_jumbotron_images--single" src="images/home/home_02.png" alt="Festivaly illustration" />
           </div>
           <Section
             data-scroll
-            data-scroll-speed="3"
+            data-scroll-speed="1"
             right
             title="Your own festival"
             description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
@@ -36,10 +36,10 @@
           />
         </div>
 
-        <div class="grid grid-between">
+        <div class="relative grid grid-between">
           <Section
             data-scroll
-            data-scroll-speed="3"
+            data-scroll-speed="1"
             title="Discover your next musical crushes"
             description="You might be one click away from your new favorite music. In Discovery World, each scene
           hosts an artist carefully selected based on your tastes. Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
@@ -49,13 +49,13 @@
           </div>
         </div>
 
-        <div class="grid grid-between">
+        <div class="relative grid grid-between">
           <div class="section_jumbotron_images grid">
             <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
           </div>
           <Section
             data-scroll
-            data-scroll-speed="3"
+            data-scroll-speed="1"
             title="How it works"
             description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months.<br/><br/>Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br/><br/>
 Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your top songs are combined into a unique seed. The “Discovery world” is filled by songs unknown to you that are the more relevant to the seed."
@@ -92,6 +92,9 @@ export default {
       this.scroll = new LocomotiveScroll({
         el: this.$refs.data_scroll_container,
         smooth: true,
+        smartphone: {
+          smooth: true,
+        },
       })
     },
     signIn() {
@@ -129,6 +132,10 @@ export default {
   flex-flow: column;
 }
 
+.relative {
+  position: relative;
+}
+
 .fixed__logo {
   position: fixed;
   bottom: 50px;
@@ -163,11 +170,16 @@ export default {
 
   @include media('<md') {
     width: 100%;
+    margin: 0;
   }
 
   &_jumbotron {
     margin: 0;
     height: 100vh;
+
+    @include media('<sm') {
+      padding: 10% 0;
+    }
 
     h1 {
       margin-bottom: 16px;
@@ -186,13 +198,14 @@ export default {
 
       @include media('<sm') {
         justify-content: center !important;
+        margin-top: auto;
       }
 
       &--single {
         max-width: 288px;
 
         @include media('<sm') {
-          margin-bottom: 50px;
+          margin-bottom: 24px;
         }
         span {
           margin-top: 8px;
@@ -211,10 +224,26 @@ export default {
       overflow: hidden;
       max-height: 100vh;
 
+      @include media('<sm') {
+        width: 100%;
+        display: none;
+      }
+
       &--single {
         width: 100%;
         height: auto;
         object-fit: contain;
+      }
+
+      &--responsive {
+        @include media('<sm') {
+          display: block;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          left: 0;
+          width: 100%;
+        }
       }
     }
   }

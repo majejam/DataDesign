@@ -159,7 +159,7 @@ export default class Concert {
     const style = new Engine.PIXI.TextStyle({
       breakWords: true,
       fontSize: fontSize,
-      fontFamily: 'Noto Sans',
+      fontFamily: 'Montserrat',
       wordWrap: true,
       wordWrapWidth: this.screen.bounds.w * 0.9,
       fill: 0x000000,

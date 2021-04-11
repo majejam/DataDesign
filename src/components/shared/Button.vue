@@ -37,6 +37,21 @@ export default {
   &--secondary {
     color: white;
     border: 1px solid white;
+
+    @include media('<sm') {
+      border: none;
+      height: auto;
+      min-width: none;
+      font-weight: 500;
+      a {
+        text-decoration: underline !important;
+      }
+
+      .Button__content::before {
+        content: 'No Spotify account? ';
+        text-decoration: none;
+      }
+    }
   }
 
   &__content {
