@@ -99,16 +99,14 @@ export default class Person {
    */
   standingAnimation() {
     this.person.container.removeChild(this.person.animation)
-    this.person.animation = new Engine.PIXI.Sprite(Engine.textures['character.png'])
-    this.person.container.addChild(this.person.animation)
 
-    if (this.selectedConcert.isSceneRight()) {
-      this.person.animation.pivot.x = this.person.animation.width
-      this.person.animation.scale.x = -this.person.scale
-      this.person.animation.scale.y = this.person.scale
+    if (!this.selectedConcert.isSceneRight()) {
+      this.person.animation = new Engine.PIXI.Sprite(Engine.textures[this.person.gender + 'leftwalk_01.png'])
     } else {
-      this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
+      this.person.animation = new Engine.PIXI.Sprite(Engine.textures[this.person.gender + 'rightwalk_01.png'])
     }
+    this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
+    this.person.container.addChild(this.person.animation)
   }
 
   manLeftWalkAnimation() {

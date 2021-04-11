@@ -17,14 +17,18 @@
             </div>
           </div>
 
-          <div class="section_jumbotron_images">
-            <div class="section_jumbotron_images--single"></div>
-            <div class="section_jumbotron_images--single"></div>
-            <div class="section_jumbotron_images--single"></div>
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_01.png" alt="Festivaly illustration" />
           </div>
         </div>
-        <div data-scroll data-scroll-speed="3">
+        <div class="grid grid-between">
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_02.png" alt="Festivaly illustration" />
+          </div>
           <Section
+            data-scroll
+            data-scroll-speed="3"
+            right
             title="The concept"
             description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
           In Festivaly, you get the chance to roam between all your top artists stages in a cute isometric world.
@@ -32,19 +36,23 @@
           />
         </div>
 
-        <div data-scroll data-scroll-speed="3">
+        <div class="grid grid-between">
           <Section
+            data-scroll
+            data-scroll-speed="3"
             title="How it works"
             description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months. <br /><br />
           Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br />
           <br />
           Songs you love are then played through Spotify Web Playback SDK."
-            right
           />
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
+          </div>
         </div>
         <div class="section section_credit grid grid-column">
           <h2 class="section-title" data-scroll data-scroll-speed="3">Credit</h2>
-          <p class="section-description" data-scroll data-scroll-speed="2">
+          <p class="section-description" data-scroll data-scroll-speed="4">
             Thomas Lacroix, developer <br />
             Morgane Lapisardi, illustrator<br />
             Yoan Gross, designer
@@ -187,27 +195,14 @@ export default {
     &_images {
       width: 50%;
       position: relative;
-      height: 100%;
+      height: auto;
+      overflow: hidden;
+      max-height: 100vh;
 
       &--single {
-        width: 200px;
+        width: 100%;
         height: auto;
-        flex: 1;
-
-        &:nth-child(1) {
-          position: absolute;
-          background: grey;
-        }
-
-        &:nth-child(2) {
-          position: absolute;
-          background: pink;
-        }
-
-        &:nth-child(3) {
-          position: absolute;
-          background: yellow;
-        }
+        object-fit: contain;
       }
     }
   }

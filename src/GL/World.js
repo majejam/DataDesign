@@ -13,6 +13,7 @@ class World {
     this.$el = null
     this.world = {
       container: null,
+      scale: 1,
       position: {
         x: 0,
         y: 0,
@@ -111,6 +112,7 @@ class World {
   }
 
   centerWorld() {
+    this.world.container.scale.x = this.world.container.scale.y = this.world.scale
     // Move container to the center
     this.world.container.x = Engine.$app.screen.width / 2
     this.world.container.y = Engine.$app.screen.height / 2
@@ -119,9 +121,6 @@ class World {
     this.world.container.pivot.y = this.world.container.height / 2
 
     this.world.container.zIndex = 2
-
-    this.world.container.scale.x = this.world.container.scale.y = 1
-    console.log('World dimensions are : ', this.world.container.width, this.world.container.height)
   }
 
   addChild(child) {
@@ -134,6 +133,7 @@ class World {
   onResize() {
     console.log('resize')
     this.draggable.resize()
+    if (!this.background.graphics) return
     this.background.graphics.width = Engine.$app.screen.width
     this.background.graphics.height = Engine.$app.screen.height
   }

@@ -4,7 +4,11 @@ const state = {
   recentlyPlayed: [],
   currentPlaybackDevice: 0,
   playerInit: false,
-  currentSong: '',
+  currentSong: {
+    external_urls: {
+      spotify: null,
+    },
+  },
   searchData: {
     artists: {
       items: [],

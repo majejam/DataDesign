@@ -1,6 +1,6 @@
 <template>
   <transition name="song" appear mode="out-in" v-on:after-enter="afterEnter">
-    <a ref="container" :href="song.external_urls.spotify" target="_blank" :key="song.name" class="CurrentSong grid grid-left">
+    <a ref="container" v-if="song.external_urls.spotify" :href="song.external_urls.spotify" target="_blank" :key="song.name" class="CurrentSong grid grid-left">
       <span class="CurrentSong__name" ref="text" :class="classes">{{ song.name }} - {{ song.artists[0].name }}</span>
     </a>
   </transition>

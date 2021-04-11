@@ -65,7 +65,7 @@ class Player {
     this.audio.loop = true
 
     Bus.$on('PlayerInit', () => {
-      console.log('Init done')
+      console.log('Player initialization finished')
     })
   }
 
@@ -97,7 +97,6 @@ class Player {
   }
 
   setFadeVolume(level, timing) {
-    console.log(level)
     return new Promise(resolve => {
       clearInterval(this.interval)
       const step = 0.05
@@ -113,7 +112,6 @@ class Player {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
           if (this.volume.target > level - step) this.volume.target = level
-          //console.log(this.volume.target)
           this.player.setVolume(Math.round(this.volume.target * 100) / 100)
         } else if (this.volume.target > level && !isAdd) {
           if (this.volume.target < 0.01) {
