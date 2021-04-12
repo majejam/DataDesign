@@ -31,6 +31,8 @@ export default class Concert {
 
     this.scene = {
       graphics: null,
+      sprite: null,
+      direction: '',
       bounds: { x: 0, y: 0, w: 200, h: 400 },
     }
     this.screen = {
@@ -82,17 +84,26 @@ export default class Concert {
   createScene() {
     this.positionScene()
     this.scene.graphics = this.createGraphics(this.concert.container.x + this.scene.bounds.x, this.concert.container.y + this.scene.bounds.y, this.scene.bounds.w, this.scene.bounds.h, 0xff0000)
+    this.scene.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['scene.png'])
+    this.scene.sprite.position.x = this.concert.container.x + this.scene.bounds.x
     this.scene.graphics.zIndex = this.concert.container.y + this.scene.bounds.y + this.scene.bounds.h
     this.$festival.addChild(this.scene.graphics)
   }
 
   positionScene() {
-    this.scene.bounds.w = this.concert.container.width / 3
-    this.scene.bounds.h = this.concert.container.height / 1.5
+    this.scene.bounds.w = this.$data.popularity / 100 > 0.5 ? 600 : 500
+    this.scene.bounds.h = this.$data.popularity / 100 > 0.5 ? 600 : 400
 
     this.scene.bounds.y = 100 + Math.random() * (this.concert.container.height - this.scene.bounds.h - 100)
-    if (Math.round(Math.random())) this.scene.bounds.x = this.concert.container.width - this.scene.bounds.w - Math.random() * 50
-    else this.scene.bounds.x = Math.random() * 50
+    if (Math.round(Math.random())) {
+      this.scene.direction = 'right'
+      this.scene.bounds.x = this.concert.container.width - this.scene.bounds.w - Math.random() * 50
+    } else {
+      this.scene.bounds.x = Math.random() * 50
+      this.scene.direction = 'left'
+    }
+
+    console.log(this.scene.bounds.x, this.$data.artists[0].name)
   }
 
   createScreen(ratio = 1.15) {
@@ -145,7 +156,7 @@ export default class Concert {
   }
 
   isSceneRight() {
-    return this.scene.bounds.x > this.concert.container.width / 2
+    return this.scene.direction === 'right'
   }
 
   createName(skew) {
@@ -162,7 +173,7 @@ export default class Concert {
       fontFamily: 'Montserrat',
       wordWrap: true,
       wordWrapWidth: this.screen.bounds.w * 0.9,
-      fill: 0x000000,
+      fill: 0xf9b083,
       align: 'center',
     })
 
@@ -198,7 +209,7 @@ export default class Concert {
   }
 
   positionCrowd() {
-    this.crowd.bounds.w = this.concert.container.width - (this.scene.bounds.w + 50)
+    this.crowd.bounds.w = this.concert.container.width - (this.scene.bounds.w - 50)
     this.crowd.bounds.h = this.concert.container.height
     this.crowd.bounds.y = 0
 
@@ -210,7 +221,7 @@ export default class Concert {
     this.positionCrowd()
     this.crowd.graphics = this.createGraphics(this.concert.container.x + this.crowd.bounds.x, this.concert.container.y + this.crowd.bounds.y, this.crowd.bounds.w, this.crowd.bounds.h, 0xf5c0c0)
     this.crowd.graphics.zIndex = 3
-    if (this.debug) this.$festival.addChild(this.crowd.graphics)
+    if (!this.debug) this.$festival.addChild(this.crowd.graphics)
     this.positionBlastersRandom(Math.ceil((4 * this.$data.popularity) / 100), 50)
   }
 
