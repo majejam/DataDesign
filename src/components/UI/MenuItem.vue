@@ -1,39 +1,8 @@
 <template>
-  <div class="Menu" :class="classes">
-    <button class="Menu__container grid" @click="toggle">
-      <span class="Menu__title ui-font">Menu</span>
-      <img class="Menu__caret" src="images/caret.svg" alt="caret icon" />
-    </button>
-    <button v-if="$store.getters.getCurrentFestival !== 'normal'" class="Menu__container Menu__shuffle grid grid-nowrap" @click="recommendedConcert">
-      <span class="Menu__title ui-font">New Discovery World</span>
-      <img class="Menu__star" src="images/star.svg" alt="caret icon" />
-    </button>
-    <div class="Menu__dropdown grid grid-column grid-end">
-      <button class="ui-font Menu__item Menu__item--responsive" v-if="$store.getters.getCurrentFestival !== 'recommended'" @click.prevent="recommendedConcert">
-        Go to Discovery World
-        <img class="Menu__dropdown__signout__icon" src="images/ui/song_note.svg" alt="caret icon" />
-      </button>
-      <button class="ui-font Menu__item Menu__item--responsive" v-if="$store.getters.getCurrentFestival !== 'normal'" @click.prevent="yourFestival">
-        Go to your festival
-        <img class="Menu__dropdown__signout__icon" src="images/ui/song_note.svg" alt="caret icon" />
-      </button>
-      <button v-if="!demo && $store.getters.getCurrentFestival !== 'normal'" class="ui-font ui-btn-mobile grid grid-nowrap" @click.prevent="recommendedConcert">
-        New Discovery World <img class="Menu__dropdown__signout__icon" src="images/star.svg" alt="logout icon" />
-      </button>
-      <div v-if="!demo" class="Menu__dropdown__volume">
-        <label for="volume" class="ui-font">Volume</label>
-        <input type="range" step="0.1" id="volume" name="volume" :value="volume" @change="setVolume" min="0" max="1" />
-      </div>
-      <Debug v-if="false" />
-      <div class="Menu__dropdown__signout">
-        <button v-if="!demo" class="ui-font grid grid-nowrap" @click.prevent="logout">
-          Sign out (<span class="Menu__troncate">{{ this.$store.getters.getUser.display_name }}</span
-          >) <img class="Menu__dropdown__signout__icon" src="images/logout.svg" alt="logout icon" />
-        </button>
-        <router-link v-if="demo" class="ui-font grid grid-nowrap" to="/">Exit demo <img class="Menu__dropdown__signout__icon" src="images/logout.svg" alt="logout icon" /> </router-link>
-      </div>
-    </div>
-  </div>
+  <button class="MenuItem ui-font Menu__item Menu__item--responsive" :class="classes" v-if="$store.getters.getCurrentFestival !== 'recommended'" @click.prevent="recommendedConcert">
+    Go to discovery world
+    <img class="Menu__dropdown__signout__icon" src="images/ui/song_note.svg" alt="caret icon" />
+  </button>
 </template>
 
 <script>
@@ -111,7 +80,6 @@ export default {
 
   &__item {
     margin-bottom: 16px;
-    padding: 0;
     cursor: pointer;
 
     @include media('<md') {
@@ -209,7 +177,6 @@ export default {
     &__signout {
       button {
         cursor: pointer;
-        padding: 0;
       }
 
       a {

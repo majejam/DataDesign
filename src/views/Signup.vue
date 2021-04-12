@@ -212,6 +212,10 @@ export default {
 
     p {
       margin-bottom: 40px;
+
+      @include media('<sm') {
+        width: 100%;
+      }
     }
 
     &_button {
