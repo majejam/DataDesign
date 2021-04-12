@@ -1,11 +1,29 @@
 <template>
   <transition name="pannel" appear mode="out-in">
-    <img class="Pannel" :class="classes" src="images/ui/pannel.png" alt="Pannel image" />
+    <div class="Pannel">
+      <button v-if="$store.getters.getCurrentFestival !== 'recommended'" @click.prevent="recommendedConcert">
+        <img src="images/ui/discover_world.png" alt="Pannel image" />
+      </button>
+      <button v-if="$store.getters.getCurrentFestival !== 'normal'" @click.prevent="yourFestival">
+        <img :class="classes" src="images/ui/your_festival.png" alt="Pannel image" />
+      </button>
+    </div>
   </transition>
 </template>
 
 <script>
+import Chance from 'chance'
 export default {
+  methods: {
+    recommendedConcert() {
+      const chance = new Chance()
+      const ids = chance.pickset(this.$store.getters.getTopIds, 5)
+      this.$store.dispatch('getRecommendation', ids.toString())
+    },
+    yourFestival() {
+      this.$store.dispatch('getUserTopTracks')
+    },
+  },
   computed: {
     classes() {
       return [
@@ -22,10 +40,19 @@ export default {
 .Pannel {
   position: absolute;
   height: auto;
-  width: 20%;
+  width: auto;
   top: -10px;
   left: 50%;
   transform: translate(-50%, 0%);
+  cursor: pointer;
+
+  button {
+    cursor: pointer;
+  }
+
+  @include media('<md') {
+    display: none;
+  }
 }
 
 .hue-rotate {

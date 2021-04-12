@@ -43,6 +43,7 @@ export default {
       height: auto;
       min-width: none;
       font-weight: 500;
+      width: 100%;
       a {
         text-decoration: underline !important;
       }

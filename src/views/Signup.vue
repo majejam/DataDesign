@@ -5,7 +5,7 @@
     <div ref="data_scroll_container" class="u-flex-column" data-scroll-container>
       <div data-scroll-section class="scroll_bg main-column-inner">
         <div class="relative grid grid-between">
-          <div data-scroll data-scroll-speed="3" class="section section_jumbotron grid grid-column grid-start">
+          <div data-scroll :data-scroll-speed="speed" class="section section_jumbotron grid grid-column grid-start">
             <h1 class="h1-title">Festivaly.</h1>
             <p class="main-description">Experience your musical festival. Discover your next musical crushes. Curated by your Spotify tastes.</p>
             <div class="section_jumbotron_button grid grid-between grid-start">
@@ -27,7 +27,7 @@
           </div>
           <Section
             data-scroll
-            data-scroll-speed="3"
+            :data-scroll-speed="speed"
             right
             title="Your own festival"
             description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it?<br /><br/>
@@ -38,7 +38,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
         <div class="relative grid grid-between">
           <Section
             data-scroll
-            data-scroll-speed="3"
+            :data-scroll-speed="speed"
             title="Discover your next musical crushes"
             description="You might be one click away from your new favorite music. In Discovery World, each scene
           hosts an artist carefully selected based on your tastes.<br /><br /> Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
@@ -54,7 +54,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
           </div>
           <Section
             data-scroll
-            data-scroll-speed="3"
+            :data-scroll-speed="speed"
             title="How it works"
             description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months.<br/><br/>Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br/><br/>
 Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your top songs are combined into a unique seed. The “Discovery world” is filled by songs unknown to you that are the more relevant to the seed."
@@ -84,6 +84,7 @@ export default {
   data() {
     return {
       scroll: null,
+      speed: 3,
     }
   },
   methods: {
@@ -95,6 +96,18 @@ export default {
           smooth: true,
         },
       })
+
+      this._resize = this.resize.bind(this)
+      this.resize()
+    },
+    resize() {
+      if (window.innerWidth < 767) {
+        this.speed = 1
+      } else {
+        this.speed = 3
+      }
+
+      if (this.scroll) this.scroll.update()
     },
     signIn() {
       let url =
@@ -113,10 +126,12 @@ export default {
   },
   deactivated() {
     this.scroll.destroy()
+    window.removeEventListener('resize', this._resize)
   },
   activated() {
     setTimeout(() => {
       this.init()
+      window.addEventListener('resize', this._resize)
 
       setTimeout(() => {
         this.scroll.update()
@@ -195,6 +210,10 @@ export default {
     &_button {
       width: 100%;
 
+      @include media('<md') {
+        justify-content: left !important;
+      }
+
       @include media('<sm') {
         justify-content: center !important;
         margin-top: auto;
@@ -203,8 +222,14 @@ export default {
       &--single {
         max-width: 288px;
 
+        @include media('<md') {
+          margin-right: 16px;
+        }
+
         @include media('<sm') {
           margin-bottom: 24px;
+          margin-right: 0;
+          width: 100%;
         }
         span {
           margin-top: 8px;
@@ -233,16 +258,23 @@ export default {
         width: 100%;
         height: auto;
         object-fit: contain;
+
+        @include media('<sm') {
+          height: 50vh;
+        }
       }
 
       &--responsive {
-        @include media('<sm') {
-          display: block !important;
+        @include media('<md') {
+          display: none !important;
           position: absolute;
           top: 50%;
           transform: translateY(-50%);
           left: 0;
           width: 100%;
+        }
+        @include media('<sm') {
+          display: block !important;
         }
       }
     }
@@ -253,11 +285,17 @@ export default {
     width: 100%;
 
     @include media('<sm') {
-      height: 75vh;
+      height: 30vh;
+      justify-content: left !important;
+      align-items: flex-start !important;
     }
 
     p {
       text-align: center;
+
+      @include media('<sm') {
+        text-align: left;
+      }
     }
   }
 }

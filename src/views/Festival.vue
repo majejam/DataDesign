@@ -2,7 +2,7 @@
   <div :class="scrollClass">
     <div class="renderer" ref="renderer" :class="classes"></div>
     <CurrentSong v-if="loaded" :song="$store.getters.getCurrentSong" />
-    <Menu v-if="loaded" :song="$store.getters.getCurrentSong" />
+    <Menu v-if="loaded" />
     <Loader v-if="!loaded" />
     <Pannel v-if="loaded" />
   </div>

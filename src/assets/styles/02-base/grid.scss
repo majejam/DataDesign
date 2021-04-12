@@ -108,7 +108,7 @@ $padmobile: 0;
   max-width: var(--column-width);
   margin: 0 auto;
 
-  @include media('<960px') {
+  @include media('<1232px') {
     width: 90%;
     margin: 0 auto;
   }
@@ -118,7 +118,12 @@ $padmobile: 0;
   width: 100%;
   padding: 0 calc((100vw - var(--column-width)) / 2);
 
-  @include media('<960px') {
+  @include media('<1232px') {
+    width: 100%;
+    padding: 0 2%;
+  }
+
+  @include media('<md') {
     width: 100%;
     padding: 0 5%;
   }
@@ -126,4 +131,8 @@ $padmobile: 0;
 
 .fixed_column {
   right: calc((100vw - var(--column-width)) / 2);
+
+  @include media('<1232px') {
+    right: 2%;
+  }
 }

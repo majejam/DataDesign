@@ -50,8 +50,9 @@ export default {
   &__image {
     width: 100%;
     height: auto;
-    @include media('>sm') {
-      display: none;
+    display: none;
+    @include media('<sm') {
+      display: block;
     }
   }
 
