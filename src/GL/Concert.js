@@ -173,11 +173,13 @@ export default class Concert {
       fontFamily: 'Montserrat',
       wordWrap: true,
       wordWrapWidth: this.screen.bounds.w * 0.9,
-      fill: 0xf9b083,
+      fill: 0xffffff,
       align: 'center',
     })
 
     let text = new Engine.PIXI.Text(string, style)
+
+    text.alpha = 0.8
 
     text.position.x = this.screen.bounds.w / 2 - text.width / 3
 

@@ -7,7 +7,11 @@
         <div class="relative grid grid-between">
           <div data-scroll :data-scroll-speed="speed" class="section section_jumbotron grid grid-column grid-start">
             <h1 class="h1-title">Festivaly.</h1>
-            <p class="main-description">Experience your musical festival. Discover your next musical crushes. Curated by your Spotify tastes.</p>
+            <p class="main-description">
+              Experience your musical festival.<br />
+              Discover your next musical crushes.<br />
+              Curated by your Spotify tastes.
+            </p>
             <div class="section_jumbotron_button grid grid-between grid-start">
               <div class="grid grid-column section_jumbotron_button--single">
                 <Button primary @click.native="signIn()">Discover your festival</Button>
@@ -92,6 +96,9 @@ export default {
       this.scroll = new LocomotiveScroll({
         el: this.$refs.data_scroll_container,
         smooth: true,
+        tablet: {
+          smooth: true,
+        },
         smartphone: {
           smooth: true,
         },
@@ -191,7 +198,7 @@ export default {
     margin: 0;
     height: 100vh;
 
-    @include media('<sm') {
+    @include media('<md') {
       padding: 10% 0;
     }
 
@@ -212,6 +219,7 @@ export default {
 
       @include media('<md') {
         justify-content: left !important;
+        margin-top: auto;
       }
 
       @include media('<sm') {
@@ -259,22 +267,23 @@ export default {
         height: auto;
         object-fit: contain;
 
-        @include media('<sm') {
+        @include media('<md') {
           height: 50vh;
         }
       }
 
       &--responsive {
         @include media('<md') {
-          display: none !important;
+          display: block !important;
           position: absolute;
-          top: 50%;
+          top: 55%;
           transform: translateY(-50%);
           left: 0;
           width: 100%;
         }
         @include media('<sm') {
           display: block !important;
+          top: 50%;
         }
       }
     }

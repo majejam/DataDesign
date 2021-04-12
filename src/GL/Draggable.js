@@ -32,6 +32,8 @@ export default class Draggable {
       width: window.innerWidth,
       height: window.innerHeight,
     }
+
+    this.isMobile = this.viewport.width < 767
     this.init()
   }
 
@@ -73,7 +75,9 @@ export default class Draggable {
   }
 
   updatePosition() {
-    this.position.x -= this.cursor.delta.x * 1000 * this.speed
+    if (this.isMobile) this.position.x -= this.cursor.delta.x * 500 * this.speed
+    else this.position.x -= this.cursor.delta.x * 1000 * this.speed
+
     this.position.y -= this.cursor.delta.y * 1000 * this.speed * 0.8
   }
 
@@ -113,6 +117,7 @@ export default class Draggable {
       width: window.innerWidth,
       height: window.innerHeight,
     }
+    this.isMobile = this.viewport.width < 767
   }
 
   mouseDown(_e) {

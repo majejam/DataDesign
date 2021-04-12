@@ -132,7 +132,7 @@ class World {
 
   onResize() {
     console.log('resize')
-    this.draggable.resize()
+    if (this.draggable) this.draggable.resize()
     if (!this.background.graphics) return
     this.background.graphics.width = Engine.$app.screen.width
     this.background.graphics.height = Engine.$app.screen.height

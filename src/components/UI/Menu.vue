@@ -14,7 +14,7 @@
       </button>
       <button class="ui-font Menu__item Menu__item--responsive" v-if="$store.getters.getCurrentFestival !== 'recommended'" @click.prevent="recommendedConcert">
         Go to discovery world
-        <img class="Menu__dropdown__signout__icon" src="images/star.svg" alt="caret icon" />
+        <img class="Menu__dropdown__signout__icon" src="images/ui/song_note.svg" alt="caret icon" />
       </button>
       <button class="ui-font Menu__item Menu__item--responsive" v-if="$store.getters.getCurrentFestival !== 'normal'" @click.prevent="yourFestival">
         Go to your festival
@@ -113,6 +113,11 @@ export default {
     margin-bottom: 16px;
     cursor: pointer;
 
+    @include media('<md') {
+      margin-bottom: 0px;
+      padding-bottom: 20px;
+    }
+
     &--responsive {
       display: none;
 
@@ -169,6 +174,11 @@ export default {
 
     &__volume {
       margin-bottom: 16px;
+
+      @include media('<md') {
+        margin-bottom: 20px;
+      }
+
       input {
         cursor: pointer;
         -webkit-appearance: none;
