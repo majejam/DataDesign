@@ -1,6 +1,6 @@
 <template>
   <transition name="pannel" appear mode="out-in">
-    <div class="Pannel">
+    <div :key="$store.getters.getCurrentFestival" class="Pannel">
       <button v-if="$store.getters.getCurrentFestival !== 'recommended'" @click.prevent="recommendedConcert">
         <img src="images/ui/discover_world.png" alt="Pannel image" />
       </button>
@@ -60,13 +60,21 @@ export default {
 }
 
 .pannel-enter-active {
-  transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8) 2s;
+  transition: opacity 0.5s ease-out 2s;
+  button {
+    transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8) 2s;
+  }
 }
 
 .pannel-leave-active {
-  transition: transform 0.5s ease-out 0s;
+  transition: opacity 0.5s ease-out 2s;
+  button {
+    transition: transform 0.5s ease-out 0s;
+  }
 }
 .pannel-enter, .pannel-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  transform: translate(-50%, -100%);
+  button {
+    transform: translate(0%, -100%);
+  }
 }
 </style>

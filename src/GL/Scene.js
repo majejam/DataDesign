@@ -173,29 +173,31 @@ export default class Scene {
   }
 
   createSinger() {
-    this.artists.singer.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['character.png'])
+    this.artists.singer.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[this.scene.direction + 'singer.png'])
+    this.artists.singer.sprite.scale.x = this.artists.singer.sprite.scale.y = 0.8
     const random = Math.random() * 20 - 10
     console.log(random)
     if (this.isBig()) {
-      this.artists.singer.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.13 + random : this.scene.container.width * 0.26 + random
-      this.artists.singer.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0.29 + random : this.scene.container.height * 0.26 + random
+      this.artists.singer.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.14 + random : this.scene.container.width * 0.3 + random
+      this.artists.singer.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0.3 + random : this.scene.container.height * 0.3 + random
     } else {
-      this.artists.singer.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.1 + random : this.scene.container.width * 0.1 + random
-      this.artists.singer.sprite.position.y = this.isSceneRight() ? this.scene.container.height * -0.2 + random : this.scene.container.height * 0 + random
+      this.artists.singer.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.12 + random : this.scene.container.width * 0.1 + random
+      this.artists.singer.sprite.position.y = this.isSceneRight() ? this.scene.container.height * -0.15 + random : this.scene.container.height * 0.1 + random
     }
     this.scene.container.addChild(this.artists.singer.sprite)
   }
 
   createMusician() {
-    this.artists.musician.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['character.png'])
+    this.artists.musician.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[this.scene.direction + 'musician.png'])
+    this.artists.musician.sprite.scale.x = this.artists.musician.sprite.scale.y = 0.8
     const random = Math.random() * 20 - 10
     console.log(random)
     if (this.isBig()) {
-      this.artists.musician.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.25 + random : this.scene.container.width * 0.1 + random
-      this.artists.musician.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0.4 + random : this.scene.container.height * 0.4 + random
+      this.artists.musician.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.25 + random : this.scene.container.width * 0.15 + random
+      this.artists.musician.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0.42 + random : this.scene.container.height * 0.42 + random
     } else {
-      this.artists.musician.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.23 + random : this.scene.container.width * 0.32 + random
-      this.artists.musician.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0 + random : this.scene.container.height * -0.3 + random
+      this.artists.musician.sprite.position.x = this.isSceneRight() ? this.scene.container.width * 0.25 + random : this.scene.container.width * 0.32 + random
+      this.artists.musician.sprite.position.y = this.isSceneRight() ? this.scene.container.height * 0.05 + random : this.scene.container.height * -0.1 + random
     }
     this.scene.container.addChild(this.artists.musician.sprite)
   }
