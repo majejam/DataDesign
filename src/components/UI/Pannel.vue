@@ -60,14 +60,14 @@ export default {
 }
 
 .pannel-enter-active {
-  transition: opacity 0.5s ease-out 2s;
+  transition: opacity 0.5s ease-out 1s;
   button {
-    transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8) 2s;
+    transition: transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8) 1s;
   }
 }
 
 .pannel-leave-active {
-  transition: opacity 0.5s ease-out 2s;
+  transition: opacity 0.5s ease-out;
   button {
     transition: transform 0.5s ease-out 0s;
   }
