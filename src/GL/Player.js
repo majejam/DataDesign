@@ -46,7 +46,7 @@ class Player {
     Store.commit('setLoadingMessage', 'Player initialization')
     const token = Store.getters.getTokens['access_token']
     this.player = new window.Spotify.Player({
-      name: 'Create your festival',
+      name: 'Festivaly',
       volume: Store.getters.getVolume,
       getOAuthToken: cb => {
         cb(token)
