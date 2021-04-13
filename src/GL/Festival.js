@@ -27,7 +27,7 @@ export default class Festival {
         height: this.$opt.height ? this.$opt.height : 2000,
       },
       margin: {
-        x: this.$opt.marginx ? this.$opt.marginx : 500,
+        x: this.$opt.marginx ? this.$opt.marginx : 700,
         y: this.$opt.marginy ? this.$opt.marginy : 700,
       },
       position: {
@@ -141,7 +141,7 @@ export default class Festival {
         this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
       } else {
         let xPos = Math.random() * (this.festival.size.width + this.festival.margin.x * 2)
-        let yPos = this.festival.size.height + Math.random() * this.festival.margin.y
+        let yPos = this.festival.size.height + 100 + Math.random() * this.festival.margin.y
         this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
       }
     }

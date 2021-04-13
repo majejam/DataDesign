@@ -86,8 +86,9 @@ export default class Person {
   decision(time) {
     if (this.timeout) clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
-      else if (this.person.static) this.moveToRandomConcerts()
+      const random = Math.random()
+      if (this.person.static && random > 0.9) this.moveToRandomConcerts()
+      else if (this.person.static && random < 0.9 && random > 0.6) this.moveInsideConcert()
 
       this.person.decisionDuration = this.person.baseDecisionTime + Math.round(Math.random() * this.person.decisionMaxOffset)
       this.decision(this.person.decisionDuration)
