@@ -54,7 +54,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
 
         <div class="relative grid grid-between">
           <div class="section_jumbotron_images grid">
-            <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
+            <img class="section_jumbotron_images--single" src="images/home/home_04.png" alt="Festivaly illustration" />
           </div>
           <Section
             data-scroll
