@@ -1,7 +1,7 @@
 <template>
   <div class="Section grid grid-column grid-start" :class="classes">
     <h2 class="Section__title section-title">{{ title }}</h2>
-    <img class="Section__image" src="images/home/home_03.png" alt="Festivaly illustration" />
+    <img class="Section__image" :src="src" alt="Festivaly illustration" />
     <p class="Section__description section-description" v-html="description"></p>
   </div>
 </template>
@@ -10,6 +10,9 @@
 export default {
   props: {
     title: {
+      type: String,
+    },
+    src: {
       type: String,
     },
     description: {

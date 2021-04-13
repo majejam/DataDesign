@@ -31,6 +31,7 @@
           </div>
           <Section
             data-scroll
+            :src="'images/home/home_02.png'"
             :data-scroll-speed="speed"
             right
             title="Your own festival"
@@ -42,6 +43,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
         <div class="relative grid grid-between">
           <Section
             data-scroll
+            :src="'images/home/home_03.png'"
             :data-scroll-speed="speed"
             title="Discover your next musical crushes"
             description="You might be one click away from your new favorite music. In Discovery World, each scene
@@ -59,6 +61,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
           <Section
             data-scroll
             :data-scroll-speed="speed"
+            :src="'images/home/home_04.png'"
             title="How it works"
             description="The data are collected through Spotify Web API. We retrieve the 20 artists you've listened the most on Spotify during the last 3 months.<br /><br />Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br /><br />Songs you love are then played through Spotify Web Playback SDK.<br /><br />Your top songs are combined into a unique seed. The “Discovery World” is filled with new songs that are the most relevant to the seed."
             right
