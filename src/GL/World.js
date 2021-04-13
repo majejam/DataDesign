@@ -13,6 +13,7 @@ class World {
     this.$el = null
     this.world = {
       container: null,
+      scale: 1,
       position: {
         x: 0,
         y: 0,
@@ -101,7 +102,6 @@ class World {
     //document.body.appendChild(c)
     ctx.canvas.width = Engine.$app.screen.width
     ctx.canvas.height = Engine.$app.screen.height
-    console.log(Engine.$app.screen.width, Engine.$app.screen.height)
     const grd = ctx.createLinearGradient(0, 0, 1, Engine.$app.screen.height)
     grd.addColorStop(0, from)
     grd.addColorStop(0.5, middle)
@@ -112,6 +112,7 @@ class World {
   }
 
   centerWorld() {
+    this.world.container.scale.x = this.world.container.scale.y = this.world.scale
     // Move container to the center
     this.world.container.x = Engine.$app.screen.width / 2
     this.world.container.y = Engine.$app.screen.height / 2
@@ -120,8 +121,6 @@ class World {
     this.world.container.pivot.y = this.world.container.height / 2
 
     this.world.container.zIndex = 2
-
-    this.world.container.scale.x = this.world.container.scale.y = 1
   }
 
   addChild(child) {
@@ -133,13 +132,15 @@ class World {
 
   onResize() {
     console.log('resize')
+    if (this.draggable) this.draggable.resize()
+    if (!this.background.graphics) return
     this.background.graphics.width = Engine.$app.screen.width
     this.background.graphics.height = Engine.$app.screen.height
   }
 
   update() {
     this.updateWorldPosition()
-    this.currentFestival.getNearestConcert(this.normalizeWorldPos().x, this.normalizeWorldPos().y)
+    this.currentFestival.getNearestConcert(this.getTruePosition().x, this.getTruePosition().y)
   }
 
   /**
@@ -172,6 +173,16 @@ class World {
     return {
       x: -(this.draggable.getPosition().x / (this.world.container.width - Engine.$app.screen.width) - 0.5),
       y: -(this.draggable.getPosition().y / (this.world.container.height - Engine.$app.screen.height) - 0.5),
+    }
+  }
+
+  getTruePosition() {
+    /**
+     * We only devide height by 1.5 to skew the final position in order to have a better feel for the nearest concert
+     */
+    return {
+      x: 1 - (this.world.container.position.x + this.world.container.width / 2 - Engine.$app.screen.width / 2) / this.world.container.width,
+      y: 1 - (this.world.container.position.y + this.world.container.height / 2 - Engine.$app.screen.height / 1.25) / this.world.container.height,
     }
   }
 

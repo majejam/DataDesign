@@ -9,18 +9,20 @@ export default class Person {
     this.$festival = festival
     this.$opt = opt
     this.person = {
+      state: 'static',
       container: null,
       graphics: null,
       sprite: null,
+      animation: null,
       color: this.$opt.color ? this.$opt.color : 0xff87f0,
+      scale: 0.8,
+      gender: Math.round(Math.random()) ? 'girl' : 'man',
       size: {
         width: this.$opt.width ? this.$opt.width : 200,
         height: this.$opt.height ? this.$opt.height : 200,
       },
       maxSpeed: Math.random() + 1,
       target: new Engine.PIXI.Point(2500, 1800),
-      steerStrengh: 1,
-      wanderStrengh: 0.6,
       static: false,
       position: new Engine.PIXI.Point(Math.random() * this.$festival.festival.container.width - 200, Math.random() * this.$festival.festival.container.height - 200),
       velocity: new Engine.PIXI.Point(),
@@ -29,9 +31,9 @@ export default class Person {
       desiredPosition: new Engine.PIXI.Point(),
       distance: 0,
       isVisible: false,
-      baseDecisionTime: 5000,
+      baseDecisionTime: 10000,
       decisionMaxOffset: 50000,
-      decisionDuration: Math.round(Math.random() * 50000),
+      decisionDuration: Math.round(Math.random() * 20000),
       changedState: false,
     }
 
@@ -52,21 +54,20 @@ export default class Person {
 
   createPerson() {
     this.person.container = new Engine.PIXI.Container()
-    this.person.container.zIndex = 2
     this.person.container.x = this.person.position.x
     this.person.container.y = this.person.position.y
-    this.createPersonGraphics()
+    //this.createPersonGraphics()
     this.$festival.addChild(this.person.container)
   }
 
   createPersonGraphics() {
     this.person.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures['character.png'])
     this.person.graphics = new Engine.PIXI.Graphics()
-    this.person.sprite.scale.x = this.person.sprite.scale.y = 0.8
+    this.person.sprite.scale.x = this.person.sprite.scale.y = this.person.scale
     this.person.graphics.beginFill(this.person.color)
     this.person.graphics.drawRect(0, 0, this.person.size.width, this.person.size.height)
     this.person.graphics.endFill()
-    this.person.container.addChild(this.person.sprite)
+    //this.person.container.addChild(this.person.sprite)
     //this.person.container.addChild(this.person.graphics)
   }
 
@@ -85,8 +86,9 @@ export default class Person {
   decision(time) {
     if (this.timeout) clearTimeout(this.timeout)
     this.timeout = setTimeout(() => {
-      if (this.person.static && Math.random() < 0.9) this.moveInsideConcert()
-      else if (this.person.static) this.moveToRandomConcerts()
+      const random = Math.random()
+      if (this.person.static && random > 0.9) this.moveToRandomConcerts()
+      else if (this.person.static && random < 0.9 && random > 0.6) this.moveInsideConcert()
 
       this.person.decisionDuration = this.person.baseDecisionTime + Math.round(Math.random() * this.person.decisionMaxOffset)
       this.decision(this.person.decisionDuration)
@@ -96,16 +98,42 @@ export default class Person {
   /**
    * Animations
    */
+  standingAnimation() {
+    this.person.container.removeChild(this.person.animation)
 
-  createAnimation() {
+    if (!this.selectedConcert.isSceneRight()) {
+      this.person.animation = new Engine.PIXI.AnimatedSprite(Engine.animations[this.person.gender + 'leftdancing'])
+    } else {
+      this.person.animation = new Engine.PIXI.AnimatedSprite(Engine.animations[this.person.gender + 'rightdancing'])
+    }
+    this.person.animation.play()
+    this.person.animation.animationSpeed = this.selectedConcert.$data.audio_features.danceability / 5
+    this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
+    this.person.container.addChild(this.person.animation)
+  }
+
+  manLeftWalkAnimation() {
+    if (this.person.state === 'walk_left') return
+    this.person.state = 'walk_left'
+    this.person.container.removeChild(this.person.animation)
     // create an animated sprite
-    this.animatedCapguy = new Engine.PIXI.AnimatedSprite(Engine.spritesheet.animations['dancingman'])
-    // set speed, start playback and add it to the stage
-    this.animatedCapguy.animationSpeed = this.$data.audio_features.danceability / 3
-    this.animatedCapguy.play()
-    this.animatedCapguy.position.x = this.person.position.x
-    this.animatedCapguy.position.y = this.person.position.y
-    this.concert.crowd.container.addChild(this.animatedCapguy)
+    this.person.animation = new Engine.PIXI.AnimatedSprite(Engine.animations[this.person.gender + 'leftwalk'])
+    this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
+
+    this.person.animation.play()
+    this.person.container.addChild(this.person.animation)
+  }
+
+  manRightWalkAnimation() {
+    if (this.person.state === 'walk_right') return
+    this.person.state = 'walk_right'
+    this.person.container.removeChild(this.person.animation)
+    // create an animated sprite
+    this.person.animation = new Engine.PIXI.AnimatedSprite(Engine.animations[this.person.gender + 'rightwalk'])
+    this.person.animation.scale.x = this.person.animation.scale.y = this.person.scale
+
+    this.person.animation.play()
+    this.person.container.addChild(this.person.animation)
   }
 
   /**
@@ -115,6 +143,8 @@ export default class Person {
   checkIfArrivedToDestination() {
     if (Math.round(this.person.position.x) == Math.round(this.person.target.x) && Math.round(this.person.position.y) == Math.round(this.person.target.y)) {
       this.person.static = true
+      this.person.state = 'static'
+
       if (!this.person.changedState) {
         this.person.changedState = true
         this.checkState(true)
@@ -124,11 +154,7 @@ export default class Person {
 
   checkState(once) {
     if (this.person.static) {
-      this.changeColor(0x9fd8df)
-    } else if (!this.person.static && this.person.position.x > this.person.target.x) {
-      this.changeColor(0xb8b5ff)
-    } else if (!this.person.static && this.person.position.x < this.person.target.x) {
-      this.changeColor(0x7868e6)
+      this.standingAnimation()
     }
 
     if (!this.person.static)
@@ -152,24 +178,35 @@ export default class Person {
       this.simplePositionCalculation()
     }
 
-    if (this.person.static) {
-      this.energeticDance(this.time)
-    }
+    this.animationHandler()
 
     this.person.container.x = this.person.position.x
     this.person.container.y = this.person.position.y
-    this.person.container.zIndex = Math.round(this.person.position.y + this.person.size.height)
+    this.person.container.zIndex = Math.round(this.person.position.y + this.person.size.height * this.person.scale)
 
     this.checkIfArrivedToDestination()
+  }
+
+  animationHandler() {
+    if (this.person.animation && !this.person.static && this.person.isVisible) {
+      this.person.animation.animationSpeed = (1 + (Math.abs(this.person.acceleration.x) + Math.abs(this.person.acceleration.y)) / 2) / 30
+      if (!this.person.static && this.person.acceleration.x < 0) {
+        this.manLeftWalkAnimation()
+      } else if (!this.person.static && this.person.acceleration.x > 0) {
+        this.manRightWalkAnimation()
+      }
+    } else if (this.person.animation && this.person.static && this.person.isVisible) {
+      this.energeticDance(this.time)
+    }
   }
 
   energeticDance(time) {
     // If very danceable song
     if (this.selectedConcert.$data.audio_features.energy > 0.48) {
       const energetic_factor = 5 + 15 * (1 - this.selectedConcert.$data.audio_features.energy)
-      this.person.graphics.position.y = Math.sin((this.person.maxSpeed * time) / energetic_factor) * 10
+      this.person.animation.position.y = Math.sin((this.person.maxSpeed * time) / energetic_factor) * 5
     } else {
-      this.person.graphics.position.y = 0
+      this.person.animation.position.y = 0
     }
   }
 
@@ -187,7 +224,7 @@ export default class Person {
     )
 
     if (Math.round(this.person.position.x) == Math.round(this.person.target.x)) {
-      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.2)
+      this.person.acceleration.x = this.lerp(this.person.acceleration.x, 0, 0.6)
     } else {
       this.person.acceleration.x = this.lerp(this.person.acceleration.x, this.person.velocity.x, this.person.delta.x)
     }

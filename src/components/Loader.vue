@@ -28,6 +28,18 @@ export default {
   z-index: 10;
   overflow: hidden;
 
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-image: url('../assets/images/noise.png');
+    opacity: 0.05;
+  }
+
   &__image {
     animation: 30s linear 0s slidein infinite;
 
@@ -48,8 +60,8 @@ export default {
     position: absolute;
     top: 50%;
     left: 50%;
-    height: 400px;
-    width: 400px;
+    height: 300px;
+    width: 300px;
     transform: translate(-50%, -50%);
     z-index: 15;
     background: var(--neutral-white);
@@ -58,8 +70,9 @@ export default {
     border: solid 10px var(--primary-base);
 
     @include media('<md') {
-      height: 220px;
-      width: 220px;
+      height: 164px;
+      width: 164px;
+      border: solid 8px var(--primary-base);
     }
 
     img {
@@ -144,9 +157,12 @@ export default {
   }
 }
 
-.appear-enter-active,
-.appear-leave-active {
+.appear-enter-active {
   transition: opacity 0.5s ease-in 1s;
+}
+
+.appear-leave-active {
+  transition: opacity 0.5s ease-in 0s;
 }
 .appear-enter, .appear-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;

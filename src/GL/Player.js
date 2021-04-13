@@ -65,7 +65,7 @@ class Player {
     this.audio.loop = true
 
     Bus.$on('PlayerInit', () => {
-      console.log('Init done')
+      console.log('Player initialization finished')
     })
   }
 
@@ -97,7 +97,6 @@ class Player {
   }
 
   setFadeVolume(level, timing) {
-    console.log(level)
     return new Promise(resolve => {
       clearInterval(this.interval)
       const step = 0.05
@@ -113,7 +112,6 @@ class Player {
         if (this.volume.target <= level && isAdd) {
           this.volume.target += step
           if (this.volume.target > level - step) this.volume.target = level
-          //console.log(this.volume.target)
           this.player.setVolume(Math.round(this.volume.target * 100) / 100)
         } else if (this.volume.target > level && !isAdd) {
           if (this.volume.target < 0.01) {
@@ -133,7 +131,7 @@ class Player {
 
   mute() {}
 
-  changeTrackFade(uri) {
+  changeTrackFade(uri, artist) {
     this.currenturi = uri
     if (!this.status.hasInit) {
       console.warn('Player was not ready (might be demo mode)')
@@ -146,7 +144,7 @@ class Player {
 
     this.setFadeVolume(0, 50).then(() => {
       console.log('Switching track...')
-      Store.dispatch('playTrack', [uri]).then(() => {
+      Store.dispatch('playTracks', { uri: uri, artist: artist }).then(() => {
         const volume = Store.getters.getVolume
         this.setFadeVolume(volume, 50).then(() => {
           console.log('Volume set to normal')
@@ -188,13 +186,10 @@ class Player {
       this.status.hasInit = false
       router.push('Demo')
     })
+
     this.player.addListener('playback_error', ({ message }) => {
       console.warn(message)
     })
-
-    // Playback status updates
-    //this.player.addListener('player_state_changed')
-
     // Ready
     this.player.addListener('ready', this._playerReady)
 
@@ -202,12 +197,10 @@ class Player {
     this.player.addListener('not_ready', ({ device_id }) => {
       console.log('Device ID has gone offline', device_id)
     })
-    /*
-    this.player.addListener('player_state_changed', ({ position, duration, track_window: { current_track } }) => {
-      console.log('Currently Playing', current_track)
-      console.log('Position in Song', position)
-      console.log('Duration of Song', duration)
-    })*/
+
+    this.player.addListener('player_state_changed', ({ track_window: { current_track } }) => {
+      if (Store.getters.getCurrentSong.id !== current_track.id) Store.dispatch('getTrack', current_track.id)
+    })
   }
 }
 

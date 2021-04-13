@@ -27,8 +27,8 @@ export default class Festival {
         height: this.$opt.height ? this.$opt.height : 2000,
       },
       margin: {
-        x: this.$opt.marginx ? this.$opt.marginx : 500,
-        y: this.$opt.marginy ? this.$opt.marginy : 500,
+        x: this.$opt.marginx ? this.$opt.marginx : 700,
+        y: this.$opt.marginy ? this.$opt.marginy : 700,
       },
       position: {
         x: this.$opt.x ? this.$opt.x : 0,
@@ -52,6 +52,8 @@ export default class Festival {
 
     this.createConcerts()
     this.createFestivalGrounds()
+    this.positionSideTreeAround(100)
+    this.positionTreeAround(100)
     this.positionTreeRandom(100, 2500, 1.2)
     this.generatePersons(200)
 
@@ -78,6 +80,9 @@ export default class Festival {
     this.festival.graphics.drawRect(0, 0, this.festival.container.width + this.festival.margin.x * 2, this.festival.container.height + this.festival.margin.y * 2)
     this.festival.graphics.endFill()
 
+    this.festival.size.width = this.festival.container.width
+    this.festival.size.height = this.festival.container.height
+
     //this.festival.graphics.visible = false
     this.festival.graphics.zIndex = 1
     this.addChild(this.festival.graphics)
@@ -99,7 +104,7 @@ export default class Festival {
   }
 
   createConcerts() {
-    this.positionConcertRow(5, 200, 200)
+    this.positionConcertRow(5, 300, 200)
   }
 
   positionTreeRandom(numberOfTree, maxTries, overlay) {
@@ -128,12 +133,41 @@ export default class Festival {
     }
     console.log('Placed ', nbPlaced, ' tree in ', count, ' tries')
   }
+  positionTreeAround(numberOfTree) {
+    for (let index = 0; index < numberOfTree; index++) {
+      if (index % 2) {
+        let xPos = Math.random() * (this.festival.size.width + this.festival.margin.x * 2)
+        let yPos = Math.random() * this.festival.margin.y * 0.5
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      } else {
+        let xPos = Math.random() * (this.festival.size.width + this.festival.margin.x * 2)
+        let yPos = this.festival.size.height + 100 + Math.random() * this.festival.margin.y
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      }
+    }
+  }
+
+  positionSideTreeAround(numberOfTree) {
+    for (let index = 0; index < numberOfTree; index++) {
+      if (index % 2) {
+        let xPos = Math.random() * this.festival.margin.x
+        let yPos = 300 + Math.random() * this.festival.size.height - 300
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      } else {
+        let xPos = this.festival.size.width + Math.random() * this.festival.margin.x * 2
+        let yPos = 300 + Math.random() * this.festival.size.height - 300
+        this.createTree(xPos, yPos, 1.5 + Math.random() * 1.5)
+      }
+    }
+  }
 
   positionConcertRow(concertPerRow, baseOffset, randomOffset) {
     this.concertPosition = new Array()
     this.concerts = new Array()
     let count = 0
     let row = 0
+
+    console.groupCollapsed('Concerts infos')
 
     this.$concertsData.forEach((concert, index) => {
       let xPos = count > 0 ? baseOffset + Math.random() * randomOffset + this.concertPosition[index - 1].x + this.concertPosition[index - 1].width : this.festival.margin.x
@@ -144,8 +178,8 @@ export default class Festival {
       } else {
         yPos = this.festival.margin.y
       }
-      let rWidth = ((1500 + Math.random() * 400) * concert.popularity) / 100
-      let rHeight = ((1100 + Math.random() * 200) * concert.popularity) / 100
+      let rWidth = 700 + ((800 + Math.random() * 400) * concert.popularity) / 100
+      let rHeight = 400 + ((600 + Math.random() * 200) * concert.popularity) / 100
       this.concertPosition.push({ x: xPos, y: yPos, width: rWidth, height: rHeight })
       this.concerts.push(
         new Concert(this, concert, {
@@ -162,6 +196,8 @@ export default class Festival {
         count++
       }
     })
+
+    console.groupEnd()
   }
 
   sortConcert(array) {
@@ -282,10 +318,10 @@ export default class Festival {
       }
       if (tmp > highest) highest = tmp
     }
-    if (data[current].$data.name !== this.festival.currentConcertName) {
+    if (typeof current !== 'undefined' && data[current].$data.name !== this.festival.currentConcertName) {
       if (Store.getters.getPlayerInit) Player.changeTrackFade(data[current].$data.uri, data[current].$data.artists[0].id)
       this.festival.currentConcertName = data[current].$data.name
-      Store.commit('setCurrentSong', this.festival.currentConcertName + ' - ' + data[current].$data.artists[0].name)
+      Store.commit('setCurrentSong', data[current].$data)
       console.log('Now playing : ', this.festival.currentConcertName, data[current].$data)
     }
   }

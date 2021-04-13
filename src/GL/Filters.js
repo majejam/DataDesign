@@ -19,8 +19,7 @@ export default class Filters {
 
     this.setEvents()
 
-    this.$container.filters = [this.blur, this.tilt, this.crt]
-    Engine.$app.stage.filters = [this.color]
+    Engine.$app.stage.filters = [this.blur, this.tilt, this.crt, this.color]
   }
 
   updateFilters() {
@@ -43,23 +42,23 @@ export default class Filters {
       'Color',
       'hue',
       {
-        default: 30,
+        default: 340,
         min: 0,
         max: 360,
         step: 1,
       },
-      this._updateCRT
+      this._updateColor
     )
     this.updateColor()
   }
 
   updateColor() {
-    this.color.enabled = GUI.datas.Color.enabled
     this.color.reset()
+    this.color.enabled = GUI.datas.Color.enabled
     //this.color.technicolor(GUI.datas.Color.technicolor)
 
     if (Store.getters.getCurrentFestival === 'normal') this.color.hue(0, true)
-    else this.color.hue(340, true)
+    else this.color.hue(GUI.datas.Color.hue, true)
   }
 
   blurFilter() {

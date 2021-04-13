@@ -2,6 +2,7 @@
 
 import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
+import Scene from '@/GL/Scene.js'
 //import Store from '@/store'
 export default class Concert {
   constructor(festival, data = null, opt = {}) {
@@ -29,21 +30,22 @@ export default class Concert {
       distance: 0,
     }
 
-    this.scene = {
-      graphics: null,
-      bounds: { x: 0, y: 0, w: 200, h: 400 },
-    }
     this.screen = {
       container: null,
       graphics: null,
       bounds: { x: 100, y: -100, w: 300, h: 200 },
     }
+
     this.crowd = {
       graphics: null,
       bounds: { x: 300, y: 0, w: 300, h: 200 },
     }
 
+    this.time = 0
+
     this.stands = new Array()
+
+    this.scene = null
 
     this.blasters = new Array()
 
@@ -53,6 +55,7 @@ export default class Concert {
   init() {
     this.setEvents()
     this.createConcert()
+    console.log(this.$data, this.$data.artists[0].name, this.$data.name)
   }
 
   createConcert() {
@@ -60,8 +63,8 @@ export default class Concert {
     this.concert.container.zIndex = 2
     this.createConcertGrounds()
 
-    this.createScene()
-    this.createScreen()
+    this.scene = new Scene(this)
+    if (!this.scene.isBig()) this.createScreen()
     this.createCrowdZone()
     this.createStand()
     this.concertInteractivity(false)
@@ -78,22 +81,6 @@ export default class Concert {
     this.addChild(this.concert.graphics)
   }
 
-  createScene() {
-    this.positionScene()
-    this.scene.graphics = this.createGraphics(this.concert.container.x + this.scene.bounds.x, this.concert.container.y + this.scene.bounds.y, this.scene.bounds.w, this.scene.bounds.h, 0xff0000)
-    this.scene.graphics.zIndex = this.concert.container.y + this.scene.bounds.y + this.scene.bounds.h
-    this.$festival.addChild(this.scene.graphics)
-  }
-
-  positionScene() {
-    this.scene.bounds.w = this.concert.container.width / 3
-    this.scene.bounds.h = this.concert.container.height / 1.5
-
-    this.scene.bounds.y = 100 + Math.random() * (this.concert.container.height - this.scene.bounds.h - 100)
-    if (Math.round(Math.random())) this.scene.bounds.x = this.concert.container.width - this.scene.bounds.w - Math.random() * 50
-    else this.scene.bounds.x = Math.random() * 50
-  }
-
   createScreen(ratio = 1.15) {
     this.screen.container = new Engine.PIXI.Container()
     let sprite_name = this.isSceneRight() ? 'screen_right.png' : 'screen.png'
@@ -102,11 +89,11 @@ export default class Concert {
     if (this.isSceneRight()) {
       this.screen.graphics.y = this.screen.bounds.y / 2
       this.screen.graphics.width = this.screen.graphics.width / ratio
-      this.screen.container.x = this.concert.container.x + this.concert.container.width - this.concert.container.width * 0.1 - this.screen.bounds.w
+      this.screen.container.x = this.concert.container.x + this.concert.container.width - this.concert.container.width * 0.3 - this.screen.bounds.w
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y - 100
     } else {
       this.screen.graphics.y = this.screen.bounds.y
-      this.screen.container.x = this.concert.container.x + this.concert.container.width * 0.1
+      this.screen.container.x = this.concert.container.x + this.concert.container.width * 0.3
       this.screen.graphics.width = this.screen.graphics.width / ratio
       this.screen.container.y = this.concert.container.y + this.screen.bounds.y
     }
@@ -144,22 +131,30 @@ export default class Concert {
   }
 
   isSceneRight() {
-    return this.scene.bounds.x > this.concert.container.width / 2
+    return this.scene.isSceneRight()
   }
 
   createName(skew) {
+    const string = this.substr(this.$data.artists[0].name)
+    let fontSize = 48
+
+    if (this.lgstwrdstr(string) * 30 > this.screen.bounds.w * 0.9) {
+      fontSize = 30
+    }
+
     const style = new Engine.PIXI.TextStyle({
       breakWords: true,
-      fontSize: 48,
-      fontFamily: 'Noto Sans',
+      fontSize: fontSize,
+      fontFamily: 'Montserrat',
       wordWrap: true,
       wordWrapWidth: this.screen.bounds.w * 0.9,
-      fill: 0x000000,
+      fill: 0xffffff,
       align: 'center',
     })
 
-    let text = new Engine.PIXI.Text(this.substr(this.$data.artists[0].name), style)
-    text.position.x = this.screen.bounds.w / 2 - text.width / 3
+    let text = new Engine.PIXI.Text(string, style)
+
+    text.alpha = 0.8
 
     if (this.isSceneRight()) {
       text.skew.y = skew
@@ -174,6 +169,13 @@ export default class Concert {
     return text
   }
 
+  lgstwrdstr(str) {
+    let longestWord = str.split(' ').sort(function (a, b) {
+      return b.length - a.length
+    })
+    return longestWord[0].length
+  }
+
   substr(string, limit = 30) {
     let str = string + ' '
     str = str.substring(0, limit)
@@ -182,7 +184,7 @@ export default class Concert {
   }
 
   positionCrowd() {
-    this.crowd.bounds.w = this.concert.container.width - (this.scene.bounds.w + 50)
+    this.crowd.bounds.w = this.concert.container.width - (this.scene.getBounds().w - 50)
     this.crowd.bounds.h = this.concert.container.height
     this.crowd.bounds.y = 0
 
@@ -246,26 +248,14 @@ export default class Concert {
     }
   }
 
-  createMan(x, y) {
-    // create an animated sprite
-    this.animatedCapguy = new Engine.PIXI.AnimatedSprite(Engine.spritesheet.animations['dancingman'])
-    // set speed, start playback and add it to the stage
-    this.animatedCapguy.animationSpeed = this.$data.audio_features.danceability / 3
-    this.animatedCapguy.play()
-    this.animatedCapguy.position.x = x
-    this.animatedCapguy.position.y = y
-    this.concert.crowd.container.addChild(this.animatedCapguy)
-    return this.animatedCapguy
-  }
-
   addChild(child) {
     this.concert.container.addChild(child)
   }
 
   update() {
     this.concert.container.visible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
-    this.screen.container.visible = World.cull.isInViewport(this.screen.container.position.x, this.screen.container.position.y, this.screen.container.width, this.screen.container.height)
-
+    if (this.screen.container)
+      this.screen.container.visible = World.cull.isInViewport(this.screen.container.position.x, this.screen.container.position.y, this.screen.container.width, this.screen.container.height)
     if (this.blasters.length > 0) {
       this.blasters.forEach(blaster => {
         blaster.visible = World.cull.isInViewport(blaster.position.x, blaster.position.y, blaster.width, blaster.height)
@@ -296,9 +286,17 @@ export default class Concert {
   }
 
   getMiddlePosition() {
-    return {
-      x: this.concert.position.x + this.concert.size.width / 2,
-      y: this.concert.position.y + this.concert.size.height / 2,
+    // return the position of the scene
+    if (this.isSceneRight()) {
+      return {
+        x: this.concert.position.x + this.concert.size.width - this.concert.size.width / 4,
+        y: this.concert.position.y + this.concert.size.height / 2,
+      }
+    } else {
+      return {
+        x: this.concert.position.x + this.concert.size.width / 4,
+        y: this.concert.position.y + this.concert.size.height / 2,
+      }
     }
   }
 

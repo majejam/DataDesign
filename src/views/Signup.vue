@@ -4,10 +4,14 @@
     <img class="fixed__logo fixed_column" src="images/logo_white.svg" alt="logo festivaly" />
     <div ref="data_scroll_container" class="u-flex-column" data-scroll-container>
       <div data-scroll-section class="scroll_bg main-column-inner">
-        <div class="grid grid-between">
-          <div data-scroll data-scroll-speed="3" class="section section_jumbotron grid grid-column grid-start">
+        <div class="relative grid grid-between">
+          <div data-scroll :data-scroll-speed="speed" class="section section_jumbotron grid grid-column grid-start">
             <h1 class="h1-title">Festivaly.</h1>
-            <p class="main-description">Experience your musical festival. Curated by your Spotify tastes.</p>
+            <p class="main-description">
+              Experience your musical festival.<br />
+              Discover your next musical crushes.<br />
+              Curated by your Spotify tastes.
+            </p>
             <div class="section_jumbotron_button grid grid-between grid-start">
               <div class="grid grid-column section_jumbotron_button--single">
                 <Button primary @click.native="signIn()">Discover your festival</Button>
@@ -17,37 +21,55 @@
             </div>
           </div>
 
-          <div class="section_jumbotron_images">
-            <div class="section_jumbotron_images--single"></div>
-            <div class="section_jumbotron_images--single"></div>
-            <div class="section_jumbotron_images--single"></div>
+          <div class="section_jumbotron_images section_jumbotron_images--responsive grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_01.png" alt="Festivaly illustration" />
           </div>
         </div>
-        <div data-scroll data-scroll-speed="3">
+        <div class="relative grid grid-between">
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_02.png" alt="Festivaly illustration" />
+          </div>
           <Section
-            title="The concept"
-            description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it? <br /><br />
-          In Festivaly, you get the chance to roam between all your top artists stages in a cute isometric world.
-        "
+            data-scroll
+            :data-scroll-speed="speed"
+            right
+            title="Your own festival"
+            description="We used to spend our summers in festivals, and now Spotify is our only way to get vibed on and experience music. What if we added a whole new dimension to it?<br /><br/>
+In Festivaly, vibe on your favorite artist stages within a cute isometric world!        "
           />
         </div>
 
-        <div data-scroll data-scroll-speed="3">
+        <div class="relative grid grid-between">
           <Section
+            data-scroll
+            :data-scroll-speed="speed"
+            title="Discover your next musical crushes"
+            description="You might be one click away from your new favorite music. In Discovery World, each scene
+          hosts an artist carefully selected based on your tastes.<br /><br /> Build as many discovery festivals as you want with the 'New Discovery Word' feature!"
+          />
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_03.png" alt="Festivaly illustration" />
+          </div>
+        </div>
+
+        <div class="relative grid grid-between">
+          <div class="section_jumbotron_images grid">
+            <img class="section_jumbotron_images--single" src="images/home/home_04.png" alt="Festivaly illustration" />
+          </div>
+          <Section
+            data-scroll
+            :data-scroll-speed="speed"
             title="How it works"
-            description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months. <br /><br />
-          Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br />
-          <br />
-          Songs you love are then played through Spotify Web Playback SDK."
+            description="The data are collected through Spotify Web API. We retrieve the 20 artists you've listened the most on Spotify during the last 3 months.<br /><br />Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br /><br />Songs you love are then played through Spotify Web Playback SDK.<br /><br />Your top songs are combined into a unique seed. The “Discovery World” is filled with new songs that are the most relevant to the seed."
             right
           />
         </div>
         <div class="section section_credit grid grid-column">
-          <h2 class="section-title" data-scroll data-scroll-speed="3">Credit</h2>
-          <p class="section-description" data-scroll data-scroll-speed="2">
-            Thomas Lacroix, developer <br />
-            Morgane Lapisardi, illustrator<br />
-            Yoan Gross, designer
+          <h2 class="section-title" data-scroll data-scroll-speed="3">Credits</h2>
+          <p class="section-description" data-scroll data-scroll-speed="4">
+            Thomas Lacroix, Developer <br />
+            Morgane Lapisardi, Illustrator<br />
+            Yoan Gross, Designer
           </p>
         </div>
       </div>
@@ -65,6 +87,7 @@ export default {
   data() {
     return {
       scroll: null,
+      speed: 3,
     }
   },
   methods: {
@@ -72,7 +95,25 @@ export default {
       this.scroll = new LocomotiveScroll({
         el: this.$refs.data_scroll_container,
         smooth: true,
+        tablet: {
+          smooth: true,
+        },
+        smartphone: {
+          smooth: true,
+        },
       })
+
+      this._resize = this.resize.bind(this)
+      this.resize()
+    },
+    resize() {
+      if (window.innerWidth < 767) {
+        this.speed = 1
+      } else {
+        this.speed = 3
+      }
+
+      if (this.scroll) this.scroll.update()
     },
     signIn() {
       let url =
@@ -91,14 +132,16 @@ export default {
   },
   deactivated() {
     this.scroll.destroy()
+    window.removeEventListener('resize', this._resize)
   },
   activated() {
     setTimeout(() => {
       this.init()
+      window.addEventListener('resize', this._resize)
 
-      this.$nextTick(() => {
+      setTimeout(() => {
         this.scroll.update()
-      })
+      }, 500)
     }, 100)
   },
 }
@@ -107,6 +150,10 @@ export default {
 <style lang="scss">
 .scroll_height {
   flex-flow: column;
+}
+
+.relative {
+  position: relative;
 }
 
 .fixed__logo {
@@ -143,11 +190,16 @@ export default {
 
   @include media('<md') {
     width: 100%;
+    margin: 0;
   }
 
   &_jumbotron {
     margin: 0;
     height: 100vh;
+
+    @include media('<md') {
+      padding: 10% 0;
+    }
 
     h1 {
       margin-bottom: 16px;
@@ -159,23 +211,40 @@ export default {
 
     p {
       margin-bottom: 40px;
+
+      @include media('<sm') {
+        width: 100%;
+      }
     }
 
     &_button {
       width: 100%;
 
+      @include media('<md') {
+        justify-content: left !important;
+        margin-top: auto;
+      }
+
       @include media('<sm') {
         justify-content: center !important;
+        margin-top: auto;
       }
 
       &--single {
         max-width: 288px;
 
+        @include media('<md') {
+          margin-right: 16px;
+        }
+
         @include media('<sm') {
-          margin-bottom: 50px;
+          margin-bottom: 24px;
+          margin-right: 0;
+          width: 100%;
         }
         span {
           margin-top: 8px;
+          font-size: rem(14px);
           font-family: var(--font-secondary);
           font-weight: 500;
           line-height: rem(18px);
@@ -187,26 +256,37 @@ export default {
     &_images {
       width: 50%;
       position: relative;
-      height: 100%;
+      height: auto;
+      overflow: hidden;
+      max-height: 100vh;
+
+      @include media('<sm') {
+        width: 100%;
+        display: none !important;
+      }
 
       &--single {
-        width: 200px;
+        width: 100%;
         height: auto;
-        flex: 1;
+        object-fit: contain;
 
-        &:nth-child(1) {
-          position: absolute;
-          background: grey;
+        @include media('<md') {
+          height: 50vh;
         }
+      }
 
-        &:nth-child(2) {
+      &--responsive {
+        @include media('<md') {
+          display: block !important;
           position: absolute;
-          background: pink;
+          top: 55%;
+          transform: translateY(-50%);
+          left: 0;
+          width: 100%;
         }
-
-        &:nth-child(3) {
-          position: absolute;
-          background: yellow;
+        @include media('<sm') {
+          display: block !important;
+          top: 50%;
         }
       }
     }
@@ -215,8 +295,19 @@ export default {
   &_credit {
     height: 50vh;
     width: 100%;
+
+    @include media('<sm') {
+      height: 30vh;
+      justify-content: left !important;
+      align-items: flex-start !important;
+    }
+
     p {
       text-align: center;
+
+      @include media('<sm') {
+        text-align: left;
+      }
     }
   }
 }

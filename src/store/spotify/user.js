@@ -9,7 +9,7 @@ const state = {
   isLogged: false,
   isDemo: false,
   loading_message: 'Loading api info',
-  volume: 1,
+  volume: 0.5,
   user: {
     images: [
       {
