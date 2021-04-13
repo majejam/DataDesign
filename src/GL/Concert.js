@@ -2,6 +2,7 @@
 
 import Engine from '@/GL/Engine.js'
 import World from '@/GL/World.js'
+import Scene from '@/GL/Scene.js'
 //import Store from '@/store'
 export default class Concert {
   constructor(festival, data = null, opt = {}) {
@@ -29,20 +30,12 @@ export default class Concert {
       distance: 0,
     }
 
-    this.scene = {
-      graphics: null,
-      sprite: null,
-      text: null,
-      container: null,
-      isBig: this.$data.popularity / 100 > 0.5,
-      direction: '',
-      bounds: { x: 0, y: 0, w: 200, h: 400 },
-    }
     this.screen = {
       container: null,
       graphics: null,
       bounds: { x: 100, y: -100, w: 300, h: 200 },
     }
+
     this.crowd = {
       graphics: null,
       bounds: { x: 300, y: 0, w: 300, h: 200 },
@@ -51,6 +44,8 @@ export default class Concert {
     this.time = 0
 
     this.stands = new Array()
+
+    this.scene = null
 
     this.blasters = new Array()
 
@@ -68,8 +63,8 @@ export default class Concert {
     this.concert.container.zIndex = 2
     this.createConcertGrounds()
 
-    this.createScene()
-    if (!this.scene.isBig) this.createScreen()
+    this.scene = new Scene(this)
+    if (!this.scene.isBig()) this.createScreen()
     this.createCrowdZone()
     this.createStand()
     this.concertInteractivity(false)
@@ -84,52 +79,6 @@ export default class Concert {
     if (this.debug) this.concert.graphics.alpha = 1
     else this.concert.graphics.alpha = 0
     this.addChild(this.concert.graphics)
-  }
-
-  createScene() {
-    this.positionScene()
-    this.scene.graphics = this.createGraphics(this.concert.container.x + this.scene.bounds.x, this.concert.container.y + this.scene.bounds.y, this.scene.bounds.w, this.scene.bounds.h, 0xff0000)
-    this.scene.graphics.zIndex = this.concert.container.y + this.scene.bounds.y + this.scene.bounds.h
-    //this.$festival.addChild(this.scene.graphics)
-    if (this.scene.isBig && !this.isSceneRight()) this.createBigScene('scenebigleft.png')
-    else if (this.scene.isBig && this.isSceneRight()) this.createBigScene('scenebigright.png')
-    else if (!this.scene.isBig && !this.isSceneRight()) this.createSmallScene('scenesmallleft.png')
-    else if (!this.scene.isBig && this.isSceneRight()) this.createSmallScene('scenesmallright.png')
-  }
-
-  createSmallScene(sprite) {
-    this.scene.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[sprite])
-    this.scene.sprite.position.x = this.concert.container.x + this.scene.bounds.x
-    this.scene.sprite.position.y = this.concert.container.y + this.scene.bounds.y + 50
-    this.scene.sprite.zIndex = this.scene.sprite.position.y + this.scene.sprite.height
-    this.$festival.addChild(this.scene.sprite)
-  }
-
-  createBigScene(sprite) {
-    this.scene.container = new Engine.PIXI.Container()
-    this.scene.sprite = new Engine.PIXI.Sprite(Engine.spritesheet.textures[sprite])
-    this.scene.container.position.x = this.concert.container.x + this.scene.bounds.x
-    this.scene.container.position.y = this.concert.container.y + this.scene.bounds.y
-    this.scene.container.zIndex = this.scene.container.position.y + this.scene.sprite.height
-
-    this.scene.container.addChild(this.scene.sprite)
-    this.scene.container.addChild(this.createNameScene(0.53))
-    this.$festival.addChild(this.scene.container)
-  }
-
-  positionScene() {
-    this.scene.bounds.w = this.scene.isBig ? 600 : 500
-    this.scene.bounds.h = this.scene.isBig ? 600 : 400
-    this.scene.bounds.y = this.scene.isBig ? 0 : 100 + Math.random() * 50
-
-    if (Math.round(Math.random())) {
-      this.scene.direction = 'right'
-      this.scene.bounds.y = Math.random() * 50
-      this.scene.bounds.x = this.concert.container.width - this.scene.bounds.w - Math.random() * 50
-    } else {
-      this.scene.bounds.x = 0
-      this.scene.direction = 'left'
-    }
   }
 
   createScreen(ratio = 1.15) {
@@ -182,47 +131,7 @@ export default class Concert {
   }
 
   isSceneRight() {
-    return this.scene.direction === 'right'
-  }
-
-  createNameScene(skew) {
-    const string = this.substr(this.$data.artists[0].name)
-    let fontSize = 30
-
-    if (this.lgstwrdstr(string) * 30 > this.screen.bounds.w * 0.5) {
-      fontSize = 30
-    }
-
-    const style = new Engine.PIXI.TextStyle({
-      breakWords: true,
-      fontSize: fontSize,
-      fontFamily: 'Montserrat',
-      wordWrap: true,
-      wordWrapWidth: 300,
-      fill: 0xffffff,
-      align: 'center',
-    })
-
-    this.scene.text = new Engine.PIXI.Text(string, style)
-    this.scene.text.alpha = 0.8
-
-    if (this.isSceneRight()) {
-      this.scene.text.skew.y = skew
-      this.scene.text.position.y = this.scene.container.height * 0.22 - this.scene.text.width / 6
-      this.scene.text.position.x = this.scene.container.width * 0.37 - this.scene.text.width / 2
-    } else {
-      this.scene.text.skew.y = -skew
-      this.scene.text.position.y = this.scene.container.height * 0.31 + this.scene.text.width / 6
-      this.scene.text.position.x = this.scene.container.width * 0.24 - this.scene.text.width / 2
-    }
-
-    return this.scene.text
-  }
-
-  animateSceneName(time) {
-    if (this.scene.text) {
-      this.scene.text.alpha = Math.abs(Math.sin(time))
-    }
+    return this.scene.isSceneRight()
   }
 
   createName(skew) {
@@ -275,7 +184,7 @@ export default class Concert {
   }
 
   positionCrowd() {
-    this.crowd.bounds.w = this.concert.container.width - (this.scene.bounds.w - 50)
+    this.crowd.bounds.w = this.concert.container.width - (this.scene.getBounds().w - 50)
     this.crowd.bounds.h = this.concert.container.height
     this.crowd.bounds.y = 0
 
@@ -344,14 +253,9 @@ export default class Concert {
   }
 
   update() {
-    this.time += 0.05
-
-    this.animateSceneName(this.time)
     this.concert.container.visible = World.cull.isInViewport(this.concert.position.x, this.concert.position.y, this.concert.size.width, this.concert.size.height)
     if (this.screen.container)
       this.screen.container.visible = World.cull.isInViewport(this.screen.container.position.x, this.screen.container.position.y, this.screen.container.width, this.screen.container.height)
-    if (this.scene.container)
-      this.scene.container.visible = World.cull.isInViewport(this.scene.container.position.x, this.scene.container.position.y, this.scene.container.width, this.scene.container.height)
     if (this.blasters.length > 0) {
       this.blasters.forEach(blaster => {
         blaster.visible = World.cull.isInViewport(blaster.position.x, blaster.position.y, blaster.width, blaster.height)

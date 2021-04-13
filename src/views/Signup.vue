@@ -60,8 +60,7 @@ In Festivaly, vibe on your favorite artist stages within a cute isometric world!
             data-scroll
             :data-scroll-speed="speed"
             title="How it works"
-            description="The datas are collected through Spotify Web API. We retrieve the 20 artists you've listened to the most on Spotify during the last 3 months.<br/><br/>Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br/><br/>
-Songs you love are then played through Spotify Web Playback SDK.<br/><br/>Your top songs are combined into a unique seed. The “Discovery world” is filled by songs unknown to you that are the more relevant to the seed."
+            description="The data are collected through Spotify Web API. We retrieve the 20 artists you've listened the most on Spotify during the last 3 months.<br /><br />Metrics such as the popularity, the danceability and the energy are used to create a lively and personalized experience. <br /><br />Songs you love are then played through Spotify Web Playback SDK.<br /><br />Your top songs are combined into a unique seed. The “Discovery World” is filled with new songs that are the most relevant to the seed."
             right
           />
         </div>
